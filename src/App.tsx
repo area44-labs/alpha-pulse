@@ -1,453 +1,209 @@
-import { useState } from "react";
+import { Info, TrendingUp, Star } from "lucide-react";
+import { useState, useMemo } from "react";
+
+import { FilterBar } from "./components/filter-bar";
+import { Header } from "./components/header";
+import { MarketSummary } from "./components/market-summary";
+import { StockDetailModal } from "./components/stock-detail-modal";
+import { StockTable } from "./components/stock-table";
+import stocksData from "./data/stocks.json";
+
+interface Stock {
+  symbol: string;
+  companyName: string;
+  sector: string;
+  type: "BUY" | "SELL";
+  currentPrice: number;
+  targetBuyPrice: string;
+  targetSellPrice: number;
+  stopLossPrice: number;
+  riskRewardRatio: string;
+  riskLevel: "LOW" | "MEDIUM" | "HIGH";
+  rationale: string;
+}
 
 function App() {
-  const [count, setCount] = useState<number>(0);
+  // Filters state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSector, setSelectedSector] = useState("");
+  const [selectedRisk, setSelectedRisk] = useState("");
+
+  // Selected stock for modal detail
+  const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Active tab state ("BUY" or "SELL")
+  const [activeTab, setActiveTab] = useState("BUY");
+
+  // Dynamically extract sectors from recommendations data for filtering options
+  const sectors = useMemo(() => {
+    const allSectors = stocksData.recommendations.map((stock) => stock.sector);
+    return Array.from(new Set(allSectors)).sort();
+  }, []);
+
+  // Filter recommendations based on search queries and selection states
+  const filteredStocks = useMemo(() => {
+    return (stocksData.recommendations as Stock[]).filter((stock) => {
+      const matchesSearch =
+        stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        stock.companyName.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesSector = selectedSector === "" || stock.sector === selectedSector;
+      const matchesRisk = selectedRisk === "" || stock.riskLevel === selectedRisk;
+
+      return matchesSearch && matchesSector && matchesRisk;
+    });
+  }, [searchQuery, selectedSector, selectedRisk]);
+
+  // Thống kê số lượng tổng (không bị ảnh hưởng bởi bộ lọc)
+  const totalBuyCount = useMemo(() => {
+    return stocksData.recommendations.filter((s) => s.type === "BUY").length;
+  }, []);
+
+  const totalSellCount = useMemo(() => {
+    return stocksData.recommendations.filter((s) => s.type === "SELL").length;
+  }, []);
+
+  const handleSelectStock = (stock: Stock) => {
+    setSelectedStock(stock);
+    setIsModalOpen(true);
+  };
 
   return (
-    <main className="mx-auto max-w-7xl p-8 text-center sm:p-16 lg:p-32">
-      <section className="flex justify-center gap-8">
-        <a
-          href="https://vite.dev"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group"
-          aria-label="Visit Vite website"
-        >
-          <span className="sr-only">Visit Vite website</span>
+    <div className="flex min-h-screen flex-col bg-gray-50/50 text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100">
+      {/* Header component */}
+      <Header lastUpdated={stocksData.lastUpdated} />
 
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-24 p-6 transition duration-300 group-hover:drop-shadow-[0_0_2em_#646cffaa]"
-            fill="none"
-            viewBox="0 0 48 46"
-          >
-            <path
-              fill="#863bff"
-              d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z"
-              style={{ fill: "color(display-p3 .5252 .23 1)", fillOpacity: 1 }}
-            />
-            <mask
-              id="a"
-              width="48"
-              height="46"
-              x="0"
-              y="0"
-              maskUnits="userSpaceOnUse"
-              style={{ maskType: "alpha" }}
-            >
-              <path
-                fill="#000"
-                d="M25.842 44.938c-.664.844-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.183c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.498 0-3.579-1.842-3.579H1.133c-.92 0-1.456-1.04-.92-1.787L9.91.473c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.578 1.842 3.578h11.377c.943 0 1.473 1.088.89 1.832L25.843 44.94z"
-                style={{ fill: "#000", fillOpacity: 1 }}
-              />
-            </mask>
-            <g mask="url(#a)">
-              <g filter="url(#b)">
-                <ellipse
-                  cx="5.508"
-                  cy="14.704"
-                  fill="#ede6ff"
-                  rx="5.508"
-                  ry="14.704"
-                  style={{ fill: "color(display-p3 .9275 .9033 1)", fillOpacity: 1 }}
-                  transform="matrix(.00324 1 1 -.00324 -4.47 31.516)"
-                />
-              </g>
-              <g filter="url(#c)">
-                <ellipse
-                  cx="10.399"
-                  cy="29.851"
-                  fill="#ede6ff"
-                  rx="10.399"
-                  ry="29.851"
-                  style={{ fill: "color(display-p3 .9275 .9033 1)", fillOpacity: 1 }}
-                  transform="matrix(.00324 1 1 -.00324 -39.328 7.883)"
-                />
-              </g>
-              <g filter="url(#d)">
-                <ellipse
-                  cx="5.508"
-                  cy="30.487"
-                  fill="#7e14ff"
-                  rx="5.508"
-                  ry="30.487"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="rotate(89.814 -25.913 -14.639)scale(1 -1)"
-                />
-              </g>
-              <g filter="url(#e)">
-                <ellipse
-                  cx="5.508"
-                  cy="30.599"
-                  fill="#7e14ff"
-                  rx="5.508"
-                  ry="30.599"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="rotate(89.814 -32.644 -3.334)scale(1 -1)"
-                />
-              </g>
-              <g filter="url(#f)">
-                <ellipse
-                  cx="5.508"
-                  cy="30.599"
-                  fill="#7e14ff"
-                  rx="5.508"
-                  ry="30.599"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="matrix(.00324 1 1 -.00324 -34.34 30.47)"
-                />
-              </g>
-              <g filter="url(#g)">
-                <ellipse
-                  cx="14.072"
-                  cy="22.078"
-                  fill="#ede6ff"
-                  rx="14.072"
-                  ry="22.078"
-                  style={{ fill: "color(display-p3 .9275 .9033 1)", fillOpacity: 1 }}
-                  transform="rotate(93.35 24.506 48.493)scale(-1 1)"
-                />
-              </g>
-              <g filter="url(#h)">
-                <ellipse
-                  cx="3.47"
-                  cy="21.501"
-                  fill="#7e14ff"
-                  rx="3.47"
-                  ry="21.501"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="rotate(89.009 28.708 47.59)scale(-1 1)"
-                />
-              </g>
-              <g filter="url(#i)">
-                <ellipse
-                  cx="3.47"
-                  cy="21.501"
-                  fill="#7e14ff"
-                  rx="3.47"
-                  ry="21.501"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="rotate(89.009 28.708 47.59)scale(-1 1)"
-                />
-              </g>
-              <g filter="url(#j)">
-                <ellipse
-                  cx=".387"
-                  cy="8.972"
-                  fill="#7e14ff"
-                  rx="4.407"
-                  ry="29.108"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="rotate(39.51 .387 8.972)"
-                />
-              </g>
-              <g filter="url(#k)">
-                <ellipse
-                  cx="47.523"
-                  cy="-6.092"
-                  fill="#7e14ff"
-                  rx="4.407"
-                  ry="29.108"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="rotate(37.892 47.523 -6.092)"
-                />
-              </g>
-              <g filter="url(#l)">
-                <ellipse
-                  cx="41.412"
-                  cy="6.333"
-                  fill="#47bfff"
-                  rx="5.971"
-                  ry="9.665"
-                  style={{ fill: "color(display-p3 .2799 .748 1)", fillOpacity: 1 }}
-                  transform="rotate(37.892 41.412 6.333)"
-                />
-              </g>
-              <g filter="url(#m)">
-                <ellipse
-                  cx="-1.879"
-                  cy="38.332"
-                  fill="#7e14ff"
-                  rx="4.407"
-                  ry="29.108"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="rotate(37.892 -1.88 38.332)"
-                />
-              </g>
-              <g filter="url(#n)">
-                <ellipse
-                  cx="-1.879"
-                  cy="38.332"
-                  fill="#7e14ff"
-                  rx="4.407"
-                  ry="29.108"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="rotate(37.892 -1.88 38.332)"
-                />
-              </g>
-              <g filter="url(#o)">
-                <ellipse
-                  cx="35.651"
-                  cy="29.907"
-                  fill="#7e14ff"
-                  rx="4.407"
-                  ry="29.108"
-                  style={{ fill: "color(display-p3 .4922 .0767 1)", fillOpacity: 1 }}
-                  transform="rotate(37.892 35.651 29.907)"
-                />
-              </g>
-              <g filter="url(#p)">
-                <ellipse
-                  cx="38.418"
-                  cy="32.4"
-                  fill="#47bfff"
-                  rx="5.971"
-                  ry="15.297"
-                  style={{ fill: "color(display-p3 .2799 .748 1)", fillOpacity: 1 }}
-                  transform="rotate(37.892 38.418 32.4)"
-                />
-              </g>
-            </g>
-            <defs>
-              <filter
-                id="b"
-                width="60.045"
-                height="41.654"
-                x="-19.77"
-                y="16.149"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659" />
-              </filter>
-              <filter
-                id="c"
-                width="90.34"
-                height="51.437"
-                x="-54.613"
-                y="-7.533"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659" />
-              </filter>
-              <filter
-                id="d"
-                width="79.355"
-                height="29.4"
-                x="-49.64"
-                y="2.03"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="e"
-                width="79.579"
-                height="29.4"
-                x="-45.045"
-                y="20.029"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="f"
-                width="79.579"
-                height="29.4"
-                x="-43.513"
-                y="21.178"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="g"
-                width="74.749"
-                height="58.852"
-                x="15.756"
-                y="-17.901"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="7.659" />
-              </filter>
-              <filter
-                id="h"
-                width="61.377"
-                height="25.362"
-                x="23.548"
-                y="2.284"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="i"
-                width="61.377"
-                height="25.362"
-                x="23.548"
-                y="2.284"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="j"
-                width="56.045"
-                height="63.649"
-                x="-27.636"
-                y="-22.853"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="k"
-                width="54.814"
-                height="64.646"
-                x="20.116"
-                y="-38.415"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="l"
-                width="33.541"
-                height="35.313"
-                x="24.641"
-                y="-11.323"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="m"
-                width="54.814"
-                height="64.646"
-                x="-29.286"
-                y="6.009"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="n"
-                width="54.814"
-                height="64.646"
-                x="-29.286"
-                y="6.009"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="o"
-                width="54.814"
-                height="64.646"
-                x="8.244"
-                y="-2.416"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-              <filter
-                id="p"
-                width="39.409"
-                height="43.623"
-                x="18.713"
-                y="10.588"
-                color-interpolation-filters="sRGB"
-                filterUnits="userSpaceOnUse"
-              >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur result="effect1_foregroundBlur_2002_17158" stdDeviation="4.596" />
-              </filter>
-            </defs>
-          </svg>
-        </a>
+      {/* Main dashboard content */}
+      <main className="mx-auto w-full max-w-7xl flex-1 space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+        {/* Banner Section */}
+        <section className="relative overflow-hidden rounded-2xl border border-gray-200/60 bg-gradient-to-r from-indigo-50 via-white to-indigo-50/20 p-6 shadow-sm transition-all duration-300 sm:p-8 dark:border-gray-800 dark:from-indigo-950/20 dark:via-gray-950 dark:to-indigo-950/5">
+          {/* Decorative blur elements */}
+          <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-indigo-500/10 blur-3xl dark:bg-indigo-400/5" />
+          <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-indigo-500/10 blur-3xl dark:bg-indigo-400/5" />
 
-        <a
-          href="https://react.dev"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group"
-          aria-label="Visit React website"
-        >
-          <span className="sr-only">Visit React website</span>
-          <svg
-            className="h-24 p-6 transition duration-300 group-hover:drop-shadow-[0_0_2em_#61dafbaa] motion-safe:animate-[spin_20s_linear_infinite]"
-            viewBox="0 0 256 228"
-            aria-hidden={true}
-          >
-            <path
-              fill="#00D8FF"
-              d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"
-            />
-          </svg>
-        </a>
-      </section>
+          <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="max-w-2xl space-y-3">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-400">
+                <Star className="h-3 w-3 fill-indigo-600 dark:fill-indigo-400" />
+                <span>Cập Nhật Hằng Ngày: 100% Tự Động Từ JSON</span>
+              </div>
+              <h2 className="text-2xl leading-tight font-extrabold tracking-tight text-gray-950 sm:text-3xl dark:text-white">
+                Hệ Thống Phân Tích & Khuyến Nghị Giao Dịch
+              </h2>
+              <p className="text-sm leading-relaxed font-medium text-gray-500 dark:text-gray-400">
+                Chào mừng bạn đến với{" "}
+                <strong className="font-bold text-gray-900 dark:text-gray-100">Alpha Pulse</strong>,
+                nền tảng tổng hợp tín hiệu giao dịch cổ phiếu hàng đầu Việt Nam. Chúng tôi cung cấp
+                các điểm mua bán tối ưu dựa trên mô hình định lượng kết hợp hành vi dòng tiền lớn,
+                chỉ báo kỹ thuật RSI, MACD, và cấu trúc đám mây Ichimoku.
+              </p>
+            </div>
 
-      <h1 className="my-10 text-4xl font-extrabold text-gray-800">Vite Workspace</h1>
+            <div className="flex flex-col items-stretch gap-3 sm:flex-row md:items-center">
+              <div className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-center shadow-2xs dark:border-gray-800 dark:bg-gray-900/40">
+                <div className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
+                  Tín Hiệu Mua
+                </div>
+                <div className="mt-1 text-2xl font-black text-emerald-600 dark:text-emerald-400">
+                  +{totalBuyCount} Mã
+                </div>
+              </div>
+              <div className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-center shadow-2xs dark:border-gray-800 dark:bg-gray-900/40">
+                <div className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
+                  Tín Hiệu Bán
+                </div>
+                <div className="mt-1 text-2xl font-black text-rose-600 dark:text-rose-400">
+                  -{totalSellCount} Mã
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-      <section className="mt-8 flex flex-col items-center gap-4">
-        <button
-          type="button"
-          onClick={() => setCount((prev) => prev + 1)}
-          className="cursor-pointer rounded-lg border border-transparent bg-[#1a1a1a] px-5 py-2.5 text-sm font-medium text-white transition-colors duration-250 hover:border-[#646cff] focus:ring-4 focus:ring-indigo-500/30 focus:outline-none dark:bg-[#f9f9f9] dark:text-[#213547]"
-        >
-          Count is {count}
-        </button>
+        {/* Market Summary Section */}
+        <MarketSummary
+          marketData={stocksData.marketSummary}
+          buyCount={totalBuyCount}
+          sellCount={totalSellCount}
+        />
 
-        <p className="mt-4 text-gray-700">
-          Edit <code className="rounded bg-gray-100 px-1 py-0.5">src/App.tsx</code> and save to test
-          HMR.
-        </p>
-      </section>
+        {/* Filter and Search Bar */}
+        <FilterBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          selectedSector={selectedSector}
+          setSelectedSector={setSelectedSector}
+          selectedRisk={selectedRisk}
+          setSelectedRisk={setSelectedRisk}
+          sectors={sectors}
+        />
 
-      <p className="mt-6 text-gray-500">Click on the Vite and React logos to learn more.</p>
-    </main>
+        {/* Core Stock Recommendation Table Card */}
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <div className="h-1.5 w-4 rounded-full bg-indigo-600 dark:bg-indigo-500" />
+            <h2 className="text-sm font-bold tracking-wider text-gray-900 uppercase dark:text-gray-200">
+              Danh Sách Khuyến Nghị Giao Dịch
+            </h2>
+          </div>
+          <StockTable
+            stocks={filteredStocks}
+            onSelectStock={handleSelectStock}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
+        </div>
+
+        {/* Admin configuration guide section */}
+        <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-2xs transition-all duration-300 dark:border-gray-800 dark:bg-gray-900/60">
+          <h3 className="flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white">
+            <Info className="h-4.5 w-4.5 text-indigo-500" />
+            <span>Hướng dẫn Cập nhật Khuyến nghị Hằng ngày</span>
+          </h3>
+          <p className="mt-1.5 text-xs leading-relaxed font-medium text-gray-500 dark:text-gray-400">
+            Ứng dụng web được xây dựng dưới dạng ứng dụng tĩnh (Static Web App). Để cập nhật danh
+            sách khuyến nghị và chỉ số thị trường hằng ngày, bạn chỉ cần mở rộng, chỉnh sửa hoặc
+            thay thế dữ liệu bên trong tệp nguồn
+            <code className="mx-1 rounded bg-gray-100 px-1.5 py-0.5 font-semibold text-indigo-600 dark:bg-gray-800 dark:text-indigo-400">
+              src/data/stocks.json
+            </code>
+            mà không cần phải can thiệp trực tiếp vào mã nguồn React/TypeScript của ứng dụng.
+          </p>
+        </section>
+      </main>
+
+      {/* Footer & Disclaimer */}
+      <footer className="mt-12 border-t border-gray-200 bg-white py-8 transition-colors duration-300 dark:border-gray-800 dark:bg-gray-950">
+        <div className="mx-auto max-w-7xl space-y-4 px-4 text-center sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center space-x-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded bg-indigo-600 text-xs font-bold text-white">
+              <TrendingUp className="h-3 w-3" />
+            </div>
+            <span className="text-sm font-bold text-gray-950 dark:text-white">
+              Alpha Pulse Trading Platform
+            </span>
+          </div>
+
+          <div className="mx-auto flex max-w-3xl flex-col items-center gap-2.5">
+            <p className="max-w-2xl text-[11px] leading-relaxed font-medium text-gray-500 dark:text-gray-400">
+              <strong>Tuyên bố Miễn trừ Trách nhiệm:</strong> Thị trường chứng khoán Việt Nam tiềm
+              ẩn nhiều rủi ro biến động. Mọi nhận định, phân tích kỹ thuật và khuyến nghị giao dịch
+              tại Alpha Pulse đều mang tính chất tham khảo, không được xem là lời khuyên đầu tư tài
+              chính chính thức. Nhà đầu tư cần cân nhắc kỹ lưu ý và tự chịu trách nhiệm hoàn toàn
+              với mọi quyết định phân bổ nguồn vốn và quản trị rủi ro cá nhân.
+            </p>
+            <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500">
+              © {new Date().getFullYear()} Alpha Pulse. Thiết kế và tối ưu bởi Fullstack Developer
+              Việt Nam.
+            </p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Stock Detail Modal Popover */}
+      <StockDetailModal stock={selectedStock} isOpen={isModalOpen} onOpenChange={setIsModalOpen} />
+    </div>
   );
 }
 
