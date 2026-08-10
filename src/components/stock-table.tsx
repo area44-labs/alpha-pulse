@@ -1,8 +1,8 @@
 import { ArrowUpRight, ArrowDownRight, Eye, HelpCircle, FileText, Sparkles } from "lucide-react";
 
-import { Badge } from "./ui/Badge";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/Tabs";
-import { Tooltip } from "./ui/Tooltip";
+import { Badge } from "./ui/badge";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
+import { Tooltip } from "./ui/tooltip";
 
 interface Stock {
   symbol: string;

@@ -1,7 +1,7 @@
 import { ShieldAlert, Target, Info, Percent, Sparkles, Scale } from "lucide-react";
 
-import { Badge } from "./ui/Badge";
-import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "./ui/Dialog";
+import { Badge } from "./ui/badge";
+import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "./ui/dialog";
 
 interface Stock {
   symbol: string;
@@ -59,7 +59,7 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
             {isBuy ? "Nên Mua (BUY)" : "Nên Bán (SELL)"}
           </Badge>
           <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-            Alpha Pulse VM Premium
+            Alpha Pulse VN Premium
           </span>
         </div>
         <div className="mt-2.5 flex flex-wrap items-baseline justify-between gap-2">

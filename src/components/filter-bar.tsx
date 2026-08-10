@@ -1,6 +1,6 @@
 import { Search, X, RotateCcw } from "lucide-react";
 
-import { Select } from "./ui/Select";
+import { Select } from "./ui/select";
 
 interface FilterBarProps {
   searchQuery: string;
