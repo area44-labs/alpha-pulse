@@ -20,7 +20,7 @@ export function Header({ lastUpdated }: HeaderProps) {
           </div>
           <div>
             <h1 className="text-lg font-bold tracking-tight text-gray-950 dark:text-gray-50">
-              Alpha Pulse <span className="text-indigo-600 dark:text-indigo-400">VN</span>
+              Alpha Pulse
             </h1>
             <p className="hidden text-xs font-medium text-gray-500 sm:block dark:text-gray-400">
               Khuyến nghị giao dịch cổ phiếu hàng ngày
@@ -80,9 +80,7 @@ export function Header({ lastUpdated }: HeaderProps) {
                 <span>Tài khoản cá nhân</span>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() =>
-                  alert("Hướng dẫn sử dụng hệ thống lọc & khuyến nghị Alpha Pulse VN.")
-                }
+                onClick={() => alert("Hướng dẫn sử dụng hệ thống lọc & khuyến nghị Alpha Pulse.")}
               >
                 <BookOpen className="mr-2 h-4 w-4 text-gray-400" />
                 <span>Hướng dẫn sử dụng</span>

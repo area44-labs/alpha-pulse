@@ -93,12 +93,10 @@ function App() {
               </h2>
               <p className="text-sm leading-relaxed font-medium text-gray-500 dark:text-gray-400">
                 Chào mừng bạn đến với{" "}
-                <strong className="font-bold text-gray-900 dark:text-gray-100">
-                  Alpha Pulse VN
-                </strong>
-                , nền tảng tổng hợp tín hiệu giao dịch cổ phiếu hàng đầu Việt Nam. Chúng tôi cung
-                cấp các điểm mua bán tối ưu dựa trên mô hình định lượng kết hợp hành vi dòng tiền
-                lớn, chỉ báo kỹ thuật RSI, MACD, và cấu trúc đám mây Ichimoku.
+                <strong className="font-bold text-gray-900 dark:text-gray-100">Alpha Pulse</strong>,
+                nền tảng tổng hợp tín hiệu giao dịch cổ phiếu hàng đầu Việt Nam. Chúng tôi cung cấp
+                các điểm mua bán tối ưu dựa trên mô hình định lượng kết hợp hành vi dòng tiền lớn,
+                chỉ báo kỹ thuật RSI, MACD, và cấu trúc đám mây Ichimoku.
               </p>
             </div>
 
@@ -183,7 +181,7 @@ function App() {
               <TrendingUp className="h-3 w-3" />
             </div>
             <span className="text-sm font-bold text-gray-950 dark:text-white">
-              Alpha Pulse VN Trading Platform
+              Alpha Pulse Trading Platform
             </span>
           </div>
 
@@ -191,13 +189,13 @@ function App() {
             <p className="max-w-2xl text-[11px] leading-relaxed font-medium text-gray-500 dark:text-gray-400">
               <strong>Tuyên bố Miễn trừ Trách nhiệm:</strong> Thị trường chứng khoán Việt Nam tiềm
               ẩn nhiều rủi ro biến động. Mọi nhận định, phân tích kỹ thuật và khuyến nghị giao dịch
-              tại Alpha Pulse VN đều mang tính chất tham khảo, không được xem là lời khuyên đầu tư
-              tài chính chính thức. Nhà đầu tư cần cân nhắc kỹ lưu ý và tự chịu trách nhiệm hoàn
-              toàn với mọi quyết định phân bổ nguồn vốn và quản trị rủi ro cá nhân.
+              tại Alpha Pulse đều mang tính chất tham khảo, không được xem là lời khuyên đầu tư tài
+              chính chính thức. Nhà đầu tư cần cân nhắc kỹ lưu ý và tự chịu trách nhiệm hoàn toàn
+              với mọi quyết định phân bổ nguồn vốn và quản trị rủi ro cá nhân.
             </p>
             <p className="text-[10px] font-semibold text-gray-400 dark:text-gray-500">
-              © {new Date().getFullYear()} Alpha Pulse VN. Thiết kế và tối ưu bởi Fullstack
-              Developer Việt Nam.
+              © {new Date().getFullYear()} Alpha Pulse. Thiết kế và tối ưu bởi Fullstack Developer
+              Việt Nam.
             </p>
           </div>
         </div>
