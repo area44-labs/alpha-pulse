@@ -1,0 +1,9 @@
+{
+  "name": "@area44/vite-workspace",
+  "framework": "vite",
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
+  "github": {
+    "autoJobCancelation": true
+  }
+}

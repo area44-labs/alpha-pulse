@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    /* Language & Environment */
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
+    /* React JSX Settings */
+    "jsx": "react-jsx",
+    /* Bundler Mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    /* React Type Performance */
+    "jsxImportSource": "react",
+    /* Strictness & Linting */
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "erasableSyntaxOnly": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    /* Type Declarations */
+    "types": ["node", "react", "react-dom", "vite/client"]
+  },
+  "include": ["src"]
+}
