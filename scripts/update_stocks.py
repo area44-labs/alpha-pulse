@@ -4,13 +4,58 @@ import time
 from datetime import datetime, timedelta
 import requests
 
-# Try to import vnstock as the fallback provider
+# Try to import vnstock using multiple version conventions for maximum compatibility
 try:
-    from vnstock.api.quote import Quote
+    from vnstock.api.quote import Quote as VnQuote
+    def get_fallback_data(symbol, start_date, end_date):
+        # Try KBS first (extremely fast, no rate limits, very reliable)
+        # Then try MSN as secondary fallback
+        for source in ['KBS', 'MSN']:
+            try:
+                q = VnQuote(symbol=symbol, source=source)
+                df = q.history(start=start_date, end=end_date)
+                if df is not None and not df.empty and "close" in df.columns:
+                    print(f"  -> Successfully fetched {symbol} via vnstock ({source})")
+                    return df, source
+            except Exception as e:
+                print(f"  -> vnstock source {source} failed for {symbol}: {e}")
+            time.sleep(1)
+        return None, None
     VNSTOCK_AVAILABLE = True
 except ImportError:
-    VNSTOCK_AVAILABLE = False
-    print("Warning: vnstock library is not available.")
+    try:
+        from vnstock import Vnstock
+        def get_fallback_data(symbol, start_date, end_date):
+            for source in ['KBS', 'MSN']:
+                try:
+                    stock = Vnstock().stock(symbol=symbol, source=source)
+                    df = stock.history(start=start_date, end=end_date)
+                    if df is not None and not df.empty and "close" in df.columns:
+                        print(f"  -> Successfully fetched {symbol} via Vnstock class ({source})")
+                        return df, source
+                except Exception as e:
+                    print(f"  -> Vnstock class {source} failed for {symbol}: {e}")
+                time.sleep(1)
+            return None, None
+        VNSTOCK_AVAILABLE = True
+    except ImportError:
+        try:
+            from vnstock import stock_historical_data
+            def get_fallback_data(symbol, start_date, end_date):
+                try:
+                    df = stock_historical_data(symbol=symbol, start_date=start_date, end_date=end_date)
+                    if df is not None and not df.empty and "close" in df.columns:
+                        print(f"  -> Successfully fetched {symbol} via stock_historical_data function")
+                        return df, "TCBS"
+                except Exception as e:
+                    print(f"  -> stock_historical_data failed for {symbol}: {e}")
+                return None, None
+            VNSTOCK_AVAILABLE = True
+        except ImportError:
+            VNSTOCK_AVAILABLE = False
+            def get_fallback_data(symbol, start_date, end_date):
+                return None, None
+            print("Warning: vnstock library is not available.")
 
 STOCKS_JSON_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -36,18 +81,6 @@ def get_ssi_data(symbol, from_ts, to_ts):
             print(f"SSI API returned status {response.status_code} for {symbol}")
     except Exception as e:
         print(f"Error fetching SSI data for {symbol}: {e}")
-    return None
-
-def get_kbs_data_fallback(symbol, start_date, end_date):
-    if not VNSTOCK_AVAILABLE:
-        return None
-    try:
-        q = Quote(symbol=symbol, source='KBS')
-        df = q.history(start=start_date, end=end_date)
-        if df is not None and not df.empty:
-            return df
-    except Exception as e:
-        print(f"Error fetching KBS fallback data for {symbol}: {e}")
     return None
 
 def main():
@@ -83,22 +116,28 @@ def main():
             price = ssi_data["c"][-1]
             print(f"  -> Found via SSI: {price}")
         else:
-            print(f"  -> SSI failed or blocked. Trying KBS fallback...")
-            # Fallback to KBS via vnstock
-            kbs_df = get_kbs_data_fallback(symbol, start_date, end_date)
-            if kbs_df is not None and "close" in kbs_df.columns:
-                price = float(kbs_df["close"].iloc[-1])
-                print(f"  -> Found via KBS: {price}")
+            print(f"  -> SSI failed or blocked. Trying vnstock fallback...")
+            # Fallback to vnstock (KBS/MSN)
+            df, source = get_fallback_data(symbol, start_date, end_date)
+            if df is not None:
+                val = float(df["close"].iloc[-1])
+                # If price is in VND (greater than 1000), divide by 1000 to match thousands of VND format
+                if val > 1000:
+                    val = val / 1000
+                price = val
+                print(f"  -> Found via {source}: {price}")
 
         if price is not None:
             stock["currentPrice"] = round(price, 2)
         else:
             print(f"  -> WARNING: Could not update price for {symbol}. Keeping original price: {stock.get('currentPrice')}")
+        time.sleep(1)  # Avoid rate limiting
 
     # 2. Update Market Summary (Indices)
     print("\nUpdating market summary indices...")
     index_symbol_mapping = {
         "vnIndex": "VNINDEX",
+        "roseIndex": "VN30",  # Let's verify mapping keys in JSON
         "hoseIndex": "VN30",
         "hnxIndex": "HNXINDEX",
         "upcomIndex": "UPCOMINDEX"
@@ -126,23 +165,25 @@ def main():
             print(f"  -> Updated via SSI: Value={latest_val}, Change={change:.2f} ({change_percent:.2f}%)")
             updated = True
         else:
-            print(f"  -> SSI failed or blocked. Trying KBS fallback...")
-            # Fallback to KBS
-            kbs_df = get_kbs_data_fallback(ssi_symbol, start_date, end_date)
-            if kbs_df is not None and len(kbs_df) >= 2 and "close" in kbs_df.columns:
-                latest_val = float(kbs_df["close"].iloc[-1])
-                prev_val = float(kbs_df["close"].iloc[-2])
+            print(f"  -> SSI failed or blocked. Trying vnstock fallback...")
+            # Fallback to vnstock (KBS/MSN)
+            df, source = get_fallback_data(ssi_symbol, start_date, end_date)
+            if df is not None and len(df) >= 2:
+                latest_val = float(df["close"].iloc[-1])
+                prev_val = float(df["close"].iloc[-2])
+                # If index points are somehow returned scaled (very unlikely for indices, but safe), keep as is
                 change = latest_val - prev_val
                 change_percent = (change / prev_val) * 100
 
                 market_summary[index_key]["value"] = round(latest_val, 2)
                 market_summary[index_key]["change"] = round(change, 2)
                 market_summary[index_key]["changePercent"] = round(change_percent, 2)
-                print(f"  -> Updated via KBS: Value={latest_val}, Change={change:.2f} ({change_percent:.2f}%)")
+                print(f"  -> Updated via {source}: Value={latest_val}, Change={change:.2f} ({change_percent:.2f}%)")
                 updated = True
 
         if not updated:
             print(f"  -> WARNING: Could not update index {market_summary[index_key]['name']}. Keeping original values.")
+        time.sleep(1)
 
     # 3. Update lastUpdated field
     local_now = datetime.now()
