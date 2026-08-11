@@ -1,5 +1,6 @@
 import { Search, X, RotateCcw } from "lucide-react";
 
+import { Input } from "./ui/input";
 import { Select } from "./ui/select";
 
 interface FilterBarProps {
@@ -41,15 +42,15 @@ export function FilterBar({
             Tìm kiếm cổ phiếu
           </label>
           <div className="relative">
-            <input
+            <Input
               id="stock-search-input"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Nhập mã CP (SSI, HPG...) hoặc tên công ty..."
-              className="w-full rounded-lg border border-gray-200 bg-white py-2 pr-8 pl-9 text-sm transition-colors duration-200 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-100 dark:focus:border-indigo-400 dark:focus:ring-indigo-400"
+              className="pr-8 pl-9"
             />
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
               <Search className="h-4 w-4" />
             </div>
             {searchQuery && (
