@@ -1,14 +1,10 @@
-# Vite Workspace
+# Alpha Pulse VN
 
-[![GitHub Pages](https://github.com/area44/vite-workspace/actions/workflows/pages.yml/badge.svg)](https://area44.github.io/vite-workspace/)
-
-This template provides a minimal setup to get **React**, **Tailwind CSS** working with **Vite**.
+[![GitHub Pages](https://github.com/area44/alpha-pulse/actions/workflows/pages.yml/badge.svg)](https://area44.github.io/alpha-pulse/)
 
 ## Development
 
 ```bash
-git clone https://github.com/area44/vite-workspace
-cd vite-workspace
 pnpm install
 pnpm dev
 ```

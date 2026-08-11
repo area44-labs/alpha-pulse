@@ -10,7 +10,7 @@
     "**/.github",
     "**/.next",
     "**/.astro",
-    "**/.netlify",
+    "**/.netlify"
   ],
   "sortImports": {
     "groups": [
@@ -20,12 +20,12 @@
       "value-internal",
       ["type-parent", "type-sibling", "type-index"],
       ["value-parent", "value-sibling", "value-index"],
-      "unknown",
-    ],
+      "unknown"
+    ]
   },
   "sortTailwindcss": {
     "stylesheet": "./src/index.css",
     "attributes": ["class", "className"],
-    "functions": ["clsx", "cn", "cva", "tv"],
-  },
+    "functions": ["clsx", "cn", "cva", "tv"]
+  }
 }

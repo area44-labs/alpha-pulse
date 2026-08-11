@@ -1,5 +1,5 @@
 {
-  "name": "@area44/vite-workspace",
+  "name": "@area44/alpha-pulse",
   "framework": "vite",
   "buildCommand": "vite build",
   "outputDirectory": "dist",
