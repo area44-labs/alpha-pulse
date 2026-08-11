@@ -1,28 +1,20 @@
 import { Info, TrendingUp, Star } from "lucide-react";
 import { useState, useMemo } from "react";
 
+import type { Stock } from "./hooks/use-stocks-data";
+
+import { DataCenter } from "./components/data-center";
 import { FilterBar } from "./components/filter-bar";
 import { Header } from "./components/header";
 import { MarketSummary } from "./components/market-summary";
 import { StockDetailModal } from "./components/stock-detail-modal";
 import { StockTable } from "./components/stock-table";
-import stocksData from "./data/stocks.json";
-
-interface Stock {
-  symbol: string;
-  companyName: string;
-  sector: string;
-  type: "BUY" | "SELL";
-  currentPrice: number;
-  targetBuyPrice: string;
-  targetSellPrice: number;
-  stopLossPrice: number;
-  riskRewardRatio: string;
-  riskLevel: "LOW" | "MEDIUM" | "HIGH";
-  rationale: string;
-}
+import { useStocksData } from "./hooks/use-stocks-data";
 
 function App() {
+  const dataManager = useStocksData();
+  const { data: stocksData, loading } = dataManager;
+
   // Filters state
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSector, setSelectedSector] = useState("");
@@ -37,12 +29,14 @@ function App() {
 
   // Dynamically extract sectors from recommendations data for filtering options
   const sectors = useMemo(() => {
+    if (!stocksData?.recommendations) return [];
     const allSectors = stocksData.recommendations.map((stock) => stock.sector);
     return Array.from(new Set(allSectors)).sort();
-  }, []);
+  }, [stocksData]);
 
   // Filter recommendations based on search queries and selection states
   const filteredStocks = useMemo(() => {
+    if (!stocksData?.recommendations) return [];
     return (stocksData.recommendations as Stock[]).filter((stock) => {
       const matchesSearch =
         stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -53,26 +47,41 @@ function App() {
 
       return matchesSearch && matchesSector && matchesRisk;
     });
-  }, [searchQuery, selectedSector, selectedRisk]);
+  }, [searchQuery, selectedSector, selectedRisk, stocksData]);
 
   // Thống kê số lượng tổng (không bị ảnh hưởng bởi bộ lọc)
   const totalBuyCount = useMemo(() => {
+    if (!stocksData?.recommendations) return 0;
     return stocksData.recommendations.filter((s) => s.type === "BUY").length;
-  }, []);
+  }, [stocksData]);
 
   const totalSellCount = useMemo(() => {
+    if (!stocksData?.recommendations) return 0;
     return stocksData.recommendations.filter((s) => s.type === "SELL").length;
-  }, []);
+  }, [stocksData]);
 
   const handleSelectStock = (stock: Stock) => {
     setSelectedStock(stock);
     setIsModalOpen(true);
   };
 
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50/50 dark:bg-gray-950">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent dark:border-indigo-500" />
+          <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+            Đang đồng bộ dữ liệu Alpha Pulse...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-50/50 text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100">
       {/* Header component */}
-      <Header lastUpdated={stocksData.lastUpdated} />
+      <Header lastUpdated={stocksData?.lastUpdated || "N/A"} />
 
       {/* Main dashboard content */}
       <main className="mx-auto w-full max-w-7xl flex-1 space-y-8 px-4 py-8 sm:px-6 lg:px-8">
@@ -121,12 +130,17 @@ function App() {
           </div>
         </section>
 
+        {/* Data Control Center */}
+        <DataCenter dataManager={dataManager} />
+
         {/* Market Summary Section */}
-        <MarketSummary
-          marketData={stocksData.marketSummary}
-          buyCount={totalBuyCount}
-          sellCount={totalSellCount}
-        />
+        {stocksData?.marketSummary && (
+          <MarketSummary
+            marketData={stocksData.marketSummary}
+            buyCount={totalBuyCount}
+            sellCount={totalSellCount}
+          />
+        )}
 
         {/* Filter and Search Bar */}
         <FilterBar
