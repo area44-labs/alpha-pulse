@@ -6,20 +6,18 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 export function Badge({ className = "", variant = "default", ...props }: BadgeProps) {
   const baseStyles =
-    "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
+    "inline-flex items-center rounded-sm px-1.5 py-0.5 text-[10px] font-mono tracking-wider uppercase transition-colors focus:outline-none focus:ring-1 focus:ring-gray-950 dark:focus:ring-gray-300";
 
   const variants = {
-    default:
-      "border-transparent bg-gray-900 text-gray-50 hover:bg-gray-900/80 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/80",
-    secondary:
-      "border-transparent bg-gray-100 text-gray-900 hover:bg-gray-100/80 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-800/80",
+    default: "border-transparent bg-gray-950 text-gray-50 dark:bg-gray-50 dark:text-gray-950",
+    secondary: "border-transparent bg-gray-100 text-gray-850 dark:bg-gray-900 dark:text-gray-200",
     destructive:
-      "border-transparent bg-red-100 text-red-700 hover:bg-red-100/80 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/40",
+      "border-transparent bg-red-50 text-red-600 border border-red-200/50 dark:bg-red-950/30 dark:text-red-400 dark:border-red-900/30",
     success:
-      "border-transparent bg-emerald-100 text-emerald-800 hover:bg-emerald-100/80 dark:bg-emerald-950/30 dark:text-emerald-400 dark:hover:bg-emerald-950/40",
+      "border-transparent bg-emerald-50 text-emerald-600 border border-emerald-200/50 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/30",
     warning:
-      "border-transparent bg-amber-100 text-amber-800 hover:bg-amber-100/80 dark:bg-amber-950/30 dark:text-amber-400 dark:hover:bg-amber-950/40",
-    info: "border-transparent bg-blue-100 text-blue-800 hover:bg-blue-100/80 dark:bg-blue-950/30 dark:text-blue-400 dark:hover:bg-blue-950/40",
+      "border-transparent bg-amber-50 text-amber-600 border border-amber-200/50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-900/30",
+    info: "border-transparent bg-blue-50 text-blue-600 border border-blue-200/50 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-900/30",
     outline: "text-gray-950 border border-gray-200 dark:text-gray-50 dark:border-gray-800",
   };
 

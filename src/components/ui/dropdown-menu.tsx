@@ -50,7 +50,9 @@ export function DropdownMenu({
 
       {isOpen && (
         <div
-          className={`animate-fade-in absolute z-50 mt-2 w-48 rounded-lg border border-gray-200 bg-white p-1 shadow-lg outline-none dark:border-gray-800 dark:bg-gray-950 ${align === "right" ? "right-0" : "left-0"}`}
+          className={`absolute z-50 mt-1 w-48 rounded-md border border-neutral-200 bg-white p-1 shadow-sm outline-none dark:border-neutral-800 dark:bg-black ${
+            align === "right" ? "right-0" : "left-0"
+          }`}
         >
           <div onClick={() => setIsOpen(false)} role="none">
             {children}
@@ -75,7 +77,7 @@ export function DropdownMenuItem({
     <button
       type="button"
       onClick={onClick}
-      className={`flex w-full cursor-pointer items-center rounded-md px-3 py-2 text-sm text-gray-700 transition-colors outline-none hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-gray-50 ${className}`}
+      className={`flex w-full cursor-pointer items-center rounded-sm px-2.5 py-1.5 text-xs font-medium text-neutral-700 transition-colors outline-none hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-900 dark:hover:text-neutral-50 ${className}`}
       {...props}
     >
       {children}
