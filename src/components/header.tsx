@@ -14,14 +14,9 @@ export function Header({ lastUpdated }: HeaderProps) {
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Report Identity */}
         <div className="flex items-center space-x-3.5">
-          <div className="flex flex-col">
-            <span className="text-sm font-bold tracking-tight text-gray-900 dark:text-gray-100">
-              Alpha Pulse
-            </span>
-            <span className="text-[10px] font-medium text-gray-400 dark:text-gray-500">
-              Khuyến nghị giao dịch cổ phiếu hằng ngày
-            </span>
-          </div>
+          <span className="text-sm font-bold tracking-tight text-gray-900 dark:text-gray-100">
+            Alpha Pulse
+          </span>
         </div>
 
         {/* Right navigation items */}
