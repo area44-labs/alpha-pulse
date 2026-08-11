@@ -12,22 +12,14 @@ export function Header({ lastUpdated }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-gray-100 bg-white/90 backdrop-blur-md transition-colors dark:border-gray-900 dark:bg-black/90">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Vercel wordmark & Report Identity */}
+        {/* Report Identity */}
         <div className="flex items-center space-x-3.5">
-          <a href="/" className="flex items-center focus:outline-none">
-            <img
-              src="https://py8fhxnkzwtsqdo9.public.blob.vercel-storage.com/p/vercel-wordmark.svg"
-              alt="Vercel"
-              className="h-4 w-auto transition-all dark:invert"
-            />
-          </a>
-          <div className="h-4 w-[1px] bg-gray-200 dark:bg-gray-800" />
           <div className="flex flex-col">
-            <span className="text-xs font-bold tracking-tight text-gray-900 dark:text-gray-100">
+            <span className="text-sm font-bold tracking-tight text-gray-900 dark:text-gray-100">
               Alpha Pulse
             </span>
             <span className="text-[10px] font-medium text-gray-400 dark:text-gray-500">
-              Sản phẩm thuộc AREA44
+              Khuyến nghị giao dịch cổ phiếu hằng ngày
             </span>
           </div>
         </div>

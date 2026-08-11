@@ -1,4 +1,4 @@
-import { Info, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 
 import { FilterBar } from "./components/filter-bar";
@@ -230,42 +230,13 @@ function App() {
             setActiveTab={setActiveTab}
           />
         </div>
-
-        {/* Admin configuration guide section */}
-        <section className="rounded-md border border-gray-100 bg-gray-50/30 p-5 dark:border-gray-900 dark:bg-gray-950/30">
-          <h3 className="flex items-center gap-2 text-xs font-bold text-gray-900 dark:text-white">
-            <Info className="h-4 w-4 text-gray-900 dark:text-white" />
-            <span>Hướng dẫn Cập nhật Khuyến nghị Hằng ngày</span>
-          </h3>
-          <p className="mt-1.5 text-xs leading-relaxed text-gray-500 dark:text-gray-400">
-            Ứng dụng web được xây dựng dưới dạng ứng dụng tĩnh (Static Web App). Để cập nhật danh
-            sách khuyến nghị và chỉ số thị trường hằng ngày, bạn chỉ cần mở rộng, chỉnh sửa hoặc
-            thay thế dữ liệu bên trong tệp nguồn
-            <code className="mx-1 rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-              src/data/stocks.json
-            </code>
-            mà không cần phải can thiệp trực tiếp vào mã nguồn React/TypeScript của ứng dụng.
-          </p>
-        </section>
       </main>
 
       {/* Footer */}
       <footer className="mt-16 border-t border-gray-100 bg-white py-6 dark:border-gray-900 dark:bg-black">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            {/* Left side: Vercel Logo and Owner */}
-            <div className="flex items-center space-x-2 font-mono text-[11px] tracking-tight text-gray-400 dark:text-gray-500">
-              <img
-                src="https://py8fhxnkzwtsqdo9.public.blob.vercel-storage.com/p/vercel-logo.svg"
-                alt="Vercel"
-                className="h-3 w-auto dark:invert"
-              />
-              <span>Sản phẩm thuộc AREA44</span>
-            </div>
-            {/* Right side: Simple Copyright */}
-            <div className="font-mono text-[11px] tracking-tight text-gray-400 dark:text-gray-500">
-              © {new Date().getFullYear()} AREA44. All rights reserved.
-            </div>
+          <div className="text-center font-mono text-[11px] tracking-tight text-gray-400 dark:text-gray-500">
+            © {new Date().getFullYear()} AREA44. All rights reserved.
           </div>
         </div>
       </footer>
