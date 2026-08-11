@@ -1,19 +1,107 @@
 import { Info, TrendingUp, Star } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
-import type { Stock } from "./hooks/use-stocks-data";
-
-import { DataCenter } from "./components/data-center";
 import { FilterBar } from "./components/filter-bar";
 import { Header } from "./components/header";
 import { MarketSummary } from "./components/market-summary";
 import { StockDetailModal } from "./components/stock-detail-modal";
 import { StockTable } from "./components/stock-table";
-import { useStocksData } from "./hooks/use-stocks-data";
+import mockStocksData from "./data/mock-stocks.json";
+import realStocksData from "./data/stocks.json";
+
+interface Stock {
+  symbol: string;
+  companyName: string;
+  sector: string;
+  type: "BUY" | "SELL";
+  currentPrice: number;
+  targetBuyPrice: string;
+  targetSellPrice: number;
+  stopLossPrice: number;
+  riskRewardRatio: string;
+  riskLevel: "LOW" | "MEDIUM" | "HIGH";
+  rationale: string;
+}
+
+interface MarketIndex {
+  name: string;
+  value: number;
+  change: number;
+  changePercent: number;
+  volume: string;
+}
+
+interface MarketSummaryData {
+  vnIndex: MarketIndex;
+  hoseIndex: MarketIndex;
+  hnxIndex: MarketIndex;
+  upcomIndex: MarketIndex;
+}
+
+interface StocksDataset {
+  lastUpdated: string;
+  marketSummary: MarketSummaryData;
+  recommendations: Stock[];
+}
+
+const isDev = import.meta.env.DEV;
+
+// Khởi tạo dữ liệu ban đầu dựa trên môi trường chạy
+const getInitialData = (): StocksDataset => {
+  if (isDev) {
+    return mockStocksData as StocksDataset;
+  }
+
+  // Chế độ Production: Ưu tiên dữ liệu tùy chỉnh của người dùng trong localStorage nếu có
+  try {
+    const saved = localStorage.getItem("alpha-pulse-user-stocks-data");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && parsed.recommendations && parsed.marketSummary) {
+        return parsed as StocksDataset;
+      }
+    }
+  } catch {
+    // Không log chi tiết để giữ console sạch sẽ
+  }
+
+  return realStocksData as StocksDataset;
+};
 
 function App() {
-  const dataManager = useStocksData();
-  const { data: stocksData, loading } = dataManager;
+  const [stocksData, setStocksData] = useState<StocksDataset>(getInitialData);
+
+  useEffect(() => {
+    // Chỉ lấy dữ liệu thực tế từ API/Server khi chạy ở chế độ Production
+    if (isDev) return;
+
+    const fetchRealData = async () => {
+      const baseUrl = import.meta.env.BASE_URL || "/";
+      const paths = [
+        `${baseUrl}data/stocks.json`,
+        `${baseUrl}stocks.json`,
+        `/data/stocks.json`,
+        `/stocks.json`,
+      ];
+
+      for (const path of paths) {
+        try {
+          const res = await fetch(path);
+          if (res.ok) {
+            const freshData = await res.json();
+            if (freshData && freshData.recommendations && freshData.marketSummary) {
+              setStocksData(freshData as StocksDataset);
+              break; // Đã tải thành công dữ liệu thực tế mới nhất từ server
+            }
+          }
+        } catch {
+          // Thử đường dẫn tiếp theo
+        }
+      }
+    };
+
+    fetchRealData();
+  }, []);
 
   // Filters state
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,14 +117,12 @@ function App() {
 
   // Dynamically extract sectors from recommendations data for filtering options
   const sectors = useMemo(() => {
-    if (!stocksData?.recommendations) return [];
     const allSectors = stocksData.recommendations.map((stock) => stock.sector);
     return Array.from(new Set(allSectors)).sort();
   }, [stocksData]);
 
   // Filter recommendations based on search queries and selection states
   const filteredStocks = useMemo(() => {
-    if (!stocksData?.recommendations) return [];
     return (stocksData.recommendations as Stock[]).filter((stock) => {
       const matchesSearch =
         stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -51,12 +137,10 @@ function App() {
 
   // Thống kê số lượng tổng (không bị ảnh hưởng bởi bộ lọc)
   const totalBuyCount = useMemo(() => {
-    if (!stocksData?.recommendations) return 0;
     return stocksData.recommendations.filter((s) => s.type === "BUY").length;
   }, [stocksData]);
 
   const totalSellCount = useMemo(() => {
-    if (!stocksData?.recommendations) return 0;
     return stocksData.recommendations.filter((s) => s.type === "SELL").length;
   }, [stocksData]);
 
@@ -65,23 +149,10 @@ function App() {
     setIsModalOpen(true);
   };
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50/50 dark:bg-gray-950">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent dark:border-indigo-500" />
-          <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
-            Đang đồng bộ dữ liệu Alpha Pulse...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex min-h-screen flex-col bg-gray-50/50 text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100">
       {/* Header component */}
-      <Header lastUpdated={stocksData?.lastUpdated || "N/A"} />
+      <Header lastUpdated={stocksData.lastUpdated} />
 
       {/* Main dashboard content */}
       <main className="mx-auto w-full max-w-7xl flex-1 space-y-8 px-4 py-8 sm:px-6 lg:px-8">
@@ -130,17 +201,12 @@ function App() {
           </div>
         </section>
 
-        {/* Data Control Center */}
-        <DataCenter dataManager={dataManager} />
-
         {/* Market Summary Section */}
-        {stocksData?.marketSummary && (
-          <MarketSummary
-            marketData={stocksData.marketSummary}
-            buyCount={totalBuyCount}
-            sellCount={totalSellCount}
-          />
-        )}
+        <MarketSummary
+          marketData={stocksData.marketSummary}
+          buyCount={totalBuyCount}
+          sellCount={totalSellCount}
+        />
 
         {/* Filter and Search Bar */}
         <FilterBar
