@@ -94,7 +94,6 @@ export function MarketSummary({ marketData, buyCount, sellCount }: MarketSummary
         {renderIndexCard(marketData.hoseIndex)}
         {renderIndexCard(marketData.hnxIndex)}
         {renderIndexCard(marketData.upcomIndex)}
-
       </div>
     </section>
   );

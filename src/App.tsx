@@ -169,7 +169,6 @@ function App() {
                 nền tảng tổng hợp tín hiệu giao dịch cổ phiếu Việt Nam.
               </p>
             </div>
-
           </div>
         </section>
 
