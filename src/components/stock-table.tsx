@@ -1,8 +1,16 @@
 import { ArrowUpRight, ArrowDownRight, Eye, HelpCircle, FileText, Sparkles } from "lucide-react";
 
-import { Badge } from "./ui/badge";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
-import { Tooltip } from "./ui/tooltip";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tooltip } from "@/components/ui/tooltip";
 
 interface Stock {
   symbol: string;
@@ -58,63 +66,63 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
 
     return (
       <div className="border-gray-150 overflow-x-auto rounded-sm border bg-white transition-colors dark:border-gray-900 dark:bg-black">
-        <table className="w-full border-collapse text-left">
-          <thead>
-            <tr className="border-gray-150 border-b bg-gray-50/50 font-mono text-[10px] tracking-wider text-gray-500 uppercase dark:border-gray-900 dark:bg-gray-950/40 dark:text-gray-400">
-              <th scope="col" className="px-4 py-3 font-bold">
+        <Table className="w-full border-collapse text-left">
+          <TableHeader>
+            <TableRow className="border-gray-150 border-b bg-gray-50/50 font-mono text-[10px] tracking-wider text-gray-500 uppercase hover:bg-transparent dark:border-gray-900 dark:bg-gray-950/40 dark:text-gray-400">
+              <TableHead className="h-auto px-4 py-3 font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-1">
                   Mã CP & Ngành
                   <Tooltip content="Mã giao dịch chứng khoán HOSE/HNX/UPCOM & phân loại nhóm ngành">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>
-              </th>
-              <th scope="col" className="px-4 py-3 text-right font-bold">
+              </TableHead>
+              <TableHead className="h-auto px-4 py-3 text-right font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center justify-end gap-1">
                   Giá hiện tại
                   <Tooltip content="Giá giao dịch khớp lệnh thực tế gần nhất (VND)">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>
-              </th>
-              <th scope="col" className="px-4 py-3 text-center font-bold">
+              </TableHead>
+              <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center justify-center gap-1">
                   Vùng giá hành động
                   <Tooltip content="Khoảng giá khuyến nghị giải ngân (BUY) hoặc dừng giao dịch (SELL)">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>
-              </th>
-              <th scope="col" className="px-4 py-3 font-bold">
+              </TableHead>
+              <TableHead className="h-auto px-4 py-3 font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-1">
                   Giá Mục Tiêu & Cắt Lỗ
                   <Tooltip content="Mục tiêu chốt lời (TP) và ngưỡng cắt lỗ bắt buộc (SL) kèm biên độ tăng giảm dự kiến">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>
-              </th>
-              <th scope="col" className="px-4 py-3 text-center font-bold">
+              </TableHead>
+              <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center justify-center gap-1">
                   Tỷ lệ R:R
                   <Tooltip content="Risk/Reward Ratio: Tỷ suất Lợi nhuận trên Rủi ro tương ứng (Khuyến nghị tối thiểu 1:2)">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>
-              </th>
-              <th scope="col" className="px-4 py-3 text-center font-bold">
+              </TableHead>
+              <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center justify-center gap-1">
                   Mức rủi ro
                   <Tooltip content="Xếp hạng rủi ro dựa trên biến động giá beta và thanh khoản cổ phiếu">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>
-              </th>
-              <th scope="col" className="px-4 py-3 text-right font-bold">
+              </TableHead>
+              <TableHead className="h-auto px-4 py-3 text-right font-bold text-gray-500 dark:text-gray-400">
                 Thao tác
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100 text-xs text-gray-700 dark:divide-gray-900 dark:text-gray-300">
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="divide-y divide-gray-100 text-xs text-gray-700 dark:divide-gray-900 dark:text-gray-300">
             {data.map((stock) => {
               const isBuy = stock.type === "BUY";
 
@@ -128,12 +136,12 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                 : ((stock.currentPrice - stock.stopLossPrice) / stock.currentPrice) * 100;
 
               return (
-                <tr
+                <TableRow
                   key={stock.symbol}
-                  className="transition-colors duration-150 hover:bg-gray-50/30 dark:hover:bg-gray-950/20"
+                  className="border-b border-gray-100 transition-colors duration-150 hover:bg-gray-50/30 dark:border-gray-900 dark:hover:bg-gray-950/20"
                 >
                   {/* Symbol & Company & Sector */}
-                  <td className="px-4 py-3" aria-label={`Cổ phiếu ${stock.symbol}`}>
+                  <TableCell className="px-4 py-3" aria-label={`Cổ phiếu ${stock.symbol}`}>
                     <div className="flex flex-col">
                       <div className="flex items-center space-x-2">
                         <span className="text-sm font-bold text-gray-950 dark:text-white">
@@ -147,18 +155,18 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                         {stock.companyName}
                       </span>
                     </div>
-                  </td>
+                  </TableCell>
 
                   {/* Current Price */}
-                  <td className="px-4 py-3 text-right tabular-nums">
+                  <TableCell className="px-4 py-3 text-right tabular-nums">
                     <span className="text-xs font-bold text-gray-950 dark:text-white">
                       {(stock.currentPrice * 1000).toLocaleString("vi-VN")}
                     </span>
                     <span className="text-gray-450 ml-0.5 text-[10px] dark:text-gray-500">đ</span>
-                  </td>
+                  </TableCell>
 
                   {/* Buy/Sell Zone */}
-                  <td className="px-4 py-3 text-center">
+                  <TableCell className="px-4 py-3 text-center">
                     <span
                       className={`inline-flex items-center rounded-sm px-2 py-0.5 text-[10px] font-bold ${
                         isBuy
@@ -168,10 +176,10 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                     >
                       {isBuy ? stock.targetBuyPrice : "Không khuyến nghị"}
                     </span>
-                  </td>
+                  </TableCell>
 
                   {/* Targets & Stop Loss */}
-                  <td className="px-4 py-3">
+                  <TableCell className="px-4 py-3">
                     <div className="flex flex-col space-y-1">
                       {/* TP */}
                       <div className="flex items-center text-[11px] tabular-nums">
@@ -199,20 +207,22 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                         </span>
                       </div>
                     </div>
-                  </td>
+                  </TableCell>
 
                   {/* Risk/Reward Ratio */}
-                  <td className="px-4 py-3 text-center font-mono text-[11px] tabular-nums">
+                  <TableCell className="px-4 py-3 text-center font-mono text-[11px] tabular-nums">
                     <span className="rounded-sm bg-gray-100 px-2 py-0.5 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
                       {stock.riskRewardRatio}
                     </span>
-                  </td>
+                  </TableCell>
 
                   {/* Risk Level */}
-                  <td className="px-4 py-3 text-center">{getRiskBadge(stock.riskLevel)}</td>
+                  <TableCell className="px-4 py-3 text-center">
+                    {getRiskBadge(stock.riskLevel)}
+                  </TableCell>
 
                   {/* Action */}
-                  <td className="px-4 py-3 text-right">
+                  <TableCell className="px-4 py-3 text-right">
                     <button
                       onClick={() => onSelectStock(stock)}
                       className="dark:text-gray-350 inline-flex cursor-pointer items-center gap-1 rounded-sm border border-gray-200 bg-white px-2 py-1 text-[11px] font-semibold text-gray-800 transition-colors hover:bg-gray-50 focus:outline-none dark:border-gray-800 dark:bg-black dark:hover:bg-gray-900"
@@ -220,12 +230,12 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                       <Eye className="h-3 w-3" />
                       Xem phân tích
                     </button>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     );
   };
