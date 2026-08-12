@@ -108,7 +108,7 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
                   Vùng mua an toàn
                 </span>
                 <span className="mt-1 block text-sm font-bold text-foreground">
-                  {isBuy ? `${stock.targetBuyPrice} nghìnđ` : "Bán ngay"}
+                  {isBuy ? `${stock.targetBuyPrice} nghìn VNĐ` : "Bán ngay"}
                 </span>
                 <span className="mt-0.5 block font-mono text-[9px] text-muted-foreground">
                   {isBuy ? "Khớp lệnh trực tiếp" : "Giá hiện tại"}
