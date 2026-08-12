@@ -151,7 +151,7 @@ function App() {
           <div className="flex items-center space-x-2">
             <div className="h-1.5 w-1.5 bg-gray-900 dark:bg-gray-100" />
             <h2 className="font-mono text-[11px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
-              Danh Sách Khuyến Nghị Giao Dịch
+              Danh Sách Khuyến Nghị Giao Dịch Hằng Ngày
             </h2>
           </div>
           <StockTable
@@ -168,7 +168,7 @@ function App() {
             <div className="flex items-center space-x-2">
               <div className="h-1.5 w-1.5 bg-gray-900 dark:bg-gray-100" />
               <h2 className="font-mono text-[11px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
-                Khuyến Nghị & Định Giá Theo Nhóm Ngành (Từ Các Công Ty Chứng Khoán)
+                Danh Sách Khuyến Nghị Từ Các Công Ty Chứng Khoán
               </h2>
             </div>
           </div>
