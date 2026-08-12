@@ -124,7 +124,7 @@ function App() {
       {/* Main dashboard content */}
       <main className="mx-auto w-full max-w-7xl flex-1 space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         {/* Banner Section */}
-        <section className="relative overflow-hidden rounded-md border border-gray-100 bg-white p-6 sm:p-8 dark:border-gray-900 dark:bg-black">
+        <section className="relative overflow-hidden rounded-md bg-white p-6 sm:p-8 dark:bg-black">
           <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl dark:text-white">

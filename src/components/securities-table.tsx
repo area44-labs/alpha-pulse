@@ -44,17 +44,6 @@ export function SecuritiesTable({ selectedSector, onSectorChange }: SecuritiesTa
     return SECURITIES_DATA.filter((item) => item.sector === selectedSector);
   }, [selectedSector]);
 
-  const getRecommendationBadge = (rec: "MUA" | "BÁN" | "THEO DÕI") => {
-    switch (rec) {
-      case "MUA":
-        return <Badge variant="success">MUA</Badge>;
-      case "BÁN":
-        return <Badge variant="destructive">BÁN</Badge>;
-      case "THEO DÕI":
-        return <Badge variant="warning">THEO DÕI</Badge>;
-    }
-  };
-
   const renderTableContent = () => {
     if (filteredData.length === 0) {
       return (
@@ -106,14 +95,6 @@ export function SecuritiesTable({ selectedSector, onSectorChange }: SecuritiesTa
               </TableHead>
               <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center justify-center gap-1">
-                  Khuyến nghị
-                  <Tooltip content="Đồng thuận khuyến nghị hành động từ tổ chức phân tích">
-                    <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
-                  </Tooltip>
-                </div>
-              </TableHead>
-              <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
-                <div className="flex items-center justify-center gap-1">
                   Cập nhật
                   <Tooltip content="Ngày công bố báo cáo phân tích gần nhất">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
@@ -142,6 +123,12 @@ export function SecuritiesTable({ selectedSector, onSectorChange }: SecuritiesTa
                         <span className="text-sm font-bold text-gray-950 dark:text-white">
                           {stock.symbol}
                         </span>
+                        <Badge
+                          variant="secondary"
+                          className="font-mono text-[9px] tracking-wider uppercase"
+                        >
+                          {stock.sector}
+                        </Badge>
                       </span>
                       <span className="mt-0.5 max-w-[200px] truncate text-[11px] text-gray-500 dark:text-gray-400">
                         {stock.companyName}
@@ -187,11 +174,6 @@ export function SecuritiesTable({ selectedSector, onSectorChange }: SecuritiesTa
                         {stock.securitiesFirm}
                       </div>
                     </div>
-                  </TableCell>
-
-                  {/* Khuyến nghị badge */}
-                  <TableCell className="px-4 py-3 text-center">
-                    {getRecommendationBadge(stock.recommendation)}
                   </TableCell>
 
                   {/* Ngày cập nhật */}
