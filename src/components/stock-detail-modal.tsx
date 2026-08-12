@@ -1,4 +1,4 @@
-import { ShieldAlert, Target, Info, Percent, Sparkles, Scale } from "lucide-react";
+import { ShieldAlert, Target, Info, Percent, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -19,7 +19,7 @@ interface Stock {
   targetBuyPrice: string;
   targetSellPrice: number;
   stopLossPrice: number;
-  riskRewardRatio: string;
+  riskRewardRatio?: string;
   riskLevel: "LOW" | "MEDIUM" | "HIGH";
   rationale: string;
 }
@@ -142,16 +142,6 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
                   Rủi ro: {stopLossPercent.toFixed(1)}%
                 </span>
               </div>
-            </div>
-
-            <div className="mt-3 flex items-center justify-between border-t border-border pt-3 text-xs">
-              <span className="flex items-center font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
-                <Scale className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
-                Tỷ lệ Lợi nhuận/Rủi ro (R:R Ratio)
-              </span>
-              <span className="rounded-sm bg-muted px-2 py-0.5 font-mono text-xs text-foreground tabular-nums">
-                {stock.riskRewardRatio}
-              </span>
             </div>
           </div>
 

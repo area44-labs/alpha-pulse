@@ -1,4 +1,4 @@
-import { ArrowUpRight, ArrowDownRight, Eye, HelpCircle, FileText, Sparkles } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, HelpCircle, FileText, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -21,7 +21,7 @@ interface Stock {
   targetBuyPrice: string;
   targetSellPrice: number;
   stopLossPrice: number;
-  riskRewardRatio: string;
+  riskRewardRatio?: string;
   riskLevel: "LOW" | "MEDIUM" | "HIGH";
   rationale: string;
 }
@@ -103,22 +103,11 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
               </TableHead>
               <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center justify-center gap-1">
-                  Tỷ lệ R:R
-                  <Tooltip content="Risk/Reward Ratio: Tỷ suất Lợi nhuận trên Rủi ro tương ứng (Khuyến nghị tối thiểu 1:2)">
-                    <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
-                  </Tooltip>
-                </div>
-              </TableHead>
-              <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
-                <div className="flex items-center justify-center gap-1">
                   Mức rủi ro
                   <Tooltip content="Xếp hạng rủi ro dựa trên biến động giá beta và thanh khoản cổ phiếu">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>
-              </TableHead>
-              <TableHead className="h-auto px-4 py-3 text-right font-bold text-gray-500 dark:text-gray-400">
-                Thao tác
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -141,20 +130,27 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                   className="border-b border-gray-100 transition-colors duration-150 hover:bg-gray-50/30 dark:border-gray-900 dark:hover:bg-gray-950/20"
                 >
                   {/* Symbol & Company & Sector */}
-                  <TableCell className="px-4 py-3" aria-label={`Cổ phiếu ${stock.symbol}`}>
-                    <div className="flex flex-col">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-bold text-gray-950 dark:text-white">
+                  <TableCell className="px-4 py-3">
+                    <button
+                      onClick={() => onSelectStock(stock)}
+                      className="group flex w-full cursor-pointer flex-col text-left select-none focus:outline-none"
+                      aria-label={`Xem phân tích cổ phiếu ${stock.symbol}`}
+                    >
+                      <span className="flex items-center space-x-2">
+                        <span className="text-sm font-bold text-gray-950 decoration-gray-400 group-hover:underline dark:text-white dark:decoration-gray-600">
                           {stock.symbol}
                         </span>
-                        <Badge variant="secondary" className="font-mono text-[9px]">
+                        <Badge
+                          variant="secondary"
+                          className="font-mono text-[9px] group-hover:bg-gray-200 dark:group-hover:bg-gray-800"
+                        >
                           {stock.sector}
                         </Badge>
-                      </div>
+                      </span>
                       <span className="mt-0.5 max-w-[180px] truncate text-[11px] text-gray-500 sm:max-w-[240px] dark:text-gray-400">
                         {stock.companyName}
                       </span>
-                    </div>
+                    </button>
                   </TableCell>
 
                   {/* Current Price */}
@@ -209,27 +205,9 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                     </div>
                   </TableCell>
 
-                  {/* Risk/Reward Ratio */}
-                  <TableCell className="px-4 py-3 text-center font-mono text-[11px] tabular-nums">
-                    <span className="rounded-sm bg-gray-100 px-2 py-0.5 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
-                      {stock.riskRewardRatio}
-                    </span>
-                  </TableCell>
-
                   {/* Risk Level */}
                   <TableCell className="px-4 py-3 text-center">
                     {getRiskBadge(stock.riskLevel)}
-                  </TableCell>
-
-                  {/* Action */}
-                  <TableCell className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => onSelectStock(stock)}
-                      className="inline-flex cursor-pointer items-center gap-1 rounded-sm border border-gray-200 bg-white px-2 py-1 text-[11px] font-semibold text-gray-800 transition-colors hover:bg-gray-50 focus:outline-none dark:border-gray-800 dark:bg-black dark:text-gray-200 dark:hover:bg-gray-900"
-                    >
-                      <Eye className="h-3 w-3" />
-                      Xem phân tích
-                    </button>
                   </TableCell>
                 </TableRow>
               );
@@ -256,7 +234,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
           </TabsList>
 
           <div className="hidden font-mono text-[11px] tracking-tight text-gray-400 uppercase sm:block dark:text-gray-500">
-            Nhấp "Xem phân tích" để xem chi tiết
+            Nhấp vào mã CP để xem chi tiết
           </div>
         </div>
 
