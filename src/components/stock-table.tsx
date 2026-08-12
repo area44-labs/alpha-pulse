@@ -162,7 +162,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                     <span className="text-xs font-bold text-gray-950 dark:text-white">
                       {(stock.currentPrice * 1000).toLocaleString("vi-VN")}
                     </span>
-                    <span className="text-gray-450 ml-0.5 text-[10px] dark:text-gray-500">đ</span>
+                    <span className="ml-0.5 text-[10px] text-gray-400 dark:text-gray-500">đ</span>
                   </TableCell>
 
                   {/* Buy/Sell Zone */}
@@ -225,7 +225,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                   <TableCell className="px-4 py-3 text-right">
                     <button
                       onClick={() => onSelectStock(stock)}
-                      className="dark:text-gray-350 inline-flex cursor-pointer items-center gap-1 rounded-sm border border-gray-200 bg-white px-2 py-1 text-[11px] font-semibold text-gray-800 transition-colors hover:bg-gray-50 focus:outline-none dark:border-gray-800 dark:bg-black dark:hover:bg-gray-900"
+                      className="inline-flex cursor-pointer items-center gap-1 rounded-sm border border-gray-200 bg-white px-2 py-1 text-[11px] font-semibold text-gray-800 transition-colors hover:bg-gray-50 focus:outline-none dark:border-gray-800 dark:bg-black dark:text-gray-200 dark:hover:bg-gray-900"
                     >
                       <Eye className="h-3 w-3" />
                       Xem phân tích
