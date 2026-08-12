@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import { FilterBar } from "@/components/filter-bar";
 import { Header } from "@/components/header";
 import { MarketSummary } from "@/components/market-summary";
+import { SecuritiesTable } from "@/components/securities-table";
 import { StockDetailModal } from "@/components/stock-detail-modal";
 import { StockTable } from "@/components/stock-table";
 import realStocksData from "@/data/stocks.json";
@@ -93,7 +94,6 @@ function App() {
   }, []);
 
   // Filters state
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedSector, setSelectedSector] = useState("");
   const [selectedRisk, setSelectedRisk] = useState("");
 
@@ -110,19 +110,15 @@ function App() {
     return Array.from(new Set(allSectors)).sort();
   }, [stocksData]);
 
-  // Filter recommendations based on search queries and selection states
+  // Filter recommendations based on selection states
   const filteredStocks = useMemo(() => {
     return (stocksData.recommendations as Stock[]).filter((stock) => {
-      const matchesSearch =
-        stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        stock.companyName.toLowerCase().includes(searchQuery.toLowerCase());
-
       const matchesSector = selectedSector === "" || stock.sector === selectedSector;
       const matchesRisk = selectedRisk === "" || stock.riskLevel === selectedRisk;
 
-      return matchesSearch && matchesSector && matchesRisk;
+      return matchesSector && matchesRisk;
     });
-  }, [searchQuery, selectedSector, selectedRisk, stocksData]);
+  }, [selectedSector, selectedRisk, stocksData]);
 
   // Thống kê số lượng tổng (không bị ảnh hưởng bởi bộ lọc)
   const totalBuyCount = useMemo(() => {
@@ -168,10 +164,8 @@ function App() {
           sellCount={totalSellCount}
         />
 
-        {/* Filter and Search Bar */}
+        {/* Filter Bar */}
         <FilterBar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
           selectedSector={selectedSector}
           setSelectedSector={setSelectedSector}
           selectedRisk={selectedRisk}
@@ -193,6 +187,17 @@ function App() {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
           />
+        </div>
+
+        {/* Securities Consensus Table Card */}
+        <div className="space-y-4 pt-4">
+          <div className="flex items-center space-x-2">
+            <div className="h-1.5 w-1.5 bg-gray-900 dark:bg-gray-100" />
+            <h2 className="font-mono text-[11px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
+              Khuyến Nghị & Định Giá Từ Các Công Ty Chứng Khoán (Phân Nhóm Ngành)
+            </h2>
+          </div>
+          <SecuritiesTable />
         </div>
       </main>
 
