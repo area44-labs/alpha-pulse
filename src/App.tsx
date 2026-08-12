@@ -1,13 +1,13 @@
 import { Star } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 
-import { FilterBar } from "./components/filter-bar";
-import { Header } from "./components/header";
-import { MarketSummary } from "./components/market-summary";
-import { StockDetailModal } from "./components/stock-detail-modal";
-import { StockTable } from "./components/stock-table";
-import mockStocksData from "./data/mock-stocks.json";
-import realStocksData from "./data/stocks.json";
+import { FilterBar } from "@/components/filter-bar";
+import { Header } from "@/components/header";
+import { MarketSummary } from "@/components/market-summary";
+import { StockDetailModal } from "@/components/stock-detail-modal";
+import { StockTable } from "@/components/stock-table";
+import mockStocksData from "@/data/mock-stocks.json";
+import realStocksData from "@/data/stocks.json";
 
 interface Stock {
   symbol: string;
@@ -160,40 +160,16 @@ function App() {
         <section className="relative overflow-hidden rounded-md border border-gray-100 bg-white p-6 sm:p-8 dark:border-gray-900 dark:bg-black">
           <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl space-y-3">
-              <div className="inline-flex items-center gap-1.5 rounded-sm border border-gray-100 bg-gray-50 px-2 py-0.5 font-mono text-[10px] tracking-wider text-gray-600 uppercase dark:border-gray-900 dark:bg-gray-950 dark:text-gray-400">
-                <Star className="h-3 w-3 fill-gray-900 text-gray-900 dark:fill-gray-100 dark:text-gray-100" />
-                <span>Cập nhật hằng ngày · Tự động</span>
-              </div>
               <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl dark:text-white">
-                Hệ Thống Phân Tích & Khuyến Nghị Giao Dịch
+                Phân Tích & Khuyến Nghị Giao Dịch
               </h2>
               <p className="text-xs leading-relaxed text-gray-500 dark:text-gray-400">
                 Chào mừng bạn đến với{" "}
                 <strong className="font-bold text-gray-900 dark:text-gray-100">Alpha Pulse</strong>,
-                nền tảng tổng hợp tín hiệu giao dịch cổ phiếu hàng đầu Việt Nam. Chúng tôi cung cấp
-                các điểm mua bán tối ưu dựa trên mô hình định lượng kết hợp hành vi dòng tiền lớn,
-                chỉ báo kỹ thuật RSI, MACD, và cấu trúc đám mây Ichimoku.
+                nền tảng tổng hợp tín hiệu giao dịch cổ phiếu Việt Nam.
               </p>
             </div>
 
-            <div className="flex flex-col items-stretch gap-3 sm:flex-row md:items-center">
-              <div className="rounded-md border border-gray-100 bg-gray-50/50 px-4 py-3 text-center dark:border-gray-900 dark:bg-gray-950/40">
-                <div className="font-mono text-[10px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
-                  Tín Hiệu Mua
-                </div>
-                <div className="mt-1 text-xl font-bold text-gray-900 dark:text-white">
-                  +{totalBuyCount} Mã
-                </div>
-              </div>
-              <div className="rounded-md border border-gray-100 bg-gray-50/50 px-4 py-3 text-center dark:border-gray-900 dark:bg-gray-950/40">
-                <div className="font-mono text-[10px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
-                  Tín Hiệu Bán
-                </div>
-                <div className="mt-1 text-xl font-bold text-gray-900 dark:text-white">
-                  -{totalSellCount} Mã
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 

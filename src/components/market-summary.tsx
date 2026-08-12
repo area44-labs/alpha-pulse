@@ -95,55 +95,6 @@ export function MarketSummary({ marketData, buyCount, sellCount }: MarketSummary
         {renderIndexCard(marketData.hnxIndex)}
         {renderIndexCard(marketData.upcomIndex)}
 
-        {/* Card: BUY recommendations stats */}
-        <Card className="border-gray-200 bg-white transition-colors dark:border-gray-900 dark:bg-black">
-          <CardContent className="flex h-full flex-col justify-between p-4 sm:p-5">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] tracking-wider text-emerald-600 uppercase dark:text-emerald-400">
-                KHUYẾN NGHỊ MUA
-              </span>
-              <div className="text-emerald-650 dark:text-emerald-450 rounded-sm border border-emerald-100/50 bg-emerald-50 p-1 dark:border-emerald-900/30 dark:bg-emerald-950/20">
-                <ShoppingCart className="h-3.5 w-3.5" />
-              </div>
-            </div>
-            <div className="mt-3">
-              <span className="text-emerald-650 text-2xl font-bold tabular-nums dark:text-emerald-400">
-                {buyCount}
-              </span>
-              <span className="ml-1 font-mono text-[10px] text-emerald-600/70 dark:text-emerald-400/70">
-                mã nên mua
-              </span>
-            </div>
-            <p className="mt-2 font-mono text-[9px] tracking-tight text-emerald-600/60 uppercase dark:text-emerald-400/60">
-              Cơ hội gia tăng lợi nhuận
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Card: SELL recommendations stats */}
-        <Card className="border-gray-200 bg-white transition-colors dark:border-gray-900 dark:bg-black">
-          <CardContent className="flex h-full flex-col justify-between p-4 sm:p-5">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] tracking-wider text-rose-600 uppercase dark:text-rose-400">
-                KHUYẾN NGHỊ BÁN
-              </span>
-              <div className="text-rose-650 dark:text-rose-450 rounded-sm border border-rose-100/50 bg-rose-50 p-1 dark:border-rose-900/30 dark:bg-rose-950/20">
-                <TrendingDown className="h-3.5 w-3.5" />
-              </div>
-            </div>
-            <div className="mt-3">
-              <span className="text-rose-650 text-2xl font-bold tabular-nums dark:text-rose-400">
-                {sellCount}
-              </span>
-              <span className="ml-1 font-mono text-[10px] text-rose-600/70 dark:text-rose-400/70">
-                mã nên bán
-              </span>
-            </div>
-            <p className="mt-2 font-mono text-[9px] tracking-tight text-rose-600/60 uppercase dark:text-rose-400/60">
-              Bảo toàn vốn & chốt lời
-            </p>
-          </CardContent>
-        </Card>
       </div>
     </section>
   );
