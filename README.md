@@ -1,6 +1,6 @@
 # Alpha Pulse VN
 
-[![GitHub Pages](https://github.com/area44-labs/alpha-pulse/actions/workflows/pages.yml/badge.svg)](https://area44.github.io/alpha-pulse/)
+[![GitHub Pages](https://github.com/area44-labs/alpha-pulse/actions/workflows/pages.yml/badge.svg)](https://area44-labs.github.io/alpha-pulse/)
 
 ## Development
 
