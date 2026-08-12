@@ -1,6 +1,6 @@
 import { ShieldAlert, Target, Info, Percent, Sparkles, Scale } from "lucide-react";
 
-import { Badge } from "./ui/badge";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "./ui/dialog";
+} from "@/components/ui/dialog";
 
 interface Stock {
   symbol: string;
@@ -66,27 +66,27 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
             >
               {isBuy ? "BUY" : "SELL"}
             </Badge>
-            <span className="font-mono text-[10px] tracking-wider text-gray-400 uppercase dark:text-gray-500">
+            <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
               Alpha Pulse Premium
             </span>
           </div>
           <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2">
             <div>
-              <DialogTitle className="flex items-baseline gap-2 text-lg font-bold text-gray-900 dark:text-white">
+              <DialogTitle className="flex items-baseline gap-2 text-lg font-bold text-foreground">
                 <span className="text-xl font-extrabold">{stock.symbol}</span>
-                <span className="text-xs font-normal text-gray-500 dark:text-gray-400">
+                <span className="text-xs font-normal text-muted-foreground">
                   {stock.companyName}
                 </span>
               </DialogTitle>
-              <DialogDescription className="mt-0.5 font-mono text-[10px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
+              <DialogDescription className="mt-0.5 font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                 Ngành: {stock.sector}
               </DialogDescription>
             </div>
             <div className="text-right">
-              <div className="font-mono text-[10px] tracking-wider text-gray-400 uppercase dark:text-gray-500">
+              <div className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                 Giá hiện tại
               </div>
-              <div className="text-base font-bold text-gray-950 tabular-nums dark:text-gray-50">
+              <div className="text-base font-bold text-foreground tabular-nums">
                 {(stock.currentPrice * 1000).toLocaleString("vi-VN")}đ
               </div>
             </div>
@@ -94,30 +94,30 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
         </DialogHeader>
 
         {/* Body container */}
-        <div className="mt-4 space-y-5 text-xs text-gray-700 dark:text-gray-300">
+        <div className="mt-4 space-y-5 text-xs text-foreground">
           {/* Trading Plan section */}
-          <div className="border-gray-150 rounded-sm border bg-gray-50/30 p-4 dark:border-gray-900 dark:bg-gray-950/20">
-            <h4 className="mb-3 flex items-center font-mono text-[10px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
-              <Target className="mr-2 h-4 w-4 text-gray-400" />
+          <div className="rounded-sm border border-border bg-muted/30 p-4">
+            <h4 className="mb-3 flex items-center font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+              <Target className="mr-2 h-4 w-4 text-muted-foreground" />
               Chi tiết kế hoạch giao dịch
             </h4>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               {/* Entry point */}
-              <div className="border-gray-150 rounded-sm border bg-white p-3 dark:border-gray-900 dark:bg-black">
-                <span className="block font-mono text-[9px] tracking-wider text-gray-400 uppercase dark:text-gray-500">
+              <div className="rounded-sm border border-border bg-background p-3">
+                <span className="block font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
                   Vùng mua an toàn
                 </span>
-                <span className="mt-1 block text-sm font-bold text-gray-900 dark:text-gray-50">
+                <span className="mt-1 block text-sm font-bold text-foreground">
                   {isBuy ? `${stock.targetBuyPrice} nghìnđ` : "Bán ngay"}
                 </span>
-                <span className="mt-0.5 block font-mono text-[9px] text-gray-400 dark:text-gray-500">
+                <span className="mt-0.5 block font-mono text-[9px] text-muted-foreground">
                   {isBuy ? "Khớp lệnh trực tiếp" : "Giá hiện tại"}
                 </span>
               </div>
 
               {/* Target price */}
-              <div className="border-gray-150 rounded-sm border bg-white p-3 dark:border-gray-900 dark:bg-black">
-                <span className="block font-mono text-[9px] tracking-wider text-gray-400 uppercase dark:text-gray-500">
+              <div className="rounded-sm border border-border bg-background p-3">
+                <span className="block font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
                   Mục tiêu kỳ vọng (TP)
                 </span>
                 <span className="mt-1 block text-sm font-bold text-emerald-600 tabular-nums dark:text-emerald-400">
@@ -130,8 +130,8 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
               </div>
 
               {/* Stop loss price */}
-              <div className="border-gray-150 rounded-sm border bg-white p-3 dark:border-gray-900 dark:bg-black">
-                <span className="block font-mono text-[9px] tracking-wider text-gray-400 uppercase dark:text-gray-500">
+              <div className="rounded-sm border border-border bg-background p-3">
+                <span className="block font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
                   Ngưỡng cắt lỗ (SL)
                 </span>
                 <span className="mt-1 block text-sm font-bold text-rose-600 tabular-nums dark:text-rose-400">
@@ -144,12 +144,12 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
               </div>
             </div>
 
-            <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-3 text-xs dark:border-gray-900">
-              <span className="flex items-center font-mono text-[10px] tracking-wider text-gray-400 uppercase dark:text-gray-500">
-                <Scale className="mr-1.5 h-3.5 w-3.5 text-gray-400" />
+            <div className="mt-3 flex items-center justify-between border-t border-border pt-3 text-xs">
+              <span className="flex items-center font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                <Scale className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
                 Tỷ lệ Lợi nhuận/Rủi ro (R:R Ratio)
               </span>
-              <span className="rounded-sm bg-gray-100 px-2 py-0.5 font-mono text-xs text-gray-800 tabular-nums dark:bg-gray-900 dark:text-gray-200">
+              <span className="rounded-sm bg-muted px-2 py-0.5 font-mono text-xs text-foreground tabular-nums">
                 {stock.riskRewardRatio}
               </span>
             </div>
@@ -157,11 +157,11 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
 
           {/* Technical rationale */}
           <div className="space-y-2">
-            <h4 className="dark:text-gray-440 flex items-center font-mono text-[10px] tracking-wider text-gray-500 uppercase">
-              <Sparkles className="mr-2 h-3.5 w-3.5 text-gray-400" />
+            <h4 className="flex items-center font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+              <Sparkles className="mr-2 h-3.5 w-3.5 text-muted-foreground" />
               Lý do khuyến nghị chi tiết
             </h4>
-            <p className="border-gray-150 rounded-sm border bg-white p-4 text-[11px] leading-relaxed text-gray-700 dark:border-gray-900 dark:bg-black dark:text-gray-300">
+            <p className="rounded-sm border border-border bg-background p-4 text-[11px] leading-relaxed text-foreground">
               {stock.rationale}
             </p>
           </div>
@@ -189,9 +189,9 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
         </div>
 
         <DialogFooter>
-          <div className="flex w-full flex-wrap items-center justify-between gap-2 border-t border-gray-100 pt-3 dark:border-gray-900">
-            <div className="flex items-center space-x-1.5 font-mono text-[10px] text-gray-400 uppercase dark:text-gray-500">
-              <Info className="h-3.5 w-3.5 text-gray-400" />
+          <div className="flex w-full flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
+            <div className="flex items-center space-x-1.5 font-mono text-[10px] text-muted-foreground uppercase">
+              <Info className="h-3.5 w-3.5 text-muted-foreground" />
               <span>Mức rủi ro định sẵn:</span>
               {getRiskLevelBadge(stock.riskLevel)}
             </div>
