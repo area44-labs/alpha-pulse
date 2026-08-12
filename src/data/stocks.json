@@ -3,69 +3,98 @@
   "marketSummary": {
     "vnIndex": {
       "name": "VN-Index",
-      "value": 1788.61,
-      "change": 15.2,
-      "changePercent": 0.86,
+      "value": 1793.18,
+      "change": 19.77,
+      "changePercent": 1.11,
       "volume": "18.500 tỷ VNĐ"
     },
     "hoseIndex": {
       "name": "HOSE",
-      "value": 1934.83,
-      "change": 12.3,
-      "changePercent": 0.64,
+      "value": 1936.46,
+      "change": 13.93,
+      "changePercent": 0.72,
       "volume": "15.200 tỷ VNĐ"
     },
     "hnxIndex": {
       "name": "HNX-Index",
-      "value": 287.99,
-      "change": -2.92,
-      "changePercent": -1.0,
+      "value": 288.45,
+      "change": -2.46,
+      "changePercent": -0.85,
       "volume": "1.800 tỷ VNĐ"
     },
     "upcomIndex": {
       "name": "Upcom-Index",
-      "value": 127.88,
-      "change": 0.7,
-      "changePercent": 0.55,
+      "value": 127.51,
+      "change": 0.33,
+      "changePercent": 0.26,
       "volume": "1.500 tỷ VNĐ"
     }
   },
   "recommendations": [
     {
-      "symbol": "VHC",
-      "companyName": "Công ty Cổ phần Vĩnh Hoàn",
-      "sector": "Thủy sản",
+      "symbol": "TCB",
+      "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam",
+      "sector": "Ngân hàng",
       "type": "BUY",
-      "currentPrice": 53.8,
-      "targetBuyPrice": "52.7 - 54.3",
-      "targetSellPrice": 61.9,
-      "stopLossPrice": 50.0,
+      "currentPrice": 31.5,
+      "targetBuyPrice": "31.5 - 32.3",
+      "targetSellPrice": 35.9,
+      "stopLossPrice": 29.3,
       "riskLevel": "MEDIUM",
-      "rationale": "Mã cổ phiếu VHC đã chính thức đóng cửa tại mức 53.8, thiết lập giao dịch ổn định trên đường xu hướng MA20 (53.7) và MA50 (55.6). Chỉ báo RSI đạt 49.5 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Khối lượng giao dịch bứt phá vượt 3.1 lần trung bình 20 phiên, khẳng định lực cầu chủ động hấp thụ tốt lượng cung. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Thủy sản là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại."
+      "rationale": "Giá đóng cửa 31,500đ vượt đường trung bình động MA20 (29,767đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 65.3 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.354) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "riskRewardRatio": "1:2.0"
+    },
+    {
+      "symbol": "ACB",
+      "companyName": "Ngân hàng TMCP Á Châu",
+      "sector": "Danh mục",
+      "type": "BUY",
+      "currentPrice": 22.75,
+      "targetBuyPrice": "22.8 - 23.3",
+      "targetSellPrice": 25.8,
+      "stopLossPrice": 21.2,
+      "riskLevel": "MEDIUM",
+      "rationale": "Giá đóng cửa 22,750đ vượt đường trung bình động MA20 (22,590đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 54.5 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.012) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "riskRewardRatio": "1:2.0"
+    },
+    {
+      "symbol": "VIX",
+      "companyName": "CTCP Chứng khoán VIX",
+      "sector": "Danh mục",
+      "type": "BUY",
+      "currentPrice": 14.3,
+      "targetBuyPrice": "14.3 - 14.7",
+      "targetSellPrice": 16.7,
+      "stopLossPrice": 13.1,
+      "riskLevel": "MEDIUM",
+      "rationale": "Giá đóng cửa 14,300đ vượt đường trung bình động MA20 (13,195đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 64.6 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.314) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "riskRewardRatio": "1:2.0"
     },
     {
       "symbol": "STB",
-      "companyName": "Ngân hàng TMCP Sài Gòn Thương Tín",
+      "companyName": "Ngân hàng TMCP Sài Gòn Tài Lộc",
       "sector": "Ngân hàng",
       "type": "BUY",
-      "currentPrice": 74.8,
-      "targetBuyPrice": "73.3 - 75.5",
-      "targetSellPrice": 86.0,
-      "stopLossPrice": 69.6,
+      "currentPrice": 74.1,
+      "targetBuyPrice": "74.1 - 76.0",
+      "targetSellPrice": 84.5,
+      "stopLossPrice": 68.9,
       "riskLevel": "MEDIUM",
-      "rationale": "Mã cổ phiếu STB đã chính thức đóng cửa tại mức 74.8, thiết lập giao dịch ổn định trên đường xu hướng MA20 (72.8) và MA50 (72.3). Chỉ báo RSI đạt 61.9 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Ngân hàng là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại."
+      "rationale": "Giá đóng cửa 74,100đ vượt đường trung bình động MA20 (72,775đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 59.1 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.223) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "riskRewardRatio": "1:2.0"
     },
     {
       "symbol": "SSI",
-      "companyName": "Công ty Cổ phần Chứng khoán SSI",
+      "companyName": "CTCP Chứng khoán SSI",
       "sector": "Dịch vụ tài chính",
       "type": "BUY",
-      "currentPrice": 25.25,
-      "targetBuyPrice": "24.7 - 25.5",
-      "targetSellPrice": 29.0,
+      "currentPrice": 25.3,
+      "targetBuyPrice": "25.3 - 25.9",
+      "targetSellPrice": 28.9,
       "stopLossPrice": 23.5,
       "riskLevel": "MEDIUM",
-      "rationale": "Mã cổ phiếu SSI đã chính thức đóng cửa tại mức 25.2, thiết lập giao dịch ổn định trên đường xu hướng MA20 (23.9) và MA50 (24.9). Chỉ báo RSI đạt 63.7 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Dịch vụ tài chính là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại."
+      "rationale": "Giá đóng cửa 25,300đ vượt đường trung bình động MA20 (23,888đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 64.0 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.317) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "riskRewardRatio": "1:2.0"
     },
     {
       "symbol": "HPG",
@@ -77,43 +106,8 @@
       "targetSellPrice": 25.6,
       "stopLossPrice": 20.7,
       "riskLevel": "MEDIUM",
-      "rationale": "Mã cổ phiếu HPG đã chính thức đóng cửa tại mức 22.2, thiết lập giao dịch ổn định trên đường xu hướng MA20 (21.6) và MA50 (22.2). Chỉ báo RSI đạt 67.9 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Thép là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại."
-    },
-    {
-      "symbol": "MWG",
-      "companyName": "Công ty Cổ phần Đầu tư Thế giới Di Động",
-      "sector": "Bán lẻ",
-      "type": "BUY",
-      "currentPrice": 73.6,
-      "targetBuyPrice": "72.1 - 74.3",
-      "targetSellPrice": 84.6,
-      "stopLossPrice": 68.4,
-      "riskLevel": "MEDIUM",
-      "rationale": "Mã cổ phiếu MWG đã chính thức đóng cửa tại mức 73.6, thiết lập giao dịch ổn định trên đường xu hướng MA20 (70.9) và MA50 (73.2). Chỉ báo RSI đạt 57.1 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Bán lẻ là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại."
-    },
-    {
-      "symbol": "PVD",
-      "companyName": "Tổng Công ty Cổ phần Khoan và Dịch vụ Khoan Dầu khí",
-      "sector": "Dầu khí",
-      "type": "BUY",
-      "currentPrice": 18.65,
-      "targetBuyPrice": "18.3 - 18.8",
-      "targetSellPrice": 22.0,
-      "stopLossPrice": 17.2,
-      "riskLevel": "HIGH",
-      "rationale": "Mã cổ phiếu PVD đã chính thức đóng cửa tại mức 18.6, thiết lập giao dịch ổn định trên đường xu hướng MA20 (18.5) và MA50 (18.9). Chỉ báo RSI đạt 51.9 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Khối lượng giao dịch bứt phá vượt 1.1 lần trung bình 20 phiên, khẳng định lực cầu chủ động hấp thụ tốt lượng cung. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Dầu khí là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại."
-    },
-    {
-      "symbol": "TCB",
-      "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam",
-      "sector": "Ngân hàng",
-      "type": "BUY",
-      "currentPrice": 31.05,
-      "targetBuyPrice": "30.4 - 31.4",
-      "targetSellPrice": 35.7,
-      "stopLossPrice": 28.9,
-      "riskLevel": "MEDIUM",
-      "rationale": "Mã cổ phiếu TCB đã chính thức đóng cửa tại mức 31.1, thiết lập giao dịch ổn định trên đường xu hướng MA20 (29.7) và MA50 (31.1). Chỉ báo RSI đạt 63.0 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Ngân hàng là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại."
+      "rationale": "Mã cổ phiếu HPG đã chính thức đóng cửa tại mức 22.2, thiết lập giao dịch ổn định trên đường xu hướng MA20 (21.6) và MA50 (22.2). Chỉ báo RSI đạt 67.9 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Thép là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại.",
+      "riskRewardRatio": "1:2.0"
     },
     {
       "symbol": "VHM",
@@ -125,7 +119,21 @@
       "targetSellPrice": 87.1,
       "stopLossPrice": 67.9,
       "riskLevel": "HIGH",
-      "rationale": "Mã cổ phiếu VHM đã chính thức đóng cửa tại mức 73.8, thiết lập giao dịch ổn định trên đường xu hướng MA20 (70.8) và MA50 (72.1). Chỉ báo RSI đạt 68.7 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Bất động sản là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại."
+      "rationale": "Mã cổ phiếu VHM đã chính thức đóng cửa tại mức 73.8, thiết lập giao dịch ổn định trên đường xu hướng MA20 (70.8) và MA50 (72.1). Chỉ báo RSI đạt 68.7 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Bất động sản là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại.",
+      "riskRewardRatio": "1:2.0"
+    },
+    {
+      "symbol": "MWG",
+      "companyName": "Công ty Cổ phần Đầu tư Thế giới Di Động",
+      "sector": "Bán lẻ",
+      "type": "BUY",
+      "currentPrice": 73.6,
+      "targetBuyPrice": "72.1 - 74.3",
+      "targetSellPrice": 84.6,
+      "stopLossPrice": 68.4,
+      "riskLevel": "MEDIUM",
+      "rationale": "Mã cổ phiếu MWG đã chính thức đóng cửa tại mức 73.6, thiết lập giao dịch ổn định trên đường xu hướng MA20 (70.9) và MA50 (73.2). Chỉ báo RSI đạt 57.1 điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua. MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng. Cấu trúc giá tích lũy chặt chẽ và dòng tiền lớn quay trở lại nhóm Bán lẻ là cơ sở tin cậy để mở vị thế mua quanh vùng giá hiện tại.",
+      "riskRewardRatio": "1:2.0"
     },
     {
       "symbol": "VIC",
@@ -137,7 +145,21 @@
       "targetSellPrice": 181.9,
       "stopLossPrice": 226.8,
       "riskLevel": "HIGH",
-      "rationale": "Mã cổ phiếu VIC đã chính thức đánh mất đường hỗ trợ ngắn hạn MA20 (215.3) và đang chịu sức ép lớn từ đường MA50. Chỉ báo RSI suy giảm về mốc 50.0 điểm, thể hiện áp lực phân phối đang chiếm ưu thế tuyệt đối. Chỉ báo MACD giao cắt âm dưới đường tín hiệu và đang mở rộng khoảng cách về phía dưới, cảnh báo xu hướng suy yếu. Xu hướng giảm ngắn hạn đã được xác nhận vững chắc trong nhóm Bất động sản. Khuyến nghị nhà đầu tư cơ cấu, chủ động hạ tỷ trọng bán chốt lời hoặc cắt lỗ để bảo vệ nguồn vốn."
+      "rationale": "Mã cổ phiếu VIC đã chính thức đánh mất đường hỗ trợ ngắn hạn MA20 (215.3) và đang chịu sức ép lớn từ đường MA50. Chỉ báo RSI suy giảm về mốc 50.0 điểm, thể hiện áp lực phân phối đang chiếm ưu thế tuyệt đối. Chỉ báo MACD giao cắt âm dưới đường tín hiệu và đang mở rộng khoảng cách về phía dưới, cảnh báo xu hướng suy yếu. Xu hướng giảm ngắn hạn đã được xác nhận vững chắc trong nhóm Bất động sản. Khuyến nghị nhà đầu tư cơ cấu, chủ động hạ tỷ trọng bán chốt lời hoặc cắt lỗ để bảo vệ nguồn vốn.",
+      "riskRewardRatio": "1:2.0"
+    },
+    {
+      "symbol": "VPI",
+      "companyName": "CTCP Phát triển Bất động sản Văn Phú",
+      "sector": "Danh mục",
+      "type": "SELL",
+      "currentPrice": 59.7,
+      "targetBuyPrice": "Không khuyến nghị",
+      "targetSellPrice": 68.1,
+      "stopLossPrice": 55.5,
+      "riskLevel": "MEDIUM",
+      "rationale": "Giá đóng cửa dưới đường xu hướng ngắn hạn MA20 (62,740đ). Thanh khoản bùng nổ đạt 1.8x so với trung bình 20 phiên, dòng tiền mua chủ động. RSI ở mức 34.9 điểm, thể hiện áp lực cung lấn át. MACD phân kỳ âm, đà giảm tiếp tục kéo dài. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "riskRewardRatio": "1:2.0"
     }
   ]
 }
