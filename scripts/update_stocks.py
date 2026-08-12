@@ -40,6 +40,27 @@ CANDIDATE_STOCKS = [
     {"symbol": "PVD", "companyName": "Tổng Công ty Cổ phần Khoan và Dịch vụ Khoan Dầu khí", "sector": "Dầu khí", "riskLevel": "HIGH"},
     {"symbol": "VHC", "companyName": "Công ty Cổ phần Vĩnh Hoàn", "sector": "Thủy sản", "riskLevel": "MEDIUM"},
     {"symbol": "DBC", "companyName": "Công ty Cổ phần Tập đoàn Dabaco Việt Nam", "sector": "Nông nghiệp", "riskLevel": "HIGH"},
+    {"symbol": "ACB", "companyName": "Ngân hàng TMCP Á Châu", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
+    {"symbol": "MBB", "companyName": "Ngân hàng TMCP Quân Đội", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
+    {"symbol": "VPB", "companyName": "Ngân hàng TMCP Việt Nam Thịnh Vượng", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
+    {"symbol": "CTG", "companyName": "Ngân hàng TMCP Công Thương Việt Nam", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
+    {"symbol": "VCB", "companyName": "Ngân hàng TMCP Ngoại Thương Việt Nam", "sector": "Ngân hàng", "riskLevel": "LOW"},
+    {"symbol": "VND", "companyName": "Công ty Cổ phần Chứng khoán VNDIRECT", "sector": "Dịch vụ tài chính", "riskLevel": "HIGH"},
+    {"symbol": "VCI", "companyName": "Công ty Cổ phần Chứng khoán Vietcap", "sector": "Dịch vụ tài chính", "riskLevel": "HIGH"},
+    {"symbol": "HCM", "companyName": "Công ty Cổ phần Chứng khoán TP.Hồ Chí Minh", "sector": "Dịch vụ tài chính", "riskLevel": "MEDIUM"},
+    {"symbol": "DXG", "companyName": "Công ty Cổ phần Tập đoàn Đất Xanh", "sector": "Bất động sản", "riskLevel": "HIGH"},
+    {"symbol": "DIG", "companyName": "Tổng Công ty Cổ phần Đầu tư Phát triển Xây dựng", "sector": "Bất động sản", "riskLevel": "HIGH"},
+    {"symbol": "PDR", "companyName": "Công ty Cổ phần Phát triển Bất động sản Phát Đạt", "sector": "Bất động sản", "riskLevel": "HIGH"},
+    {"symbol": "NLG", "companyName": "Công ty Cổ phần Đầu tư Nam Long", "sector": "Bất động sản", "riskLevel": "MEDIUM"},
+    {"symbol": "KDH", "companyName": "Công ty Cổ phần Đầu tư và Kinh doanh Nhà Khang Điền", "sector": "Bất động sản", "riskLevel": "MEDIUM"},
+    {"symbol": "HSG", "companyName": "Công ty Cổ phần Tập đoàn Hoa Sen", "sector": "Thép", "riskLevel": "HIGH"},
+    {"symbol": "NKG", "companyName": "Công ty Cổ phần Thép Nam Kim", "sector": "Thép", "riskLevel": "HIGH"},
+    {"symbol": "MSN", "companyName": "Công ty Cổ phần Tập đoàn Masan", "sector": "Tiêu dùng", "riskLevel": "MEDIUM"},
+    {"symbol": "GMD", "companyName": "Công ty Cổ phần Gemadept", "sector": "Logistics", "riskLevel": "MEDIUM"},
+    {"symbol": "REE", "companyName": "Công ty Cổ phần Cơ Điện Lạnh", "sector": "Cơ điện & Năng lượng", "riskLevel": "LOW"},
+    {"symbol": "GAS", "companyName": "Tổng Công ty Khí Việt Nam - CTCP", "sector": "Dầu khí", "riskLevel": "LOW"},
+    {"symbol": "GVR", "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP", "sector": "Cao su", "riskLevel": "HIGH"},
+    {"symbol": "VRE", "companyName": "Công ty Cổ phần Vincom Retail", "sector": "Bất động sản", "riskLevel": "MEDIUM"},
 ]
 
 def round_tick_size(price, exchange="HOSE"):
@@ -278,7 +299,7 @@ def main():
     for leader in CANDIDATE_STOCKS:
         if leader["symbol"] not in candidate_symbols:
             candidate_symbols.append(leader["symbol"])
-        if len(candidate_symbols) >= 6: # Deep-scan pool strictly limited to 6 symbols
+        if len(candidate_symbols) >= 24: # Deep-scan pool strictly limited to 24 symbols
             break
 
     print(f"  -> Final deep-scan pool size (limited to stay under Guest rate limits): {len(candidate_symbols)}")
@@ -287,6 +308,9 @@ def main():
     print("\n[Step 4] Querying 60-day price history and calculating technical indicators...")
     scanned_results = []
     exit_scanner_alerts = []
+
+    # To avoid rate limit issues, if we have a larger pool we can print info
+    print(f"  -> Scanning {len(candidate_symbols)} symbols...")
 
     for idx, symbol in enumerate(candidate_symbols):
         print(f"  [{idx+1}/{len(candidate_symbols)}] Analyzing symbol: {symbol}...")
