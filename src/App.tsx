@@ -1,4 +1,3 @@
-import { Star } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 
 import { FilterBar } from "@/components/filter-bar";
@@ -6,7 +5,6 @@ import { Header } from "@/components/header";
 import { MarketSummary } from "@/components/market-summary";
 import { StockDetailModal } from "@/components/stock-detail-modal";
 import { StockTable } from "@/components/stock-table";
-import mockStocksData from "@/data/mock-stocks.json";
 import realStocksData from "@/data/stocks.json";
 
 interface Stock {
@@ -44,15 +42,9 @@ interface StocksDataset {
   recommendations: Stock[];
 }
 
-const isDev = import.meta.env.DEV;
-
-// Khởi tạo dữ liệu ban đầu dựa trên môi trường chạy
+// Khởi tạo dữ liệu ban đầu
 const getInitialData = (): StocksDataset => {
-  if (isDev) {
-    return mockStocksData as StocksDataset;
-  }
-
-  // Chế độ Production: Ưu tiên dữ liệu tùy chỉnh của người dùng trong localStorage nếu có
+  // Ưu tiên dữ liệu tùy chỉnh của người dùng trong localStorage nếu có
   try {
     const saved = localStorage.getItem("alpha-pulse-user-stocks-data");
     if (saved) {
@@ -72,9 +64,6 @@ function App() {
   const [stocksData, setStocksData] = useState<StocksDataset>(getInitialData);
 
   useEffect(() => {
-    // Chỉ lấy dữ liệu thực tế từ API/Server khi chạy ở chế độ Production
-    if (isDev) return;
-
     const fetchRealData = async () => {
       const baseUrl = import.meta.env.BASE_URL || "/";
       const paths = [

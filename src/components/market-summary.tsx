@@ -1,4 +1,4 @@
-import { TrendingDown, ArrowUpRight, ArrowDownRight, ShoppingCart, DollarSign } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, DollarSign } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -21,7 +21,11 @@ interface MarketSummaryProps {
   sellCount: number;
 }
 
-export function MarketSummary({ marketData, buyCount, sellCount }: MarketSummaryProps) {
+export function MarketSummary({
+  marketData,
+  buyCount: _buyCount,
+  sellCount: _sellCount,
+}: MarketSummaryProps) {
   const renderIndexCard = (data: IndexData) => {
     const isPositive = data.change >= 0;
     return (
