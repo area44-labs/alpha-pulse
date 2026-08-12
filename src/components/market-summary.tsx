@@ -1,6 +1,6 @@
 import { TrendingDown, ArrowUpRight, ArrowDownRight, ShoppingCart, DollarSign } from "lucide-react";
 
-import { Card, CardContent } from "./ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface IndexData {
   name: string;
