@@ -175,12 +175,6 @@ def run_quantitative_analysis(stock_meta, df):
         downside_factor = 0.93 if risk_level == "MEDIUM" else (0.94 if risk_level == "LOW" else 0.92)
         stop_loss_price = round(current_price * downside_factor, 1)
 
-        reward = target_sell_price - current_price
-        risk = current_price - stop_loss_price
-        risk = max(risk, 0.1)
-        rr_ratio = round(reward / risk, 1)
-        risk_reward_ratio = f"1:{rr_ratio}"
-
         vol_text = f" Khối lượng giao dịch bứt phá vượt {vol_ratio:.1f} lần trung bình 20 phiên, khẳng định lực cầu chủ động hấp thụ tốt lượng cung." if vol_ratio > 1.1 else ""
         macd_text = "MACD duy trì phân kỳ dương phía trên đường tín hiệu tạo động lực tăng trưởng vững vàng." if hist_val > 0 else "MACD bắt đầu thu hẹp khoảng cách âm và hướng lên trên đường tín hiệu."
         rsi_text = f"Chỉ báo RSI đạt {rsi:.1f} điểm đang trong xu hướng phục hồi tích cực và còn nhiều dư địa tăng trưởng trước khi chạm vùng quá mua."
@@ -199,8 +193,6 @@ def run_quantitative_analysis(stock_meta, df):
 
         upside_factor = 1.05 if risk_level == "MEDIUM" else (1.04 if risk_level == "LOW" else 1.06)
         stop_loss_price = round(current_price * upside_factor, 1)
-
-        risk_reward_ratio = "1:1.8"
 
         vol_text = f" Áp lực bán tháo gia tăng mạnh với thanh khoản đạt {vol_ratio:.1f} lần bình quân 20 phiên." if vol_ratio > 1.1 else ""
         macd_text = "Chỉ báo MACD giao cắt âm dưới đường tín hiệu và đang mở rộng khoảng cách về phía dưới, cảnh báo xu hướng suy yếu." if hist_val < 0 else "MACD suy yếu rõ rệt tạo phân kỳ âm trên đồ thị ngày."
@@ -221,7 +213,6 @@ def run_quantitative_analysis(stock_meta, df):
         "targetBuyPrice": target_buy_price,
         "targetSellPrice": round(target_sell_price, 2),
         "stopLossPrice": round(stop_loss_price, 2),
-        "riskRewardRatio": risk_reward_ratio,
         "riskLevel": risk_level,
         "rationale": rationale,
         "analysisScore": score

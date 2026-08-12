@@ -21,7 +21,7 @@ interface Stock {
   targetBuyPrice: string;
   targetSellPrice: number;
   stopLossPrice: number;
-  riskRewardRatio: string;
+  riskRewardRatio?: string;
   riskLevel: "LOW" | "MEDIUM" | "HIGH";
   rationale: string;
 }
@@ -97,14 +97,6 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                 <div className="flex items-center gap-1">
                   Giá Mục Tiêu & Cắt Lỗ
                   <Tooltip content="Mục tiêu chốt lời (TP) và ngưỡng cắt lỗ bắt buộc (SL) kèm biên độ tăng giảm dự kiến">
-                    <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
-                  </Tooltip>
-                </div>
-              </TableHead>
-              <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
-                <div className="flex items-center justify-center gap-1">
-                  Tỷ lệ R:R
-                  <Tooltip content="Risk/Reward Ratio: Tỷ suất Lợi nhuận trên Rủi ro tương ứng (Khuyến nghị tối thiểu 1:2)">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>
@@ -213,13 +205,6 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                     </div>
                   </TableCell>
 
-                  {/* Risk/Reward Ratio */}
-                  <TableCell className="px-4 py-3 text-center font-mono text-[11px] tabular-nums">
-                    <span className="rounded-sm bg-gray-100 px-2 py-0.5 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
-                      {stock.riskRewardRatio}
-                    </span>
-                  </TableCell>
-
                   {/* Risk Level */}
                   <TableCell className="px-4 py-3 text-center">
                     {getRiskBadge(stock.riskLevel)}
@@ -249,7 +234,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
           </TabsList>
 
           <div className="hidden font-mono text-[11px] tracking-tight text-gray-400 uppercase sm:block dark:text-gray-500">
-            Nhấp "Xem phân tích" để xem chi tiết
+            Nhấp vào mã CP để xem chi tiết
           </div>
         </div>
 
