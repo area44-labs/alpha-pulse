@@ -101,12 +101,12 @@
 :root {
   /* Custom non-dark theme variable declarations */
   --subtle-foreground: oklch(0.708 0 0); /* gray-400 */
-  --trend-up-bg: oklch(0.97 0.025 150); /* rich elegant light emerald-50 bg */
-  --trend-up-text: oklch(0.46 0.15 150); /* high-contrast deep emerald text */
-  --trend-up-border: oklch(0.91 0.05 150 / 50%); /* border-emerald-100/50 */
-  --trend-down-bg: oklch(0.97 0.025 18); /* rich elegant light rose-50 bg */
-  --trend-down-text: oklch(0.46 0.16 18); /* high-contrast deep rose/red text */
-  --trend-down-border: oklch(0.91 0.05 18 / 50%); /* border-rose-100/50 */
+  --trend-up-bg: oklch(0.97 0.03 145); /* richer elegant light emerald bg */
+  --trend-up-text: oklch(0.5 0.19 145); /* brighter, highly saturated vibrant green text */
+  --trend-up-border: oklch(0.91 0.07 145 / 60%);
+  --trend-down-bg: oklch(0.97 0.035 22); /* richer elegant light rose/red bg */
+  --trend-down-text: oklch(0.51 0.23 22); /* brighter, highly saturated vibrant red text */
+  --trend-down-border: oklch(0.91 0.08 22 / 60%);
   --warning-bg: oklch(0.979 0.024 77.492 / 10%); /* bg-amber-50/10 */
   --warning-text: oklch(0.485 0.12 75.242); /* text-amber-800 */
   --warning-border: oklch(0.95 0.03 75.242 / 50%); /* border-amber-100/50 */
@@ -184,12 +184,12 @@
 .dark {
   /* Dark-mode custom variables overrides */
   --subtle-foreground: oklch(0.556 0 0); /* gray-500 */
-  --trend-up-bg: oklch(0.28 0.08 150 / 12%); /* richer deep emerald background */
-  --trend-up-text: oklch(0.78 0.13 150); /* bright luminous green/emerald */
-  --trend-up-border: oklch(0.4 0.1 150 / 30%);
-  --trend-down-bg: oklch(0.28 0.08 18 / 12%); /* richer deep rose background */
-  --trend-down-text: oklch(0.78 0.13 18); /* bright luminous red/rose */
-  --trend-down-border: oklch(0.4 0.1 18 / 30%);
+  --trend-up-bg: oklch(0.35 0.12 145 / 15%); /* more colorful deep green background */
+  --trend-up-text: oklch(0.82 0.22 145); /* luminous, exceptionally bright green text */
+  --trend-up-border: oklch(0.45 0.15 145 / 35%);
+  --trend-down-bg: oklch(0.35 0.14 22 / 15%); /* more colorful deep red background */
+  --trend-down-text: oklch(0.77 0.25 22); /* luminous, exceptionally bright red text */
+  --trend-down-border: oklch(0.45 0.17 22 / 35%);
   --warning-bg: oklch(0.256 0.054 75.242 / 5%);
   --warning-text: oklch(0.812 0.076 75.242);
   --warning-border: oklch(0.356 0.076 75.242 / 20%);
