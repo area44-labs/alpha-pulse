@@ -63,8 +63,8 @@ export function SecuritiesTable({ selectedSector, onSectorChange }: SecuritiesTa
             <TableRow className="border-gray-150 border-b bg-gray-50/50 font-mono text-[10px] tracking-wider text-gray-500 uppercase hover:bg-transparent dark:border-gray-900 dark:bg-gray-950/40 dark:text-gray-400">
               <TableHead className="h-auto px-4 py-3 font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-1">
-                  Mã CP
-                  <Tooltip content="Mã giao dịch chứng khoán">
+                  Mã CP & NGÀNH
+                  <Tooltip content="Mã giao dịch chứng khoán & phân loại nhóm ngành">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>

@@ -72,7 +72,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
               <TableHead className="h-auto px-4 py-3 font-bold text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-1">
                   Mã CP & Ngành
-                  <Tooltip content="Mã giao dịch chứng khoán HOSE/HNX/UPCOM & phân loại nhóm ngành">
+                  <Tooltip content="Mã giao dịch chứng khoán phân loại nhóm ngành">
                     <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
                   </Tooltip>
                 </div>
