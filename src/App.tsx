@@ -117,7 +117,7 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-gray-900 transition-colors duration-300 dark:bg-black dark:text-gray-100">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       {/* Header component */}
       <Header lastUpdated={stocksData.lastUpdated} />
 
@@ -127,13 +127,13 @@ function App() {
         <section className="relative overflow-hidden px-0 py-0">
           <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl space-y-3">
-              <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl dark:text-white">
+              <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
                 Phân Tích & Khuyến Nghị Giao Dịch
               </h2>
-              <p className="text-xs leading-relaxed text-gray-500 dark:text-gray-400">
+              <p className="text-xs leading-relaxed text-muted-foreground">
                 Chào mừng bạn đến với{" "}
-                <strong className="font-bold text-gray-900 dark:text-gray-100">Alpha Pulse</strong>,
-                nền tảng tổng hợp tín hiệu giao dịch cổ phiếu Việt Nam.
+                <strong className="font-bold text-foreground">Alpha Pulse</strong>, nền tảng tổng
+                hợp tín hiệu giao dịch cổ phiếu Việt Nam.
               </p>
             </div>
           </div>
@@ -149,8 +149,8 @@ function App() {
         {/* Core Stock Recommendation Table Card */}
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
-            <div className="h-1.5 w-1.5 bg-gray-900 dark:bg-gray-100" />
-            <h2 className="font-mono text-[11px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
+            <div className="h-1.5 w-1.5 bg-foreground" />
+            <h2 className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
               Danh Sách Khuyến Nghị Giao Dịch Hằng Ngày
             </h2>
           </div>
@@ -166,8 +166,8 @@ function App() {
         <div className="space-y-4 pt-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center space-x-2">
-              <div className="h-1.5 w-1.5 bg-gray-900 dark:bg-gray-100" />
-              <h2 className="font-mono text-[11px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
+              <div className="h-1.5 w-1.5 bg-foreground" />
+              <h2 className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
                 Danh Sách Khuyến Nghị Từ Các Công Ty Chứng Khoán
               </h2>
             </div>
@@ -180,9 +180,9 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-16 border-t border-gray-100 bg-white py-6 dark:border-gray-900 dark:bg-black">
+      <footer className="mt-16 border-t border-border bg-background py-6">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center font-mono text-[11px] tracking-tight text-gray-400 dark:text-gray-500">
+          <div className="text-center font-mono text-[11px] tracking-tight text-subtle-foreground">
             © {new Date().getFullYear()} AREA44. All rights reserved.
           </div>
         </div>
