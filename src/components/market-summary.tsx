@@ -29,17 +29,20 @@ export function MarketSummary({
   const renderIndexCard = (data: IndexData) => {
     const isPositive = data.change >= 0;
     return (
-      <Card key={data.name} className="overflow-hidden bg-white transition-colors dark:bg-black">
+      <Card
+        key={data.name}
+        className="overflow-hidden border-border bg-background transition-colors"
+      >
         <CardContent className="p-4 sm:p-5">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[10px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
+            <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
               {data.name}
             </span>
             <span
               className={`inline-flex items-center rounded-sm px-1.5 py-0.5 font-mono text-[10px] tracking-tight ${
                 isPositive
-                  ? "border border-emerald-100/50 bg-emerald-50 text-emerald-700 dark:border-emerald-900/20 dark:bg-emerald-950/20 dark:text-emerald-400"
-                  : "border border-rose-100/50 bg-rose-50 text-rose-700 dark:border-rose-900/20 dark:bg-rose-950/20 dark:text-rose-400"
+                  ? "border border-trend-up-border bg-trend-up-bg text-trend-up-text"
+                  : "border border-trend-down-border bg-trend-down-bg text-trend-down-text"
               }`}
             >
               {isPositive ? (
@@ -54,14 +57,12 @@ export function MarketSummary({
 
           <div className="mt-3 flex items-baseline justify-between">
             <div>
-              <span className="text-lg font-bold tracking-tight text-gray-950 tabular-nums dark:text-gray-50">
+              <span className="text-lg font-bold tracking-tight text-foreground tabular-nums">
                 {data.value.toLocaleString("vi-VN", { minimumFractionDigits: 2 })}
               </span>
               <span
                 className={`ml-1.5 text-[11px] font-medium tabular-nums ${
-                  isPositive
-                    ? "text-emerald-600 dark:text-emerald-400"
-                    : "text-rose-600 dark:text-rose-400"
+                  isPositive ? "text-trend-up-text" : "text-trend-down-text"
                 }`}
               >
                 {isPositive ? "+" : ""}
@@ -70,12 +71,12 @@ export function MarketSummary({
             </div>
           </div>
 
-          <div className="mt-3 flex items-center justify-between border-t border-gray-100 pt-2.5 font-mono text-[10px] text-gray-400 dark:border-gray-900 dark:text-gray-500">
+          <div className="mt-3 flex items-center justify-between border-t border-border pt-2.5 font-mono text-[10px] text-subtle-foreground">
             <span className="flex items-center">
-              <DollarSign className="mr-1 h-3 w-3 text-gray-400" />
+              <DollarSign className="mr-1 h-3 w-3 text-muted-foreground" />
               Thanh khoản
             </span>
-            <span className="font-semibold text-gray-900 dark:text-gray-300">{data.volume}</span>
+            <span className="font-semibold text-foreground">{data.volume}</span>
           </div>
         </CardContent>
       </Card>
@@ -86,8 +87,8 @@ export function MarketSummary({
     <section className="space-y-4">
       {/* Title */}
       <div className="flex items-center space-x-2">
-        <div className="h-1.5 w-1.5 bg-gray-900 dark:bg-gray-100" />
-        <h2 className="font-mono text-[11px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
+        <div className="h-1.5 w-1.5 bg-foreground" />
+        <h2 className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
           Tổng Quan Thị Trường Ngày Hôm Nay
         </h2>
       </div>

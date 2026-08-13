@@ -120,10 +120,10 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
                 <span className="block font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
                   Mục tiêu kỳ vọng (TP)
                 </span>
-                <span className="mt-1 block text-sm font-bold text-emerald-600 tabular-nums dark:text-emerald-400">
+                <span className="mt-1 block text-sm font-bold text-trend-up-text tabular-nums">
                   {(stock.targetSellPrice * 1000).toLocaleString("vi-VN")}đ
                 </span>
-                <span className="mt-0.5 flex items-center text-[9px] font-bold text-emerald-600 tabular-nums dark:text-emerald-400">
+                <span className="mt-0.5 flex items-center text-[9px] font-bold text-trend-up-text tabular-nums">
                   <Percent className="mr-0.5 h-3 w-3" />
                   Kỳ vọng: +{targetProfitPercent.toFixed(1)}%
                 </span>
@@ -134,10 +134,10 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
                 <span className="block font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
                   Ngưỡng cắt lỗ (SL)
                 </span>
-                <span className="mt-1 block text-sm font-bold text-rose-600 tabular-nums dark:text-rose-400">
+                <span className="mt-1 block text-sm font-bold text-trend-down-text tabular-nums">
                   {(stock.stopLossPrice * 1000).toLocaleString("vi-VN")}đ
                 </span>
-                <span className="mt-0.5 flex items-center text-[9px] font-bold text-rose-600 tabular-nums dark:text-rose-400">
+                <span className="mt-0.5 flex items-center text-[9px] font-bold text-trend-down-text tabular-nums">
                   <Percent className="mr-0.5 h-3 w-3" />
                   Rủi ro: {stopLossPercent.toFixed(1)}%
                 </span>
@@ -157,12 +157,12 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
           </div>
 
           {/* Risk & Safety warning */}
-          <div className="rounded-sm border border-amber-100/50 bg-amber-50/10 p-4 dark:border-amber-950/20 dark:bg-amber-950/5">
-            <h4 className="mb-2 flex items-center font-mono text-[10px] tracking-wider text-amber-800 uppercase dark:text-amber-400">
-              <ShieldAlert className="mr-2 h-4 w-4 text-amber-600 dark:text-amber-500" />
+          <div className="rounded-sm border border-warning-border bg-warning-bg p-4">
+            <h4 className="mb-2 flex items-center font-mono text-[10px] tracking-wider text-warning-text uppercase">
+              <ShieldAlert className="mr-2 h-4 w-4 text-warning-icon" />
               Cảnh báo rủi ro & Khuyến cáo
             </h4>
-            <ul className="list-disc space-y-1 pl-4 text-[11px] leading-relaxed text-amber-800/80 dark:text-amber-400/80">
+            <ul className="list-disc space-y-1 pl-4 text-[11px] leading-relaxed text-warning-text/80">
               <li>
                 Mức độ rủi ro của mã này ở mức{" "}
                 <strong className="font-bold uppercase">{stock.riskLevel}</strong>. Quyết định mua
@@ -187,7 +187,7 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
             </div>
             <button
               onClick={() => onOpenChange(false)}
-              className="cursor-pointer rounded-sm border border-gray-950 bg-gray-950 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-gray-900 focus:outline-none dark:border-gray-50 dark:bg-gray-50 dark:text-gray-950 dark:hover:bg-gray-100"
+              className="cursor-pointer rounded-sm border border-button-outline-border bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/80 focus:outline-none"
             >
               Đã hiểu & Đóng
             </button>

@@ -52,12 +52,10 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
   const renderTable = (data: Stock[]) => {
     if (data.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center rounded-sm border border-dashed border-gray-200 bg-gray-50/20 p-12 text-center dark:border-gray-800 dark:bg-gray-950/20">
-          <FileText className="mb-3 h-8 w-8 text-gray-400 dark:text-gray-500" />
-          <p className="text-xs font-bold text-gray-900 dark:text-gray-200">
-            Không tìm thấy mã khuyến nghị nào
-          </p>
-          <p className="mt-1 text-[11px] text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col items-center justify-center rounded-sm border border-dashed border-border bg-muted/20 p-12 text-center">
+          <FileText className="mb-3 h-8 w-8 text-subtle-foreground" />
+          <p className="text-xs font-bold text-foreground">Không tìm thấy mã khuyến nghị nào</p>
+          <p className="mt-1 text-[11px] text-muted-foreground">
             Vui lòng thay đổi từ khóa tìm kiếm hoặc đặt lại bộ lọc.
           </p>
         </div>
@@ -65,53 +63,53 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
     }
 
     return (
-      <div className="border-gray-150 overflow-x-auto rounded-sm border bg-white transition-colors dark:border-gray-900 dark:bg-black">
+      <div className="overflow-x-auto rounded-sm border border-border bg-background transition-colors">
         <Table className="w-full border-collapse text-left">
           <TableHeader>
-            <TableRow className="border-gray-150 border-b bg-gray-50/50 font-mono text-[10px] tracking-wider text-gray-500 uppercase hover:bg-transparent dark:border-gray-900 dark:bg-gray-950/40 dark:text-gray-400">
-              <TableHead className="h-auto px-4 py-3 font-bold text-gray-500 dark:text-gray-400">
+            <TableRow className="border-b border-border bg-muted/50 font-mono text-[10px] tracking-wider text-muted-foreground uppercase hover:bg-transparent">
+              <TableHead className="h-auto px-4 py-3 font-bold text-muted-foreground">
                 <div className="flex items-center gap-1">
                   Mã CP & Ngành
                   <Tooltip content="Mã giao dịch chứng khoán phân loại nhóm ngành">
-                    <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
+                    <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
               </TableHead>
-              <TableHead className="h-auto px-4 py-3 text-right font-bold text-gray-500 dark:text-gray-400">
+              <TableHead className="h-auto px-4 py-3 text-right font-bold text-muted-foreground">
                 <div className="flex items-center justify-end gap-1">
                   Giá hiện tại
                   <Tooltip content="Giá giao dịch khớp lệnh thực tế gần nhất (VND)">
-                    <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
+                    <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
               </TableHead>
-              <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
+              <TableHead className="h-auto px-4 py-3 text-center font-bold text-muted-foreground">
                 <div className="flex items-center justify-center gap-1">
                   Vùng giá hành động
                   <Tooltip content="Khoảng giá khuyến nghị giải ngân (BUY) hoặc dừng giao dịch (SELL)">
-                    <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
+                    <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
               </TableHead>
-              <TableHead className="h-auto px-4 py-3 font-bold text-gray-500 dark:text-gray-400">
+              <TableHead className="h-auto px-4 py-3 font-bold text-muted-foreground">
                 <div className="flex items-center gap-1">
                   Giá Mục Tiêu & Cắt Lỗ
                   <Tooltip content="Mục tiêu chốt lời (TP) và ngưỡng cắt lỗ bắt buộc (SL) kèm biên độ tăng giảm dự kiến">
-                    <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
+                    <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
               </TableHead>
-              <TableHead className="h-auto px-4 py-3 text-center font-bold text-gray-500 dark:text-gray-400">
+              <TableHead className="h-auto px-4 py-3 text-center font-bold text-muted-foreground">
                 <div className="flex items-center justify-center gap-1">
                   Mức rủi ro
                   <Tooltip content="Xếp hạng rủi ro dựa trên biến động giá beta và thanh khoản cổ phiếu">
-                    <HelpCircle className="h-3 w-3 cursor-help text-gray-400" />
+                    <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
               </TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="divide-y divide-gray-100 text-xs text-gray-700 dark:divide-gray-900 dark:text-gray-300">
+          <TableBody className="divide-y divide-border text-xs text-foreground/85">
             {data.map((stock) => {
               const isBuy = stock.type === "BUY";
 
@@ -127,7 +125,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
               return (
                 <TableRow
                   key={stock.symbol}
-                  className="border-b border-gray-100 transition-colors duration-150 hover:bg-gray-50/30 dark:border-gray-900 dark:hover:bg-gray-950/20"
+                  className="border-b border-border transition-colors duration-150 hover:bg-muted/30"
                 >
                   {/* Symbol & Company & Sector */}
                   <TableCell className="px-4 py-3">
@@ -137,17 +135,17 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                       aria-label={`Xem phân tích cổ phiếu ${stock.symbol}`}
                     >
                       <span className="flex items-center space-x-2">
-                        <span className="text-sm font-bold text-gray-950 decoration-gray-400 group-hover:underline dark:text-white dark:decoration-gray-600">
+                        <span className="text-sm font-bold text-foreground decoration-muted-foreground group-hover:underline">
                           {stock.symbol}
                         </span>
                         <Badge
                           variant="secondary"
-                          className="font-mono text-[9px] group-hover:bg-gray-200 dark:group-hover:bg-gray-800"
+                          className="font-mono text-[9px] group-hover:bg-accent"
                         >
                           {stock.sector}
                         </Badge>
                       </span>
-                      <span className="mt-0.5 max-w-[180px] truncate text-[11px] text-gray-500 sm:max-w-[240px] dark:text-gray-400">
+                      <span className="mt-0.5 max-w-[180px] truncate text-[11px] text-muted-foreground sm:max-w-[240px]">
                         {stock.companyName}
                       </span>
                     </button>
@@ -155,10 +153,10 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
 
                   {/* Current Price */}
                   <TableCell className="px-4 py-3 text-right tabular-nums">
-                    <span className="text-xs font-bold text-gray-950 dark:text-white">
+                    <span className="text-xs font-bold text-foreground">
                       {(stock.currentPrice * 1000).toLocaleString("vi-VN")}
                     </span>
-                    <span className="ml-0.5 text-[10px] text-gray-400 dark:text-gray-500">đ</span>
+                    <span className="ml-0.5 text-[10px] text-subtle-foreground">đ</span>
                   </TableCell>
 
                   {/* Buy/Sell Zone */}
@@ -166,8 +164,8 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                     <span
                       className={`inline-flex items-center rounded-sm px-2 py-0.5 text-[10px] font-bold ${
                         isBuy
-                          ? "border border-emerald-100/50 bg-emerald-50 text-emerald-800 dark:border-emerald-900/30 dark:bg-emerald-950/20 dark:text-emerald-400"
-                          : "border border-rose-100/50 bg-rose-50 text-rose-800 dark:border-rose-900/30 dark:bg-rose-950/20 dark:text-rose-400"
+                          ? "border border-trend-up-border bg-trend-up-bg text-trend-up-text"
+                          : "border border-trend-down-border bg-trend-down-bg text-trend-down-text"
                       }`}
                     >
                       {isBuy ? stock.targetBuyPrice : "Không khuyến nghị"}
@@ -179,25 +177,21 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                     <div className="flex flex-col space-y-1">
                       {/* TP */}
                       <div className="flex items-center text-[11px] tabular-nums">
-                        <span className="w-12 font-medium text-gray-400 dark:text-gray-500">
-                          Mục tiêu:
-                        </span>
-                        <span className="mr-1 font-bold text-emerald-600 dark:text-emerald-400">
+                        <span className="w-12 font-medium text-subtle-foreground">Mục tiêu:</span>
+                        <span className="mr-1 font-bold text-trend-up-text">
                           {(stock.targetSellPrice * 1000).toLocaleString("vi-VN")}đ
                         </span>
-                        <span className="inline-flex items-center text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                        <span className="inline-flex items-center text-[10px] font-bold text-trend-up-text">
                           <ArrowUpRight className="mr-0.5 h-3 w-3" />+{returnPct.toFixed(1)}%
                         </span>
                       </div>
                       {/* SL */}
                       <div className="flex items-center text-[11px] tabular-nums">
-                        <span className="w-12 font-medium text-gray-400 dark:text-gray-500">
-                          Cắt lỗ:
-                        </span>
-                        <span className="mr-1 font-bold text-rose-600 dark:text-rose-400">
+                        <span className="w-12 font-medium text-subtle-foreground">Cắt lỗ:</span>
+                        <span className="mr-1 font-bold text-trend-down-text">
                           {(stock.stopLossPrice * 1000).toLocaleString("vi-VN")}đ
                         </span>
-                        <span className="inline-flex items-center text-[10px] font-bold text-rose-600 dark:text-rose-400">
+                        <span className="inline-flex items-center text-[10px] font-bold text-trend-down-text">
                           <ArrowDownRight className="mr-0.5 h-3 w-3" />
                           {lossPct.toFixed(1)}%
                         </span>
@@ -221,19 +215,19 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
   return (
     <div className="space-y-4">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <div className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-900">
+        <div className="flex items-center justify-between border-b border-border pb-2">
           <TabsList>
             <TabsTrigger value="BUY" className="flex cursor-pointer items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
+              <Sparkles className="h-3.5 w-3.5 text-trend-up-text" />
               Mã khuyến nghị mua ({buyStocks.length})
             </TabsTrigger>
             <TabsTrigger value="SELL" className="flex cursor-pointer items-center gap-1.5">
-              <ArrowDownRight className="h-3.5 w-3.5 text-rose-500" />
+              <ArrowDownRight className="h-3.5 w-3.5 text-trend-down-text" />
               Mã khuyến nghị bán ({sellStocks.length})
             </TabsTrigger>
           </TabsList>
 
-          <div className="hidden font-mono text-[11px] tracking-tight text-gray-400 uppercase sm:block dark:text-gray-500">
+          <div className="hidden font-mono text-[11px] tracking-tight text-subtle-foreground uppercase sm:block">
             Nhấp vào mã CP để xem chi tiết
           </div>
         </div>

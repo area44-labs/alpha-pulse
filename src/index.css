@@ -9,6 +9,55 @@
   --font-heading: var(--font-sans);
   --font-sans: "Geist Variable", sans-serif;
   --font-mono: "Geist Mono Variable", monospace;
+
+  /* Custom non-dark variant color mappings */
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-trend-up-bg: var(--trend-up-bg);
+  --color-trend-up-text: var(--trend-up-text);
+  --color-trend-up-border: var(--trend-up-border);
+  --color-trend-down-bg: var(--trend-down-bg);
+  --color-trend-down-text: var(--trend-down-text);
+  --color-trend-down-border: var(--trend-down-border);
+  --color-warning-bg: var(--warning-bg);
+  --color-warning-text: var(--warning-text);
+  --color-warning-border: var(--warning-border);
+  --color-warning-icon: var(--warning-icon);
+  --color-button-outline-border: var(--button-outline-border);
+  --color-button-outline-bg: var(--button-outline-bg);
+  --color-button-outline-hover-bg: var(--button-outline-hover-bg);
+  --color-button-destructive-bg: var(--button-destructive-bg);
+  --color-button-destructive-hover-bg: var(--button-destructive-hover-bg);
+  --color-button-destructive-ring: var(--button-destructive-ring);
+  --color-button-destructive-border: var(--button-destructive-border);
+  --color-button-invalid-border: var(--button-invalid-border);
+  --color-button-invalid-ring: var(--button-invalid-ring);
+  --color-button-ghost-hover: var(--button-ghost-hover);
+  --color-badge-destructive-bg: var(--badge-destructive-bg);
+  --color-badge-destructive-ring: var(--badge-destructive-ring);
+  --color-badge-ghost-hover: var(--badge-ghost-hover);
+  --color-badge-invalid-ring: var(--badge-invalid-ring);
+  --color-badge-success-border: var(--badge-success-border);
+  --color-badge-success-bg: var(--badge-success-bg);
+  --color-badge-success-text: var(--badge-success-text);
+  --color-badge-warning-border: var(--badge-warning-border);
+  --color-badge-warning-bg: var(--badge-warning-bg);
+  --color-badge-warning-text: var(--badge-warning-text);
+  --color-badge-info-border: var(--badge-info-border);
+  --color-badge-info-bg: var(--badge-info-bg);
+  --color-badge-info-text: var(--badge-info-text);
+  --color-input-bg: var(--input-bg);
+  --color-input-disabled-bg: var(--input-disabled-bg);
+  --color-input-invalid-border: var(--input-invalid-border);
+  --color-input-invalid-ring: var(--input-invalid-ring);
+  --color-select-bg: var(--select-bg);
+  --color-select-text: var(--select-text);
+  --color-select-hover-bg: var(--select-hover-bg);
+  --color-tab-trigger-text: var(--tab-trigger-text);
+  --color-tab-trigger-hover-text: var(--tab-trigger-hover-text);
+  --color-tab-active-border: var(--tab-active-border);
+  --color-tab-active-bg: var(--tab-active-bg);
+  --color-dropdown-destructive-focus-bg: var(--dropdown-destructive-focus-bg);
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -50,6 +99,54 @@
 }
 
 :root {
+  /* Custom non-dark theme variable declarations */
+  --subtle-foreground: oklch(0.708 0 0); /* gray-400 */
+  --trend-up-bg: oklch(0.97 0.03 145); /* richer elegant light emerald bg */
+  --trend-up-text: oklch(0.5 0.19 145); /* brighter, highly saturated vibrant green text */
+  --trend-up-border: oklch(0.91 0.07 145 / 60%);
+  --trend-down-bg: oklch(0.97 0.035 22); /* richer elegant light rose/red bg */
+  --trend-down-text: oklch(0.51 0.23 22); /* brighter, highly saturated vibrant red text */
+  --trend-down-border: oklch(0.91 0.08 22 / 60%);
+  --warning-bg: oklch(0.979 0.024 77.492 / 10%); /* bg-amber-50/10 */
+  --warning-text: oklch(0.485 0.12 75.242); /* text-amber-800 */
+  --warning-border: oklch(0.95 0.03 75.242 / 50%); /* border-amber-100/50 */
+  --warning-icon: oklch(0.589 0.141 72.822); /* text-amber-600 */
+  --button-outline-border: var(--border);
+  --button-outline-bg: var(--background);
+  --button-outline-hover-bg: var(--muted);
+  --button-destructive-bg: oklch(0.577 0.245 27.325 / 10%);
+  --button-destructive-hover-bg: oklch(0.577 0.245 27.325 / 20%);
+  --button-destructive-ring: oklch(0.577 0.245 27.325 / 20%);
+  --button-destructive-border: oklch(0.577 0.245 27.325 / 40%);
+  --button-invalid-border: var(--destructive);
+  --button-invalid-ring: oklch(0.577 0.245 27.325 / 20%);
+  --button-ghost-hover: var(--muted);
+  --badge-destructive-bg: oklch(0.577 0.245 27.325 / 10%);
+  --badge-destructive-ring: oklch(0.577 0.245 27.325 / 20%);
+  --badge-ghost-hover: var(--muted);
+  --badge-invalid-ring: oklch(0.577 0.245 27.325 / 20%);
+  --badge-success-border: var(--trend-up-border);
+  --badge-success-bg: var(--trend-up-bg);
+  --badge-success-text: var(--trend-up-text);
+  --badge-warning-border: oklch(0.95 0.03 75.242 / 50%);
+  --badge-warning-bg: oklch(0.979 0.024 77.492);
+  --badge-warning-text: oklch(0.485 0.12 75.242);
+  --badge-info-border: oklch(0.93 0.03 245.242 / 50%);
+  --badge-info-bg: oklch(0.97 0.02 245.242);
+  --badge-info-text: oklch(0.45 0.15 245.242);
+  --input-bg: transparent;
+  --input-disabled-bg: oklch(0.922 0 0 / 50%);
+  --input-invalid-border: var(--destructive);
+  --input-invalid-ring: oklch(0.577 0.245 27.325 / 20%);
+  --select-bg: oklch(1 0 0);
+  --select-text: var(--foreground);
+  --select-hover-bg: oklch(0.97 0 0);
+  --tab-trigger-text: oklch(0.145 0 0 / 60%);
+  --tab-trigger-hover-text: oklch(0.145 0 0);
+  --tab-active-border: transparent;
+  --tab-active-bg: oklch(1 0 0);
+  --dropdown-destructive-focus-bg: oklch(0.577 0.245 27.325 / 10%);
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -85,6 +182,54 @@
 }
 
 .dark {
+  /* Dark-mode custom variables overrides */
+  --subtle-foreground: oklch(0.556 0 0); /* gray-500 */
+  --trend-up-bg: oklch(0.35 0.12 145 / 15%); /* more colorful deep green background */
+  --trend-up-text: oklch(0.82 0.22 145); /* luminous, exceptionally bright green text */
+  --trend-up-border: oklch(0.45 0.15 145 / 35%);
+  --trend-down-bg: oklch(0.35 0.14 22 / 15%); /* more colorful deep red background */
+  --trend-down-text: oklch(0.77 0.25 22); /* luminous, exceptionally bright red text */
+  --trend-down-border: oklch(0.45 0.17 22 / 35%);
+  --warning-bg: oklch(0.256 0.054 75.242 / 5%);
+  --warning-text: oklch(0.812 0.076 75.242);
+  --warning-border: oklch(0.356 0.076 75.242 / 20%);
+  --warning-icon: oklch(0.704 0.14 75.242);
+  --button-outline-border: var(--input);
+  --button-outline-bg: oklch(1 0 0 / 4.5%);
+  --button-outline-hover-bg: oklch(1 0 0 / 7.5%);
+  --button-destructive-bg: oklch(0.704 0.191 22.216 / 20%);
+  --button-destructive-hover-bg: oklch(0.704 0.191 22.216 / 30%);
+  --button-destructive-ring: oklch(0.704 0.191 22.216 / 40%);
+  --button-destructive-border: oklch(0.704 0.191 22.216 / 50%);
+  --button-invalid-border: oklch(0.704 0.191 22.216 / 50%);
+  --button-invalid-ring: oklch(0.704 0.191 22.216 / 40%);
+  --button-ghost-hover: oklch(0.269 0 0 / 50%);
+  --badge-destructive-bg: oklch(0.704 0.191 22.216 / 20%);
+  --badge-destructive-ring: oklch(0.704 0.191 22.216 / 40%);
+  --badge-ghost-hover: oklch(0.269 0 0 / 50%);
+  --badge-invalid-ring: oklch(0.704 0.191 22.216 / 40%);
+  --badge-success-border: var(--trend-up-border);
+  --badge-success-bg: var(--trend-up-bg);
+  --badge-success-text: var(--trend-up-text);
+  --badge-warning-border: oklch(0.356 0.076 75.242 / 30%);
+  --badge-warning-bg: oklch(0.256 0.054 75.242 / 30%);
+  --badge-warning-text: oklch(0.812 0.076 75.242);
+  --badge-info-border: oklch(0.3 0.07 245.242 / 30%);
+  --badge-info-bg: oklch(0.2 0.05 245.242 / 30%);
+  --badge-info-text: oklch(0.8 0.07 245.242);
+  --input-bg: oklch(1 0 0 / 4.5%);
+  --input-disabled-bg: oklch(1 0 0 / 12%);
+  --input-invalid-border: oklch(0.704 0.191 22.216 / 50%);
+  --input-invalid-ring: oklch(0.704 0.191 22.216 / 40%);
+  --select-bg: oklch(1 0 0 / 4.5%);
+  --select-text: oklch(0.922 0 0);
+  --select-hover-bg: oklch(1 0 0 / 7.5%);
+  --tab-trigger-text: oklch(0.708 0 0);
+  --tab-trigger-hover-text: oklch(0.985 0 0);
+  --tab-active-border: oklch(1 0 0 / 10%);
+  --tab-active-bg: oklch(1 0 0 / 4.5%);
+  --dropdown-destructive-focus-bg: oklch(0.704 0.191 22.216 / 20%);
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
