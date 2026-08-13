@@ -101,12 +101,12 @@
 :root {
   /* Custom non-dark theme variable declarations */
   --subtle-foreground: oklch(0.708 0 0); /* gray-400 */
-  --trend-up-bg: oklch(0.979 0.021 148.249); /* bg-emerald-50 */
-  --trend-up-text: oklch(0.527 0.154 150.069); /* text-emerald-700 */
-  --trend-up-border: oklch(0.935 0.042 147.411 / 50%); /* border-emerald-100/50 */
-  --trend-down-bg: oklch(0.975 0.024 18.577); /* bg-rose-50 */
-  --trend-down-text: oklch(0.528 0.174 19.349); /* text-rose-700 */
-  --trend-down-border: oklch(0.93 0.047 19.839 / 50%); /* border-rose-100/50 */
+  --trend-up-bg: oklch(0.97 0.025 150); /* rich elegant light emerald-50 bg */
+  --trend-up-text: oklch(0.46 0.15 150); /* high-contrast deep emerald text */
+  --trend-up-border: oklch(0.91 0.05 150 / 50%); /* border-emerald-100/50 */
+  --trend-down-bg: oklch(0.97 0.025 18); /* rich elegant light rose-50 bg */
+  --trend-down-text: oklch(0.46 0.16 18); /* high-contrast deep rose/red text */
+  --trend-down-border: oklch(0.91 0.05 18 / 50%); /* border-rose-100/50 */
   --warning-bg: oklch(0.979 0.024 77.492 / 10%); /* bg-amber-50/10 */
   --warning-text: oklch(0.485 0.12 75.242); /* text-amber-800 */
   --warning-border: oklch(0.95 0.03 75.242 / 50%); /* border-amber-100/50 */
@@ -125,15 +125,15 @@
   --badge-destructive-ring: oklch(0.577 0.245 27.325 / 20%);
   --badge-ghost-hover: var(--muted);
   --badge-invalid-ring: oklch(0.577 0.245 27.325 / 20%);
-  --badge-success-border: oklch(0.935 0.042 147.411 / 50%);
-  --badge-success-bg: oklch(0.979 0.021 148.249);
-  --badge-success-text: oklch(0.627 0.194 149.214);
+  --badge-success-border: var(--trend-up-border);
+  --badge-success-bg: var(--trend-up-bg);
+  --badge-success-text: var(--trend-up-text);
   --badge-warning-border: oklch(0.95 0.03 75.242 / 50%);
   --badge-warning-bg: oklch(0.979 0.024 77.492);
-  --badge-warning-text: oklch(0.65 0.15 75.242);
+  --badge-warning-text: oklch(0.485 0.12 75.242);
   --badge-info-border: oklch(0.93 0.03 245.242 / 50%);
   --badge-info-bg: oklch(0.97 0.02 245.242);
-  --badge-info-text: oklch(0.6 0.15 245.242);
+  --badge-info-text: oklch(0.45 0.15 245.242);
   --input-bg: transparent;
   --input-disabled-bg: oklch(0.922 0 0 / 50%);
   --input-invalid-border: var(--destructive);
@@ -184,12 +184,12 @@
 .dark {
   /* Dark-mode custom variables overrides */
   --subtle-foreground: oklch(0.556 0 0); /* gray-500 */
-  --trend-up-bg: oklch(0.245 0.05 141.144 / 20%);
-  --trend-up-text: oklch(0.824 0.149 141.144);
-  --trend-up-border: oklch(0.354 0.082 141.144 / 20%);
-  --trend-down-bg: oklch(0.244 0.052 23.364 / 20%);
-  --trend-down-text: oklch(0.811 0.111 23.364);
-  --trend-down-border: oklch(0.347 0.077 23.364 / 20%);
+  --trend-up-bg: oklch(0.28 0.08 150 / 12%); /* richer deep emerald background */
+  --trend-up-text: oklch(0.78 0.13 150); /* bright luminous green/emerald */
+  --trend-up-border: oklch(0.4 0.1 150 / 30%);
+  --trend-down-bg: oklch(0.28 0.08 18 / 12%); /* richer deep rose background */
+  --trend-down-text: oklch(0.78 0.13 18); /* bright luminous red/rose */
+  --trend-down-border: oklch(0.4 0.1 18 / 30%);
   --warning-bg: oklch(0.256 0.054 75.242 / 5%);
   --warning-text: oklch(0.812 0.076 75.242);
   --warning-border: oklch(0.356 0.076 75.242 / 20%);
@@ -208,9 +208,9 @@
   --badge-destructive-ring: oklch(0.704 0.191 22.216 / 40%);
   --badge-ghost-hover: oklch(0.269 0 0 / 50%);
   --badge-invalid-ring: oklch(0.704 0.191 22.216 / 40%);
-  --badge-success-border: oklch(0.354 0.082 141.144 / 30%);
-  --badge-success-bg: oklch(0.245 0.05 141.144 / 30%);
-  --badge-success-text: oklch(0.824 0.149 141.144);
+  --badge-success-border: var(--trend-up-border);
+  --badge-success-bg: var(--trend-up-bg);
+  --badge-success-text: var(--trend-up-text);
   --badge-warning-border: oklch(0.356 0.076 75.242 / 30%);
   --badge-warning-bg: oklch(0.256 0.054 75.242 / 30%);
   --badge-warning-text: oklch(0.812 0.076 75.242);

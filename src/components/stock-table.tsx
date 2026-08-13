@@ -218,11 +218,11 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
         <div className="flex items-center justify-between border-b border-border pb-2">
           <TabsList>
             <TabsTrigger value="BUY" className="flex cursor-pointer items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
+              <Sparkles className="h-3.5 w-3.5 text-trend-up-text" />
               Mã khuyến nghị mua ({buyStocks.length})
             </TabsTrigger>
             <TabsTrigger value="SELL" className="flex cursor-pointer items-center gap-1.5">
-              <ArrowDownRight className="h-3.5 w-3.5 text-rose-500" />
+              <ArrowDownRight className="h-3.5 w-3.5 text-trend-down-text" />
               Mã khuyến nghị bán ({sellStocks.length})
             </TabsTrigger>
           </TabsList>

@@ -21,7 +21,7 @@ export function Header({ lastUpdated }: HeaderProps) {
         <div className="flex items-center space-x-4">
           {/* Last updated metadata */}
           <div className="hidden items-center font-mono text-[11px] tracking-tight text-muted-foreground md:flex">
-            <span className="mr-2 h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span className="mr-2 h-1.5 w-1.5 rounded-full bg-trend-up-text" />
             Cập nhật: <span className="ml-1 font-semibold text-foreground">{lastUpdated}</span>
           </div>
 
