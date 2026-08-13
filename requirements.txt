@@ -1,0 +1,5 @@
+vnstock
+requests
+pandas
+numpy
+openpyxl
