@@ -1,8 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 
-import { FilterBar } from "@/components/filter-bar";
 import { Header } from "@/components/header";
 import { MarketSummary } from "@/components/market-summary";
+import { SecuritiesTable } from "@/components/securities-table";
 import { StockDetailModal } from "@/components/stock-detail-modal";
 import { StockTable } from "@/components/stock-table";
 import realStocksData from "@/data/stocks.json";
@@ -92,10 +92,8 @@ function App() {
     fetchRealData();
   }, []);
 
-  // Filters state
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedSector, setSelectedSector] = useState("");
-  const [selectedRisk, setSelectedRisk] = useState("");
+  // Securities sector filter state
+  const [selectedSecuritiesSector, setSelectedSecuritiesSector] = useState("");
 
   // Selected stock for modal detail
   const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
@@ -103,26 +101,6 @@ function App() {
 
   // Active tab state ("BUY" or "SELL")
   const [activeTab, setActiveTab] = useState("BUY");
-
-  // Dynamically extract sectors from recommendations data for filtering options
-  const sectors = useMemo(() => {
-    const allSectors = stocksData.recommendations.map((stock) => stock.sector);
-    return Array.from(new Set(allSectors)).sort();
-  }, [stocksData]);
-
-  // Filter recommendations based on search queries and selection states
-  const filteredStocks = useMemo(() => {
-    return (stocksData.recommendations as Stock[]).filter((stock) => {
-      const matchesSearch =
-        stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        stock.companyName.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesSector = selectedSector === "" || stock.sector === selectedSector;
-      const matchesRisk = selectedRisk === "" || stock.riskLevel === selectedRisk;
-
-      return matchesSearch && matchesSector && matchesRisk;
-    });
-  }, [searchQuery, selectedSector, selectedRisk, stocksData]);
 
   // Thống kê số lượng tổng (không bị ảnh hưởng bởi bộ lọc)
   const totalBuyCount = useMemo(() => {
@@ -146,7 +124,7 @@ function App() {
       {/* Main dashboard content */}
       <main className="mx-auto w-full max-w-7xl flex-1 space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         {/* Banner Section */}
-        <section className="relative overflow-hidden rounded-md border border-gray-100 bg-white p-6 sm:p-8 dark:border-gray-900 dark:bg-black">
+        <section className="relative overflow-hidden px-0 py-0">
           <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl space-y-3">
               <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl dark:text-white">
@@ -168,30 +146,35 @@ function App() {
           sellCount={totalSellCount}
         />
 
-        {/* Filter and Search Bar */}
-        <FilterBar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          selectedSector={selectedSector}
-          setSelectedSector={setSelectedSector}
-          selectedRisk={selectedRisk}
-          setSelectedRisk={setSelectedRisk}
-          sectors={sectors}
-        />
-
         {/* Core Stock Recommendation Table Card */}
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
             <div className="h-1.5 w-1.5 bg-gray-900 dark:bg-gray-100" />
             <h2 className="font-mono text-[11px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
-              Danh Sách Khuyến Nghị Giao Dịch
+              Danh Sách Khuyến Nghị Giao Dịch Hằng Ngày
             </h2>
           </div>
           <StockTable
-            stocks={filteredStocks}
+            stocks={stocksData.recommendations}
             onSelectStock={handleSelectStock}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
+          />
+        </div>
+
+        {/* Securities Consensus Table Card */}
+        <div className="space-y-4 pt-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="h-1.5 w-1.5 bg-gray-900 dark:bg-gray-100" />
+              <h2 className="font-mono text-[11px] tracking-wider text-gray-500 uppercase dark:text-gray-400">
+                Danh Sách Khuyến Nghị Từ Các Công Ty Chứng Khoán
+              </h2>
+            </div>
+          </div>
+          <SecuritiesTable
+            selectedSector={selectedSecuritiesSector}
+            onSectorChange={setSelectedSecuritiesSector}
           />
         </div>
       </main>

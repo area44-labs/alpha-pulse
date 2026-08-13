@@ -1,11 +1,8 @@
-import { Search, X, RotateCcw } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 
 interface FilterBarProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
   selectedSector: string;
   setSelectedSector: (sector: string) => void;
   selectedRisk: string;
@@ -14,8 +11,6 @@ interface FilterBarProps {
 }
 
 export function FilterBar({
-  searchQuery,
-  setSearchQuery,
   selectedSector,
   setSelectedSector,
   selectedRisk,
@@ -23,50 +18,17 @@ export function FilterBar({
   sectors,
 }: FilterBarProps) {
   const handleReset = () => {
-    setSearchQuery("");
     setSelectedSector("");
     setSelectedRisk("");
   };
 
-  const isFiltered = searchQuery !== "" || selectedSector !== "" || selectedRisk !== "";
+  const isFiltered = selectedSector !== "" || selectedRisk !== "";
 
   return (
     <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-xs transition-all duration-300 dark:border-gray-800 dark:bg-gray-900/60">
-      <div className="flex flex-col gap-4 md:flex-row md:items-end">
-        {/* Search Input */}
-        <div className="relative flex-1">
-          <label
-            htmlFor="stock-search-input"
-            className="mb-1.5 block text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400"
-          >
-            Tìm kiếm cổ phiếu
-          </label>
-          <div className="relative">
-            <Input
-              id="stock-search-input"
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Nhập mã CP (SSI, HPG...) hoặc tên công ty..."
-              className="pr-8 pl-9"
-            />
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
-              <Search className="h-4 w-4" />
-            </div>
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-2.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-                title="Xóa tìm kiếm"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-        </div>
-
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-start">
         {/* Sector Filter */}
-        <div className="w-full md:w-56">
+        <div className="w-full md:w-64">
           <Select
             label="LỌC THEO NGÀNH NGHỀ"
             value={selectedSector}
@@ -82,7 +44,7 @@ export function FilterBar({
         </div>
 
         {/* Risk Level Filter */}
-        <div className="w-full md:w-48">
+        <div className="w-full md:w-56">
           <Select
             label="MỨC ĐỘ RỦI RO"
             value={selectedRisk}
