@@ -24,8 +24,6 @@ jobs:
 
       - name: Run build
         uses: area44/workflows/vite@7912709bf2aa6a2c6c03fddf2df233e7367234ce # v5.1.0
-        env:
-          BASE: "/alpha-pulse/"
 
   deploy:
     needs: build
