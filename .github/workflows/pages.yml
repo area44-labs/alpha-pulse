@@ -4,6 +4,10 @@ on:
   push:
     branches: ["main"]
   pull_request:
+  workflow_run:
+    workflows: ["Update Stock Data Daily"]
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -12,6 +16,7 @@ permissions:
 
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -22,7 +27,7 @@ jobs:
 
   deploy:
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
