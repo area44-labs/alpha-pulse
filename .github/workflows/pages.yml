@@ -8,6 +8,7 @@ on:
     workflows: ["Update Stock Data Daily"]
     types:
       - completed
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -27,7 +28,7 @@ jobs:
 
   deploy:
     needs: build
-    if: (github.event_name == 'push' || github.event_name == 'workflow_run') && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_run' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
