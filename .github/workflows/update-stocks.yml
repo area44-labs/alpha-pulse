@@ -2,8 +2,8 @@ name: Update Stock Data Daily
 
 on:
   schedule:
-    # Run at 17:00 ICT (10:00 UTC) Monday through Friday
-    - cron: '0 10 * * 1-5'
+    # Run at 16:30 ICT (09:30 UTC) Monday through Friday
+    - cron: '30 9 * * 1-5'
   workflow_dispatch: # Allow manual trigger
 
 permissions:
@@ -59,7 +59,7 @@ jobs:
           fi
 
       - name: Trigger GitHub Pages deployment
-        if: steps.commit_changes.outputs.pushed == 'true'
+        if: success()
         run: gh workflow run pages.yml
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
