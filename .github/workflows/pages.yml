@@ -9,8 +9,8 @@ on:
     types:
       - completed
   schedule:
-    # Run at 17:00 ICT (10:00 UTC) Monday through Friday
-    - cron: '0 10 * * 1-5'
+    # Run daily at 17:00 ICT (10:00 UTC)
+    - cron: '0 10 * * *'
   workflow_dispatch:
 
 permissions:
