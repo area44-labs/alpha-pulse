@@ -8,6 +8,9 @@ on:
     workflows: ["Update Stock Data Daily"]
     types:
       - completed
+  schedule:
+    # Run at 17:00 ICT (10:00 UTC) Monday through Friday
+    - cron: '0 10 * * 1-5'
   workflow_dispatch:
 
 permissions:
@@ -28,7 +31,7 @@ jobs:
 
   deploy:
     needs: build
-    if: (github.event_name == 'push' || github.event_name == 'workflow_run' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_run' || github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
