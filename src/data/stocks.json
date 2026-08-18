@@ -3,9 +3,9 @@
   "marketSummary": {
     "vnIndex": {
       "name": "VN-Index",
-      "value": 1731.67,
-      "change": 4.21,
-      "changePercent": 0.24,
+      "value": 1732.02,
+      "change": 4.56,
+      "changePercent": 0.26,
       "volume": "18.500 tỷ VNĐ"
     },
     "hoseIndex": {
@@ -31,19 +31,6 @@
     }
   },
   "recommendations": [
-    {
-      "symbol": "PVD",
-      "companyName": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí",
-      "sector": "Dầu khí",
-      "type": "BUY",
-      "currentPrice": 18.5,
-      "targetBuyPrice": "18.5 - 18.9",
-      "targetSellPrice": 19.8,
-      "stopLossPrice": 17.2,
-      "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 18,500đ vượt đường trung bình động MA20 (18,252đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.4x so với trung bình 20 phiên, dòng tiền mua chủ động. Chỉ báo RSI đạt 51.3 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.039) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
-      "riskRewardRatio": "1:1.0"
-    },
     {
       "symbol": "BVH",
       "companyName": "Tập đoàn Bảo Việt",
@@ -84,16 +71,16 @@
       "riskRewardRatio": "1:1.0"
     },
     {
-      "symbol": "FRT",
-      "companyName": "CTCP Bán lẻ Kỹ thuật số FPT",
-      "sector": "Bán lẻ",
+      "symbol": "GMD",
+      "companyName": "CTCP Gemadept",
+      "sector": "Logistics",
       "type": "BUY",
-      "currentPrice": 147.0,
-      "targetBuyPrice": "147.0 - 149.9",
-      "targetSellPrice": 157.3,
-      "stopLossPrice": 136.7,
+      "currentPrice": 79.5,
+      "targetBuyPrice": "79.5 - 81.1",
+      "targetSellPrice": 85.1,
+      "stopLossPrice": 73.9,
       "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 147,000đ vượt đường trung bình động MA20 (126,560đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.3x so với trung bình 20 phiên, dòng tiền mua chủ động. Chỉ báo RSI đạt 85.4 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (2.475) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "rationale": "Giá đóng cửa 79,500đ vượt đường trung bình động MA20 (76,100đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.4x so với trung bình 20 phiên, dòng tiền mua chủ động. Chỉ báo RSI đạt 80.0 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.343) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
       "riskRewardRatio": "1:1.0"
     },
     {
@@ -136,6 +123,19 @@
       "riskRewardRatio": "1:2.0"
     },
     {
+      "symbol": "FRT",
+      "companyName": "CTCP Bán lẻ Kỹ thuật số FPT",
+      "sector": "Bán lẻ",
+      "type": "BUY",
+      "currentPrice": 147.0,
+      "targetBuyPrice": "147.0 - 149.9",
+      "targetSellPrice": 157.3,
+      "stopLossPrice": 136.7,
+      "riskLevel": "HIGH",
+      "rationale": "Giá đóng cửa 147,000đ vượt đường trung bình động MA20 (126,560đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.3x so với trung bình 20 phiên, dòng tiền mua chủ động. Chỉ báo RSI đạt 85.4 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (2.475) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "riskRewardRatio": "1:2.0"
+    },
+    {
       "symbol": "TCB",
       "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam",
       "sector": "Ngân hàng",
@@ -146,6 +146,19 @@
       "stopLossPrice": 29.4,
       "riskLevel": "MEDIUM",
       "rationale": "Giá đóng cửa 31,650đ vượt đường trung bình động MA20 (29,970đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 73.7 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.360) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "riskRewardRatio": "1:2.0"
+    },
+    {
+      "symbol": "VRE",
+      "companyName": "Công ty Cổ phần Vincom Retail",
+      "sector": "Bất động sản",
+      "type": "SELL",
+      "currentPrice": 24.4,
+      "targetBuyPrice": "Không khuyến nghị",
+      "targetSellPrice": 26.1,
+      "stopLossPrice": 22.7,
+      "riskLevel": "MEDIUM",
+      "rationale": "Giá đóng cửa 24,400đ vượt đường trung bình động MA20 (24,045đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 66.7 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.139) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
       "riskRewardRatio": "1:2.0"
     },
     {
@@ -172,19 +185,6 @@
       "stopLossPrice": 29.35,
       "riskLevel": "HIGH",
       "rationale": "Giá đóng cửa 31,550đ vượt đường trung bình động MA20 (30,948đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 68.6 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.124) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
-      "riskRewardRatio": "1:1.0"
-    },
-    {
-      "symbol": "VRE",
-      "companyName": "Công ty Cổ phần Vincom Retail",
-      "sector": "Bất động sản",
-      "type": "SELL",
-      "currentPrice": 24.4,
-      "targetBuyPrice": "Không khuyến nghị",
-      "targetSellPrice": 26.1,
-      "stopLossPrice": 22.7,
-      "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 24,400đ vượt đường trung bình động MA20 (24,045đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 66.7 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.139) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
       "riskRewardRatio": "1:1.0"
     }
   ]
