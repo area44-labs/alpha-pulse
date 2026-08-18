@@ -240,7 +240,7 @@ def main():
         print(f"Warning: Failed to load stocks.json: {e}")
 
     end_date_dt = datetime.now()
-    start_date_dt = end_date_dt - timedelta(days=90)
+    start_date_dt = end_date_dt - timedelta(days=365)
     start_date, end_date = start_date_dt.strftime("%Y-%m-%d"), end_date_dt.strftime("%Y-%m-%d")
 
     # Step 1: Xác định Xu hướng VN-Index
@@ -277,10 +277,6 @@ def main():
     all_symbols = [item["symbol"] for item in CANDIDATE_STOCKS]
     smart_money_batch = fetch_batch_smart_money(all_symbols)
 
-    # To strictly avoid guest rate limit issues (20 req/min), limit deep history requests pool size to 18 key leaders per run
-    # while retaining/using fallback data for the remaining symbols
-    deep_scan_pool = CANDIDATE_STOCKS[:18]
-
     # Step 2: Quét toàn bộ danh sách 42 Mã chọn lọc
     scanned_results = []
     exit_scanner_alerts = []
@@ -300,10 +296,8 @@ def main():
             print(f"-> [LOẠI]: {event_msg}")
             continue
 
-        # 2. Lấy giá lịch sử (chỉ gọi API nếu nằm trong deep_scan_pool)
-        df = None
-        if item in deep_scan_pool:
-            df, _ = get_historical_data_api(symbol, start_date, end_date)
+        # 2. Lấy giá lịch sử
+        df, _ = get_historical_data_api(symbol, start_date, end_date)
 
         if df is not None and len(df) >= 20:
             try:
@@ -467,9 +461,8 @@ def main():
                     "riskLevel": item["riskLevel"]
                 })
 
-        # 1.5s delay to strictly stay under rate limits
-        if item in deep_scan_pool:
-            time.sleep(1.5)
+        # Smart delay (0.4s) to safely process all 42 candidates
+        time.sleep(0.4)
 
     # Step 3: Chọn lọc danh sách khuyến nghị & xuất file JSON
     print("\n[Step 3] Xuất dữ liệu cho AI Agent và Giao diện UI...")
