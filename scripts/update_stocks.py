@@ -342,7 +342,17 @@ def main():
 
                 score = max(0, min(100, score))
 
-                # 5. Xác định điểm Quản trị vị thế (Thanh khoản T+2.5 & Biên độ sàn)
+                # 5. Đánh giá Mức độ Rủi ro (Dynamic Risk Level Evaluation based on Base Sector Profile + ATR Volatility)
+                atr_pct = (atr / close) * 100.0 if close > 0 else 0.0
+                base_risk = item["riskLevel"]
+                if atr_pct >= 4.5 or market_risk_level == "HIGH":
+                    dynamic_risk_level = "HIGH"
+                elif atr_pct <= 2.5 and base_risk == "LOW":
+                    dynamic_risk_level = "LOW"
+                else:
+                    dynamic_risk_level = base_risk
+
+                # 6. Xác định điểm Quản trị vị thế (Thanh khoản T+2.5 & Biên độ sàn)
                 buy_min = round_tick_size(close, ex)
                 buy_max = clamp_price_limits(close * 1.02, close, ex)
                 sl_raw = min(close - 2.0 * atr, close * 0.93)
@@ -392,7 +402,7 @@ def main():
                     "rationale": full_rationale,
                     "rationale_points": rationale_points,
                     "exec_notes": exec_notes,
-                    "riskLevel": item["riskLevel"]
+                    "riskLevel": dynamic_risk_level
                 })
                 print(f"-> [THÀNH CÔNG] Điểm: {score}/100 | Khuyến nghị: {action}")
 
