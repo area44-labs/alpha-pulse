@@ -166,15 +166,15 @@ def get_exchange_mapping():
     if not VNSTOCK_AVAILABLE:
         return mapping
     try:
-        for ex in ["HOSE", "HNX", "UPCOM"]:
-            df = Listing().symbols_by_exchange(ex)
-            if df is not None and not df.empty:
-                stocks_df = df[df['type'] == 'stock']
-                for _, row in stocks_df.iterrows():
-                    mapping[row['symbol']] = {
-                        "exchange": ex,
-                        "organ_name": row.get("organ_name", "")
-                    }
+        df = Listing().symbols_by_exchange('HOSE')
+        if df is not None and not df.empty:
+            stocks_df = df[df['type'] == 'stock']
+            for _, row in stocks_df.iterrows():
+                ex = row.get('exchange') or 'HOSE'
+                mapping[row['symbol']] = {
+                    "exchange": ex,
+                    "organ_name": row.get("organ_name", "")
+                }
     except (Exception, SystemExit) as e:
         print(f"Warning: Failed to retrieve symbols by exchange: {e}")
     return mapping
@@ -209,17 +209,20 @@ def send_notification(title, message):
 def get_historical_data_api(symbol, start_date, end_date):
     if not VNSTOCK_AVAILABLE:
         return None, None
-    sources = [None, 'MSN', 'KBS']
+    sources = ['kbs', 'msn']
     for source in sources:
         try:
-            q = VnQuote(symbol=symbol, source=source) if source else VnQuote(symbol=symbol)
+            q = VnQuote(symbol=symbol, source=source)
             df = q.history(start=start_date, end=end_date)
             if df is not None and not df.empty and "close" in df.columns:
                 df.columns = [c.lower() for c in df.columns]
                 for col in ['open', 'high', 'low', 'close', 'volume']:
                     if col in df.columns:
                         df[col] = pd.to_numeric(df[col], errors='coerce')
-                return df, source or 'DEFAULT'
+                # Verify price scale
+                if df['close'].iloc[-1] < 1.0:
+                    continue
+                return df, source
         except (Exception, SystemExit):
             pass
     return None, None
@@ -514,6 +517,7 @@ def main():
     os.makedirs(os.path.dirname(AGENT_SIGNALS_PATH), exist_ok=True)
     with open(AGENT_SIGNALS_PATH, "w", encoding="utf-8") as f:
         json.dump(agent_signals, f, ensure_ascii=False, indent=2)
+        f.write("\n")
     print(f"  -> Agent Signals JSON written to: {AGENT_SIGNALS_PATH}")
 
     # Generate UI-compatible stocks.json format
@@ -585,6 +589,7 @@ def main():
     os.makedirs(os.path.dirname(STOCKS_JSON_PATH), exist_ok=True)
     with open(STOCKS_JSON_PATH, "w", encoding="utf-8") as f:
         json.dump(output_json, f, ensure_ascii=False, indent=2)
+        f.write("\n")
     print(f"  -> UI Stocks JSON written to: {STOCKS_JSON_PATH}")
 
     # Output active DataFrame to terminal

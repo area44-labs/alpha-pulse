@@ -3,109 +3,109 @@
   "market_context": {
     "vnindex_status": "DOWNTREND",
     "market_risk_level": "HIGH",
-    "vnindex_value": 1734.72,
-    "vnindex_change_percent": 0.42
+    "vnindex_value": 1732.05,
+    "vnindex_change_percent": 0.27
   },
   "signals": [
     {
       "ticker": "BVH",
-      "exchange": "UPCOM",
+      "exchange": "HOSE",
       "action": "BUY",
       "confidence_score": 75,
       "grade": "Grade B",
       "price_data": {
         "buy_zone": {
-          "min": 67500,
-          "max": 68800
+          "min": 67300,
+          "max": 68600
         },
-        "stop_loss": 62200,
-        "target_1": 77600,
-        "target_2": 77600,
-        "risk_reward_ratio": "1:1.9"
+        "stop_loss": 62600,
+        "target_1": 72000,
+        "target_2": 72000,
+        "risk_reward_ratio": "1:1.0"
       },
       "technical_rationale": [
-        "Giá đóng cửa 67,500đ vượt đường trung bình động MA20 (62,665đ), củng cố xu hướng tăng.",
+        "Giá đóng cửa 67,300đ vượt đường trung bình động MA20 (62,655đ), củng cố xu hướng tăng.",
         "Thanh khoản duy trì ở mức bình ổn.",
-        "Chỉ báo RSI đạt 67.8 điểm, duy trì động lượng phục hồi tốt.",
-        "MACD phân kỳ dương (0.658) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
+        "Chỉ báo RSI đạt 67.2 điểm, duy trì động lượng phục hồi tốt.",
+        "MACD phân kỳ dương (0.645) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
       ],
-      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 68,800đ."
+      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 68,600đ."
     },
     {
       "ticker": "GAS",
-      "exchange": "UPCOM",
+      "exchange": "HOSE",
       "action": "BUY",
       "confidence_score": 75,
       "grade": "Grade B",
       "price_data": {
         "buy_zone": {
-          "min": 83400,
-          "max": 85100
+          "min": 83300,
+          "max": 85000
         },
-        "stop_loss": 77300,
-        "target_1": 95600,
-        "target_2": 95900,
-        "risk_reward_ratio": "1:2.0"
+        "stop_loss": 77500,
+        "target_1": 89100,
+        "target_2": 89100,
+        "risk_reward_ratio": "1:1.0"
       },
       "technical_rationale": [
-        "Giá đóng cửa 83,400đ vượt đường trung bình động MA20 (72,360đ), củng cố xu hướng tăng.",
-        "Thanh khoản bùng nổ đạt 1.7x so với trung bình 20 phiên, dòng tiền mua chủ động.",
-        "Chỉ báo RSI đạt 74.0 điểm, duy trì động lượng phục hồi tốt.",
-        "MACD phân kỳ dương (1.445) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
+        "Giá đóng cửa 83,300đ vượt đường trung bình động MA20 (72,355đ), củng cố xu hướng tăng.",
+        "Thanh khoản bùng nổ đạt 1.8x so với trung bình 20 phiên, dòng tiền mua chủ động.",
+        "Chỉ báo RSI đạt 73.9 điểm, duy trì động lượng phục hồi tốt.",
+        "MACD phân kỳ dương (1.438) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
       ],
-      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 85,100đ."
+      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 85,000đ."
     },
     {
       "ticker": "PDR",
-      "exchange": "UPCOM",
+      "exchange": "HOSE",
       "action": "BUY",
       "confidence_score": 75,
       "grade": "Grade B",
       "price_data": {
         "buy_zone": {
-          "min": 12100,
-          "max": 12300
+          "min": 12150,
+          "max": 12400
         },
         "stop_loss": 11300,
-        "target_1": 13700,
-        "target_2": 13900,
-        "risk_reward_ratio": "1:2.0"
+        "target_1": 13000,
+        "target_2": 13000,
+        "risk_reward_ratio": "1:1.0"
       },
       "technical_rationale": [
-        "Giá đóng cửa 12,100đ vượt đường trung bình động MA20 (11,895đ), củng cố xu hướng tăng.",
+        "Giá đóng cửa 12,150đ vượt đường trung bình động MA20 (11,882đ), củng cố xu hướng tăng.",
         "Thanh khoản duy trì ở mức bình ổn.",
-        "Chỉ báo RSI đạt 63.0 điểm, duy trì động lượng phục hồi tốt.",
-        "MACD phân kỳ dương (0.136) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
+        "Chỉ báo RSI đạt 63.8 điểm, duy trì động lượng phục hồi tốt.",
+        "MACD phân kỳ dương (0.140) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
       ],
-      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 12,300đ."
+      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 12,400đ."
     },
     {
-      "ticker": "FPT",
-      "exchange": "UPCOM",
+      "ticker": "GMD",
+      "exchange": "HOSE",
       "action": "BUY",
-      "confidence_score": 65,
+      "confidence_score": 75,
       "grade": "Grade B",
       "price_data": {
         "buy_zone": {
-          "min": 69000,
-          "max": 70400
+          "min": 78900,
+          "max": 80500
         },
-        "stop_loss": 64200,
-        "target_1": 78600,
-        "target_2": 79300,
-        "risk_reward_ratio": "1:2.0"
+        "stop_loss": 73400,
+        "target_1": 84400,
+        "target_2": 84400,
+        "risk_reward_ratio": "1:1.0"
       },
       "technical_rationale": [
-        "Giá đóng cửa 69,000đ vượt đường trung bình động MA20 (68,035đ), củng cố xu hướng tăng.",
+        "Giá đóng cửa 78,900đ vượt đường trung bình động MA20 (76,070đ), củng cố xu hướng tăng.",
         "Thanh khoản duy trì ở mức bình ổn.",
-        "Chỉ báo RSI đạt 64.2 điểm, duy trì động lượng phục hồi tốt.",
-        "MACD phân kỳ dương (0.116) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
+        "Chỉ báo RSI đạt 78.7 điểm, duy trì động lượng phục hồi tốt.",
+        "MACD phân kỳ dương (0.305) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
       ],
-      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 70,400đ."
+      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 80,500đ."
     },
     {
       "ticker": "HDB",
-      "exchange": "UPCOM",
+      "exchange": "HOSE",
       "action": "BUY",
       "confidence_score": 65,
       "grade": "Grade B",
@@ -126,7 +126,7 @@
     },
     {
       "ticker": "MSN",
-      "exchange": "UPCOM",
+      "exchange": "HOSE",
       "action": "BUY",
       "confidence_score": 65,
       "grade": "Grade B",
@@ -146,50 +146,53 @@
       "execution_notes": "Retained from previous record."
     },
     {
-      "ticker": "PLX",
-      "exchange": "UPCOM",
+      "ticker": "VHM",
+      "exchange": "HOSE",
       "action": "BUY",
       "confidence_score": 65,
       "grade": "Grade B",
       "price_data": {
         "buy_zone": {
-          "min": 37950,
-          "max": 38709
+          "min": 240,
+          "max": 244
         },
-        "stop_loss": 35100,
-        "target_1": 43600,
-        "target_2": 47960,
+        "stop_loss": 200,
+        "target_1": 300,
+        "target_2": 330,
         "risk_reward_ratio": "1:2.0"
       },
       "technical_rationale": [
-        "Giá đóng cửa 37,950đ vượt đường trung bình động MA20 (34,104đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.8x so với trung bình 20 phiên, dòng tiền mua chủ động. Chỉ báo RSI đạt 72.9 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.442) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường."
+        "Giá đóng cửa 240đ vượt đường trung bình động MA20 (228đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 56.2 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.003) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường."
       ],
       "execution_notes": "Retained from previous record."
     },
     {
-      "ticker": "SAB",
-      "exchange": "UPCOM",
+      "ticker": "DXG",
+      "exchange": "HOSE",
       "action": "BUY",
       "confidence_score": 65,
       "grade": "Grade B",
       "price_data": {
         "buy_zone": {
-          "min": 45600,
-          "max": 46512
+          "min": 11150,
+          "max": 11350
         },
-        "stop_loss": 42400,
-        "target_1": 52000,
-        "target_2": 57200,
-        "risk_reward_ratio": "1:2.0"
+        "stop_loss": 10350,
+        "target_1": 11950,
+        "target_2": 11950,
+        "risk_reward_ratio": "1:1.0"
       },
       "technical_rationale": [
-        "Giá đóng cửa 45,600đ vượt đường trung bình động MA20 (44,591đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 63.8 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.152) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường."
+        "Giá đóng cửa 11,150đ vượt đường trung bình động MA20 (10,781đ), củng cố xu hướng tăng.",
+        "Thanh khoản duy trì ở mức bình ổn.",
+        "Chỉ báo RSI đạt 62.3 điểm, duy trì động lượng phục hồi tốt.",
+        "MACD phân kỳ dương (0.140) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
       ],
-      "execution_notes": "Retained from previous record."
+      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 11,350đ."
     },
     {
       "ticker": "TCB",
-      "exchange": "UPCOM",
+      "exchange": "HOSE",
       "action": "SELL",
       "confidence_score": 65,
       "grade": "Grade B",
@@ -210,7 +213,7 @@
     },
     {
       "ticker": "FRT",
-      "exchange": "UPCOM",
+      "exchange": "HOSE",
       "action": "SELL",
       "confidence_score": 65,
       "grade": "Grade B",
@@ -231,51 +234,48 @@
     },
     {
       "ticker": "HCM",
-      "exchange": "UPCOM",
+      "exchange": "HOSE",
       "action": "SELL",
       "confidence_score": 65,
       "grade": "Grade B",
       "price_data": {
         "buy_zone": {
           "min": 25300,
-          "max": 25800
+          "max": 25806
         },
         "stop_loss": 23500,
         "target_1": 28900,
-        "target_2": 29100,
+        "target_2": 31790,
         "risk_reward_ratio": "1:2.0"
       },
       "technical_rationale": [
-        "Giá đóng cửa dưới đường xu hướng ngắn hạn MA20 (25,512đ).",
-        "Thanh khoản duy trì ở mức bình ổn.",
-        "RSI ở mức 50.0 điểm, thể hiện áp lực cung lấn át.",
-        "MACD phân kỳ âm, đà giảm tiếp tục kéo dài."
+        "Giá đóng cửa dưới đường xu hướng ngắn hạn MA20 (25,512đ). Thanh khoản duy trì ở mức bình ổn. RSI ở mức 50.0 điểm, thể hiện áp lực cung lấn át. MACD phân kỳ âm, đà giảm tiếp tục kéo dài. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường."
       ],
-      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 25,800đ."
+      "execution_notes": "Retained from previous record."
     },
     {
       "ticker": "CTG",
-      "exchange": "UPCOM",
+      "exchange": "HOSE",
       "action": "SELL",
       "confidence_score": 55,
       "grade": "Grade C",
       "price_data": {
         "buy_zone": {
           "min": 31600,
-          "max": 32299
+          "max": 32250
         },
         "stop_loss": 29400,
-        "target_1": 36100,
-        "target_2": 36400,
-        "risk_reward_ratio": "1:2.0"
+        "target_1": 33800,
+        "target_2": 33800,
+        "risk_reward_ratio": "1:1.0"
       },
       "technical_rationale": [
-        "Giá đóng cửa 31,650đ vượt đường trung bình động MA20 (30,953đ), củng cố xu hướng tăng.",
+        "Giá đóng cửa 31,600đ vượt đường trung bình động MA20 (30,950đ), củng cố xu hướng tăng.",
         "Thanh khoản duy trì ở mức bình ổn.",
-        "Chỉ báo RSI đạt 69.2 điểm, duy trì động lượng phục hồi tốt.",
-        "MACD phân kỳ dương (0.130) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
+        "Chỉ báo RSI đạt 68.9 điểm, duy trì động lượng phục hồi tốt.",
+        "MACD phân kỳ dương (0.127) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
       ],
-      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 32,300đ."
+      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 32,250đ."
     }
   ]
 }
