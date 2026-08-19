@@ -122,62 +122,124 @@ def calculate_technical_indicators(df):
     df['daily_return'] = df['close'].pct_change()
     return df
 
-def calculate_quant_risk_level(df, df_vnindex=None, market_risk_level="LOW"):
+def calculate_advanced_vn_risk_metrics(df, exchange='HOSE', is_margin_eligible=True, df_vnindex=None):
     """
-    Computes real empirical quantitative risk level (LOW, MEDIUM, HIGH)
-    based on actual historical price series metrics:
-    1. Volatility: ATR % relative to current close price (ATR / Close)
-    2. Beta: 60-day historical Beta relative to VN-Index daily returns
-    3. Max Drawdown: Peak-to-trough decline over the historical dataset
-    4. Market Regime: High market risk pushes borderlines higher
+    Thuật toán Quản trị Rủi ro Định lượng Chuẩn hóa cho TTCK Việt Nam (Production-Ready)
+    1. UPCoM dùng VWAP (hoặc avg_price), HOSE/HNX dùng Close
+    2. Rolling 3-day Returns (T+2.5 execution cycle) & Historical VaR 95%
+    3. Multi-day Floor Hit Risk (Tần suất chạm sàn 60 phiên)
+    4. Penalty Rủi ro bị cắt Margin
+    5. Volatility Niên hóa (60 phiên)
+    6. Max Drawdown (MDD)
     """
-    if df is None or len(df) < 10:
-        return "MEDIUM"
+    if df is None or len(df) < 20:
+        return {
+            "status": "REJECTED",
+            "reason": "Dữ liệu không đủ 20 phiên",
+            "annual_vol": 0.25,
+            "historical_var_t25": -0.07,
+            "mdd": -0.15,
+            "floor_hits_60d": 0,
+            "floor_risk_flag": False,
+            "margin_penalty": 1.0 if is_margin_eligible else 1.5,
+            "avg_value_20d_bn": 0.0
+        }
 
-    close = float(df['close'].iloc[-1])
-    atr = float(df['atr'].iloc[-1]) if 'atr' in df.columns else 0.0
-    atr_pct = (atr / close) * 100.0 if close > 0 else 0.0
+    # 1. Chọn giá theo đặc thù từng sàn
+    price_col = 'vwap' if (exchange.upper() == 'UPCOM' and 'vwap' in df.columns) else (
+        'avg_price' if (exchange.upper() == 'UPCOM' and 'avg_price' in df.columns) else 'close'
+    )
 
-    # 1. Max Drawdown Calculation
-    cummax = df['close'].cummax()
-    drawdown = (df['close'] - cummax) / cummax
-    max_drawdown_pct = abs(float(drawdown.min())) * 100.0 if not drawdown.empty else 0.0
+    # 2. Tính Lợi nhuận 1D và T+2.5 (Rolling 3-day Return)
+    df['returns_1d'] = df[price_col].pct_change()
+    df['returns_t25'] = df[price_col].pct_change(periods=3)
 
-    # 2. Beta Calculation relative to VN-Index
-    beta = 1.0
-    if df_vnindex is not None and len(df_vnindex) >= 20 and 'daily_return' in df.columns and 'daily_return' in df_vnindex.columns:
-        stock_ret = df['daily_return'].dropna().tail(60)
-        vn_ret = df_vnindex['daily_return'].dropna().tail(60)
-        # Align indexes
-        combined = pd.concat([stock_ret, vn_ret], axis=1, keys=['stock', 'vnindex']).dropna()
-        if len(combined) >= 15:
-            var_vn = combined['vnindex'].var()
-            if var_vn > 0:
-                cov = combined['stock'].cov(combined['vnindex'])
-                beta = cov / var_vn
+    # 3. Lọc Thanh khoản tối thiểu (20 phiên gần nhất)
+    df['trading_value'] = df[price_col] * df['volume']
+    avg_value_20d = float(df['trading_value'].tail(20).mean())
 
-    # Quantitative Risk Score evaluation (0 - 100 points, higher = riskier)
-    # ATR Component (up to 40 pts)
-    atr_score = min(40.0, (atr_pct / 4.0) * 40.0)
+    # 4. Historical VaR 95% thực tế cho chu kỳ T+2.5
+    returns_t25_clean = df['returns_t25'].dropna()
+    var_95_t25 = float(np.percentile(returns_t25_clean, 5)) if len(returns_t25_clean) >= 5 else -0.07
 
-    # Max Drawdown Component (up to 30 pts)
-    mdd_score = min(30.0, (max_drawdown_pct / 30.0) * 30.0)
+    # 5. Tần suất chạm sàn trong 60 phiên (Floor Hit Risk)
+    floor_limit = -0.068 if exchange.upper() == 'HOSE' else (-0.098 if exchange.upper() == 'HNX' else -0.148)
+    tail_returns_1d = df['returns_1d'].tail(60)
+    floor_hits = int((tail_returns_1d <= floor_limit).sum())
+    floor_risk_flag = floor_hits >= 2
 
-    # Beta Component (up to 30 pts)
-    beta_score = min(30.0, max(0.0, (beta / 1.5) * 30.0))
+    # 6. Penalty Margin
+    margin_penalty = 1.0 if is_margin_eligible else 1.5
 
-    composite_risk_score = atr_score + mdd_score + beta_score
+    # 7. Volatility Niên hóa 60 phiên
+    tail_std = float(df['returns_1d'].tail(60).std())
+    annual_vol = tail_std * np.sqrt(252) if not np.isnan(tail_std) else 0.25
 
-    # Market regime penalty
+    # 8. Max Drawdown
+    rolling_max = df[price_col].cummax()
+    mdd_series = (df[price_col] - rolling_max) / rolling_max
+    mdd = float(mdd_series.min()) if not mdd_series.empty else -0.15
+
+    return {
+        "status": "PASSED" if avg_value_20d >= 1_000_000_000 else "LOW_LIQUIDITY",
+        "avg_value_20d_bn": round(avg_value_20d / 1e9, 2),
+        "annual_vol": round(annual_vol, 4),
+        "historical_var_t25": round(var_95_t25, 4),
+        "mdd": round(mdd, 4),
+        "floor_hits_60d": floor_hits,
+        "floor_risk_flag": floor_risk_flag,
+        "margin_penalty": margin_penalty
+    }
+
+def normalize_universe_risk(scanned_results, market_risk_level="LOW"):
+    """
+    Chuẩn hóa Điểm Rủi Ro (Z-Score) trên toàn bộ Universe thay vì tính điểm thô.
+    Phân loại cổ phiếu thành LOW, MEDIUM, HIGH dựa trên Z-score tổng hợp trong Universe.
+    """
+    if not scanned_results:
+        return scanned_results
+
+    valid_items = [r for r in scanned_results if "risk_metrics" in r]
+    if len(valid_items) < 3:
+        for r in scanned_results:
+            r["riskLevel"] = r.get("riskLevel", "MEDIUM")
+        return scanned_results
+
+    # Trích xuất chỉ số để tính Z-Score
+    vols = np.array([r["risk_metrics"]["annual_vol"] for r in valid_items])
+    vars_t25 = np.array([abs(r["risk_metrics"]["historical_var_t25"]) for r in valid_items])
+    mdds = np.array([abs(r["risk_metrics"]["mdd"]) for r in valid_items])
+    penalties = np.array([r["risk_metrics"]["margin_penalty"] for r in valid_items])
+    floor_flags = np.array([1.5 if r["risk_metrics"]["floor_risk_flag"] else 1.0 for r in valid_items])
+
+    vol_std = vols.std() if vols.std() > 0 else 1.0
+    var_std = vars_t25.std() if vars_t25.std() > 0 else 1.0
+    mdd_std = mdds.std() if mdds.std() > 0 else 1.0
+
+    vol_z = (vols - vols.mean()) / vol_std
+    var_z = (vars_t25 - vars_t25.mean()) / var_std
+    mdd_z = (mdds - mdds.mean()) / mdd_std
+
+    raw_final_scores = (vol_z * 0.4 + var_z * 0.4 + mdd_z * 0.2) * penalties * floor_flags
+
     if market_risk_level == "HIGH":
-        composite_risk_score += 10.0
+        raw_final_scores += 0.5
 
-    if composite_risk_score >= 60.0 or atr_pct >= 3.8 or beta >= 1.35 or max_drawdown_pct >= 28.0:
-        return "HIGH"
-    elif composite_risk_score <= 35.0 and atr_pct <= 2.2 and beta <= 0.9 and max_drawdown_pct <= 16.0:
-        return "LOW"
-    else:
-        return "MEDIUM"
+    # Phân loại dựa trên Bách phân vị (Percentiles)
+    p33 = np.percentile(raw_final_scores, 33)
+    p66 = np.percentile(raw_final_scores, 66)
+
+    for idx, r in enumerate(valid_items):
+        score = raw_final_scores[idx]
+        r["composite_risk_score"] = round(float(score), 3)
+        if score >= p66 or r["risk_metrics"]["floor_risk_flag"]:
+            r["riskLevel"] = "HIGH"
+        elif score <= p33 and not r["risk_metrics"]["floor_risk_flag"]:
+            r["riskLevel"] = "LOW"
+        else:
+            r["riskLevel"] = "MEDIUM"
+
+    return scanned_results
 
 def fetch_batch_smart_money(symbols):
     """Lấy dữ liệu mua/bán ròng Khối ngoại & Tự doanh gộp chung 1 request cho tất cả các mã."""
@@ -403,8 +465,9 @@ def main():
 
                 score = max(0, min(100, score))
 
-                # 5. Đánh giá Mức độ Rủi ro (Quantitative Risk Level Evaluation from Empirical Stock Data)
-                dynamic_risk_level = calculate_quant_risk_level(df, df_vnindex=df_vn, market_risk_level=market_risk_level)
+                # 5. Đánh giá Mức độ Rủi ro (Production-Ready Vietnam Quantitative Risk Model)
+                risk_metrics = calculate_advanced_vn_risk_metrics(df, exchange=ex, is_margin_eligible=True, df_vnindex=df_vn)
+                dynamic_risk_level = "MEDIUM" # Default before universe normalization
 
                 # 6. Xác định điểm Quản trị vị thế (Thanh khoản T+2.5 & Biên độ sàn)
                 buy_min = round_tick_size(close, ex)
@@ -456,6 +519,7 @@ def main():
                     "rationale": full_rationale,
                     "rationale_points": rationale_points,
                     "exec_notes": exec_notes,
+                    "risk_metrics": risk_metrics,
                     "riskLevel": dynamic_risk_level
                 })
                 print(f"-> [THÀNH CÔNG] Điểm: {score}/100 | Khuyến nghị: {action}")
@@ -530,6 +594,9 @@ def main():
 
         # Smart delay (0.4s) to safely process all 42 candidates
         time.sleep(0.4)
+
+    # Step 2.5: Chuẩn hóa điểm rủi ro Z-Score toàn vũ trụ cổ phiếu (Universe Risk Normalization)
+    scanned_results = normalize_universe_risk(scanned_results, market_risk_level=market_risk_level)
 
     # Step 3: Chọn lọc danh sách khuyến nghị & xuất file JSON
     print("\n[Step 3] Xuất dữ liệu cho AI Agent và Giao diện UI...")
