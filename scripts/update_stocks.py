@@ -27,50 +27,50 @@ AGENT_SIGNALS_PATH = os.path.join(
 # Danh sách 42 mã chọn lọc: Đầy đủ 30 mã VN30 + 12 mã Midcap dẫn dắt
 CANDIDATE_STOCKS = [
     # --- NHÓM VN30 (30 MÃ) ---
-    {"symbol": "ACB", "companyName": "Ngân hàng TMCP Á Châu", "sector": "Ngân hàng", "riskLevel": "LOW"},
-    {"symbol": "BCM", "companyName": "Tổng Công ty Đầu tư và Phát triển Công nghiệp", "sector": "Bất động sản KCN", "riskLevel": "MEDIUM"},
-    {"symbol": "BID", "companyName": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam", "sector": "Ngân hàng", "riskLevel": "LOW"},
-    {"symbol": "BVH", "companyName": "Tập đoàn Bảo Việt", "sector": "Bảo hiểm", "riskLevel": "LOW"},
-    {"symbol": "CTG", "companyName": "Ngân hàng TMCP Công Thương Việt Nam", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "FPT", "companyName": "Công ty Cổ phần FPT", "sector": "Công nghệ", "riskLevel": "LOW"},
-    {"symbol": "GAS", "companyName": "Tổng Công ty Khí Việt Nam - CTCP", "sector": "Dầu khí", "riskLevel": "LOW"},
-    {"symbol": "GVR", "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP", "sector": "Cao su & BĐS KCN", "riskLevel": "HIGH"},
-    {"symbol": "HDB", "companyName": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "HPG", "companyName": "Công ty Cổ phần Tập đoàn Hòa Phát", "sector": "Thép", "riskLevel": "MEDIUM"},
-    {"symbol": "MBB", "companyName": "Ngân hàng TMCP Quân Đội", "sector": "Ngân hàng", "riskLevel": "LOW"},
-    {"symbol": "MSN", "companyName": "Công ty Cổ phần Tập đoàn Masan", "sector": "Tiêu dùng", "riskLevel": "MEDIUM"},
-    {"symbol": "MWG", "companyName": "Công ty Cổ phần Đầu tư Thế giới Di Động", "sector": "Bán lẻ", "riskLevel": "MEDIUM"},
-    {"symbol": "PLX", "companyName": "Tập đoàn Xăng dầu Việt Nam", "sector": "Năng lượng", "riskLevel": "MEDIUM"},
-    {"symbol": "POW", "companyName": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP", "sector": "Điện lực", "riskLevel": "MEDIUM"},
-    {"symbol": "SAB", "companyName": "Tổng Công ty Cổ phần Bia - Rượu - Nước giải khát Sài Gòn", "sector": "Đồ uống", "riskLevel": "LOW"},
-    {"symbol": "SSB", "companyName": "Ngân hàng TMCP Đông Nam Á", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "SSI", "companyName": "Công ty Cổ phần Chứng khoán SSI", "sector": "Chứng khoán", "riskLevel": "MEDIUM"},
-    {"symbol": "STB", "companyName": "Ngân hàng TMCP Sài Gòn Thương Tín", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "TCB", "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "TPB", "companyName": "Ngân hàng TMCP Tiên Phong", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "VCB", "companyName": "Ngân hàng TMCP Ngoại Thương Việt Nam", "sector": "Ngân hàng", "riskLevel": "LOW"},
-    {"symbol": "VHM", "companyName": "Công ty Cổ phần Vinhomes", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "VIB", "companyName": "Ngân hàng TMCP Quốc tế Việt Nam", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "VIC", "companyName": "Tập đoàn Vingroup - CTCP", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "VJC", "companyName": "Công ty Cổ phần Hàng không Vietjet", "sector": "Hàng không", "riskLevel": "HIGH"},
-    {"symbol": "VNM", "companyName": "Công ty Cổ phần Sữa Việt Nam", "sector": "Thực phẩm", "riskLevel": "LOW"},
-    {"symbol": "VPB", "companyName": "Ngân hàng TMCP Việt Nam Thịnh Vượng", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "VRE", "companyName": "Công ty Cổ phần Vincom Retail", "sector": "Bất động sản", "riskLevel": "MEDIUM"},
-    {"symbol": "SHB", "companyName": "Ngân hàng TMCP Sài Gòn - Hà Nội", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
+    {"symbol": "ACB", "companyName": "Ngân hàng TMCP Á Châu", "sector": "Ngân hàng"},
+    {"symbol": "BCM", "companyName": "Tổng Công ty Đầu tư và Phát triển Công nghiệp", "sector": "Bất động sản KCN"},
+    {"symbol": "BID", "companyName": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "BVH", "companyName": "Tập đoàn Bảo Việt", "sector": "Bảo hiểm"},
+    {"symbol": "CTG", "companyName": "Ngân hàng TMCP Công Thương Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "FPT", "companyName": "Công ty Cổ phần FPT", "sector": "Công nghệ"},
+    {"symbol": "GAS", "companyName": "Tổng Công ty Khí Việt Nam - CTCP", "sector": "Dầu khí"},
+    {"symbol": "GVR", "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP", "sector": "Cao su & BĐS KCN"},
+    {"symbol": "HDB", "companyName": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh", "sector": "Ngân hàng"},
+    {"symbol": "HPG", "companyName": "Công ty Cổ phần Tập đoàn Hòa Phát", "sector": "Thép"},
+    {"symbol": "MBB", "companyName": "Ngân hàng TMCP Quân Đội", "sector": "Ngân hàng"},
+    {"symbol": "MSN", "companyName": "Công ty Cổ phần Tập đoàn Masan", "sector": "Tiêu dùng"},
+    {"symbol": "MWG", "companyName": "Công ty Cổ phần Đầu tư Thế giới Di Động", "sector": "Bán lẻ"},
+    {"symbol": "PLX", "companyName": "Tập đoàn Xăng dầu Việt Nam", "sector": "Năng lượng"},
+    {"symbol": "POW", "companyName": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP", "sector": "Điện lực"},
+    {"symbol": "SAB", "companyName": "Tổng Công ty Cổ phần Bia - Rượu - Nước giải khát Sài Gòn", "sector": "Đồ uống"},
+    {"symbol": "SSB", "companyName": "Ngân hàng TMCP Đông Nam Á", "sector": "Ngân hàng"},
+    {"symbol": "SSI", "companyName": "Công ty Cổ phần Chứng khoán SSI", "sector": "Chứng khoán"},
+    {"symbol": "STB", "companyName": "Ngân hàng TMCP Sài Gòn Thương Tín", "sector": "Ngân hàng"},
+    {"symbol": "TCB", "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "TPB", "companyName": "Ngân hàng TMCP Tiên Phong", "sector": "Ngân hàng"},
+    {"symbol": "VCB", "companyName": "Ngân hàng TMCP Ngoại Thương Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "VHM", "companyName": "Công ty Cổ phần Vinhomes", "sector": "Bất động sản"},
+    {"symbol": "VIB", "companyName": "Ngân hàng TMCP Quốc tế Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "VIC", "companyName": "Tập đoàn Vingroup - CTCP", "sector": "Bất động sản"},
+    {"symbol": "VJC", "companyName": "Công ty Cổ phần Hàng không Vietjet", "sector": "Hàng không"},
+    {"symbol": "VNM", "companyName": "Công ty Cổ phần Sữa Việt Nam", "sector": "Thực phẩm"},
+    {"symbol": "VPB", "companyName": "Ngân hàng TMCP Việt Nam Thịnh Vượng", "sector": "Ngân hàng"},
+    {"symbol": "VRE", "companyName": "Công ty Cổ phần Vincom Retail", "sector": "Bất động sản"},
+    {"symbol": "SHB", "companyName": "Ngân hàng TMCP Sài Gòn - Hà Nội", "sector": "Ngân hàng"},
 
     # --- NHÓM MIDCAP TIỀM NĂNG DẪN DẮT (12 MÃ) ---
-    {"symbol": "DGC", "companyName": "CTCP Tập đoàn Hóa chất Đức Giang", "sector": "Hóa chất", "riskLevel": "HIGH"},
-    {"symbol": "FRT", "companyName": "CTCP Bán lẻ Kỹ thuật số FPT", "sector": "Bán lẻ", "riskLevel": "HIGH"},
-    {"symbol": "PVD", "companyName": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí", "sector": "Dầu khí", "riskLevel": "HIGH"},
-    {"symbol": "VCI", "companyName": "CTCP Chứng khoán Vietcap", "sector": "Chứng khoán", "riskLevel": "HIGH"},
-    {"symbol": "HCM", "companyName": "CTCP Chứng khoán TP.Hồ Chí Minh", "sector": "Chứng khoán", "riskLevel": "MEDIUM"},
-    {"symbol": "VND", "companyName": "CTCP Chứng khoán VNDIRECT", "sector": "Chứng khoán", "riskLevel": "HIGH"},
-    {"symbol": "HSG", "companyName": "CTCP Tập đoàn Hoa Sen", "sector": "Thép", "riskLevel": "HIGH"},
-    {"symbol": "NKG", "companyName": "CTCP Thép Nam Kim", "sector": "Thép", "riskLevel": "HIGH"},
-    {"symbol": "DXG", "companyName": "CTCP Tập đoàn Đất Xanh", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "DIG", "companyName": "Tổng CTCP Đầu tư Phát triển Xây dựng", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "PDR", "companyName": "CTCP Phát triển Bất động sản Phát Đạt", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "GMD", "companyName": "CTCP Gemadept", "sector": "Logistics", "riskLevel": "MEDIUM"},
+    {"symbol": "DGC", "companyName": "CTCP Tập đoàn Hóa chất Đức Giang", "sector": "Hóa chất"},
+    {"symbol": "FRT", "companyName": "CTCP Bán lẻ Kỹ thuật số FPT", "sector": "Bán lẻ"},
+    {"symbol": "PVD", "companyName": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí", "sector": "Dầu khí"},
+    {"symbol": "VCI", "companyName": "CTCP Chứng khoán Vietcap", "sector": "Chứng khoán"},
+    {"symbol": "HCM", "companyName": "CTCP Chứng khoán TP.Hồ Chí Minh", "sector": "Chứng khoán"},
+    {"symbol": "VND", "companyName": "CTCP Chứng khoán VNDIRECT", "sector": "Chứng khoán"},
+    {"symbol": "HSG", "companyName": "CTCP Tập đoàn Hoa Sen", "sector": "Thép"},
+    {"symbol": "NKG", "companyName": "CTCP Thép Nam Kim", "sector": "Thép"},
+    {"symbol": "DXG", "companyName": "CTCP Tập đoàn Đất Xanh", "sector": "Bất động sản"},
+    {"symbol": "DIG", "companyName": "Tổng CTCP Đầu tư Phát triển Xây dựng", "sector": "Bất động sản"},
+    {"symbol": "PDR", "companyName": "CTCP Phát triển Bất động sản Phát Đạt", "sector": "Bất động sản"},
+    {"symbol": "GMD", "companyName": "CTCP Gemadept", "sector": "Logistics"},
 ]
 
 def round_tick_size(price, exchange="HOSE"):
@@ -117,7 +117,67 @@ def calculate_technical_indicators(df):
     df['signal'] = df['macd'].ewm(span=9, adjust=False, min_periods=1).mean()
     df['hist'] = df['macd'] - df['signal']
     df['atr'] = calculate_atr(df, 14)
+
+    # Compute daily return for statistical calculations
+    df['daily_return'] = df['close'].pct_change()
     return df
+
+def calculate_quant_risk_level(df, df_vnindex=None, market_risk_level="LOW"):
+    """
+    Computes real empirical quantitative risk level (LOW, MEDIUM, HIGH)
+    based on actual historical price series metrics:
+    1. Volatility: ATR % relative to current close price (ATR / Close)
+    2. Beta: 60-day historical Beta relative to VN-Index daily returns
+    3. Max Drawdown: Peak-to-trough decline over the historical dataset
+    4. Market Regime: High market risk pushes borderlines higher
+    """
+    if df is None or len(df) < 10:
+        return "MEDIUM"
+
+    close = float(df['close'].iloc[-1])
+    atr = float(df['atr'].iloc[-1]) if 'atr' in df.columns else 0.0
+    atr_pct = (atr / close) * 100.0 if close > 0 else 0.0
+
+    # 1. Max Drawdown Calculation
+    cummax = df['close'].cummax()
+    drawdown = (df['close'] - cummax) / cummax
+    max_drawdown_pct = abs(float(drawdown.min())) * 100.0 if not drawdown.empty else 0.0
+
+    # 2. Beta Calculation relative to VN-Index
+    beta = 1.0
+    if df_vnindex is not None and len(df_vnindex) >= 20 and 'daily_return' in df.columns and 'daily_return' in df_vnindex.columns:
+        stock_ret = df['daily_return'].dropna().tail(60)
+        vn_ret = df_vnindex['daily_return'].dropna().tail(60)
+        # Align indexes
+        combined = pd.concat([stock_ret, vn_ret], axis=1, keys=['stock', 'vnindex']).dropna()
+        if len(combined) >= 15:
+            var_vn = combined['vnindex'].var()
+            if var_vn > 0:
+                cov = combined['stock'].cov(combined['vnindex'])
+                beta = cov / var_vn
+
+    # Quantitative Risk Score evaluation (0 - 100 points, higher = riskier)
+    # ATR Component (up to 40 pts)
+    atr_score = min(40.0, (atr_pct / 4.0) * 40.0)
+
+    # Max Drawdown Component (up to 30 pts)
+    mdd_score = min(30.0, (max_drawdown_pct / 30.0) * 30.0)
+
+    # Beta Component (up to 30 pts)
+    beta_score = min(30.0, max(0.0, (beta / 1.5) * 30.0))
+
+    composite_risk_score = atr_score + mdd_score + beta_score
+
+    # Market regime penalty
+    if market_risk_level == "HIGH":
+        composite_risk_score += 10.0
+
+    if composite_risk_score >= 60.0 or atr_pct >= 3.8 or beta >= 1.35 or max_drawdown_pct >= 28.0:
+        return "HIGH"
+    elif composite_risk_score <= 35.0 and atr_pct <= 2.2 and beta <= 0.9 and max_drawdown_pct <= 16.0:
+        return "LOW"
+    else:
+        return "MEDIUM"
 
 def fetch_batch_smart_money(symbols):
     """Lấy dữ liệu mua/bán ròng Khối ngoại & Tự doanh gộp chung 1 request cho tất cả các mã."""
@@ -252,6 +312,7 @@ def main():
     vnindex_val = 1740.0
     vnindex_change = 0.0
     vnindex_pct = 0.0
+    df_vn = None
 
     try:
         df_vn, _ = get_historical_data_api("VNINDEX", start_date, end_date)
@@ -342,15 +403,8 @@ def main():
 
                 score = max(0, min(100, score))
 
-                # 5. Đánh giá Mức độ Rủi ro (Dynamic Risk Level Evaluation based on Base Sector Profile + ATR Volatility)
-                atr_pct = (atr / close) * 100.0 if close > 0 else 0.0
-                base_risk = item["riskLevel"]
-                if atr_pct >= 4.5 or market_risk_level == "HIGH":
-                    dynamic_risk_level = "HIGH"
-                elif atr_pct <= 2.5 and base_risk == "LOW":
-                    dynamic_risk_level = "LOW"
-                else:
-                    dynamic_risk_level = base_risk
+                # 5. Đánh giá Mức độ Rủi ro (Quantitative Risk Level Evaluation from Empirical Stock Data)
+                dynamic_risk_level = calculate_quant_risk_level(df, df_vnindex=df_vn, market_risk_level=market_risk_level)
 
                 # 6. Xác định điểm Quản trị vị thế (Thanh khoản T+2.5 & Biên độ sàn)
                 buy_min = round_tick_size(close, ex)
@@ -447,7 +501,7 @@ def main():
                     "rationale": old_rec["rationale"],
                     "rationale_points": [old_rec["rationale"]],
                     "exec_notes": "Retained from previous record.",
-                    "riskLevel": item["riskLevel"]
+                    "riskLevel": old_rec.get("riskLevel", "MEDIUM")
                 })
             else:
                 # Default baseline fallback record
@@ -471,7 +525,7 @@ def main():
                     "rationale": "Cổ phiếu trong danh sách theo dõi xu hướng.",
                     "rationale_points": ["Cổ phiếu trong danh sách theo dõi xu hướng."],
                     "exec_notes": "Theo dõi sát tín hiệu dòng tiền.",
-                    "riskLevel": item["riskLevel"]
+                    "riskLevel": "MEDIUM"
                 })
 
         # Smart delay (0.4s) to safely process all 42 candidates

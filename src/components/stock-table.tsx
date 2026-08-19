@@ -102,7 +102,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
               <TableHead className="h-auto px-4 py-3 text-center font-bold text-muted-foreground">
                 <div className="flex items-center justify-center gap-1">
                   Mức rủi ro
-                  <Tooltip content="Xếp hạng rủi ro dựa trên biến động giá beta và thanh khoản cổ phiếu">
+                  <Tooltip content="Mức rủi ro thực tế tính toán từ biến động ATR, hệ số Beta VN-Index và mức sụt giảm Max Drawdown">
                     <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
