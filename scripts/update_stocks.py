@@ -479,7 +479,14 @@ def main():
                 target2 = clamp_price_limits(close + 3.0 * risk, close, ex)
 
                 is_buy = (close > ma20 and score >= 65)
-                action = "BUY" if is_buy else "HOLD/WATCH"
+                is_sell = (close < ma20 or score <= 45 or macd_hist < 0 or rsi < 45 or close <= stop_loss)
+
+                if is_buy:
+                    action = "BUY"
+                elif is_sell:
+                    action = "SELL"
+                else:
+                    action = "HOLD/WATCH"
 
                 if score >= 80:
                     grade = "Grade A"
@@ -488,16 +495,20 @@ def main():
                 else:
                     grade = "Grade C"
 
-                rr_ratio = f"1:{(target1 - close) / risk:.1f}"
-                exec_notes = f"Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức {buy_max * 1000:,.0f}đ."
+                rr_ratio = f"1:{(target1 - close) / risk:.1f}" if action == "BUY" else "1:1.0"
+                exec_notes = (
+                    f"Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức {buy_max * 1000:,.0f}đ."
+                    if action == "BUY" else
+                    "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20."
+                )
 
                 rationale_points = [
-                    f"Giá đóng cửa {close * 1000:,.0f}đ vượt đường trung bình động MA20 ({ma20 * 1000:,.0f}đ), củng cố xu hướng tăng." if close > ma20 else f"Giá đóng cửa dưới đường xu hướng ngắn hạn MA20 ({ma20 * 1000:,.0f}đ).",
+                    f"Giá đóng cửa {close * 1000:,.0f}đ vượt đường trung bình động MA20 ({ma20 * 1000:,.0f}đ), củng cố xu hướng tăng." if close > ma20 else f"Giá đóng cửa {close * 1000:,.0f}đ gãy đường xu hướng ngắn hạn MA20 ({ma20 * 1000:,.0f}đ), suy yếu xu hướng.",
                     f"Thanh khoản bùng nổ đạt {vol_ratio:.1f}x so với trung bình 20 phiên, dòng tiền mua chủ động." if vol_ratio > 1.2 else "Thanh khoản duy trì ở mức bình ổn.",
-                    f"Chỉ báo RSI đạt {rsi:.1f} điểm, duy trì động lượng phục hồi tốt." if rsi > 50 else f"RSI ở mức {rsi:.1f} điểm, thể hiện áp lực cung lấn át.",
-                    f"MACD phân kỳ dương ({macd_hist:.3f}) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ." if macd_hist > 0 else "MACD phân kỳ âm, đà giảm tiếp tục kéo dài."
+                    f"Chỉ báo RSI đạt {rsi:.1f} điểm, duy trì động lượng phục hồi tốt." if rsi > 50 else f"RSI ở mức {rsi:.1f} điểm, thể hiện áp lực cung lấn át suy yếu đà tăng.",
+                    f"MACD phân kỳ dương ({macd_hist:.3f}) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ." if macd_hist > 0 else f"MACD phân kỳ âm ({macd_hist:.3f}), áp lực điều chỉnh gia tăng."
                 ]
-                full_rationale = " ".join(rationale_points) + " Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường."
+                full_rationale = " ".join(rationale_points) + (" Khuyến nghị Mua gia tăng vị thế theo xu hướng." if action == "BUY" else " Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.")
 
                 scanned_results.append({
                     "symbol": symbol,
@@ -601,15 +612,26 @@ def main():
     # Step 3: Chọn lọc danh sách khuyến nghị & xuất file JSON
     print("\n[Step 3] Xuất dữ liệu cho AI Agent và Giao diện UI...")
     all_buys = [s for s in scanned_results if s["action"] == "BUY"]
-    all_watch = [s for s in scanned_results if s["action"] != "BUY"]
+    all_sells = [s for s in scanned_results if s["action"] == "SELL"]
+    all_watch = [s for s in scanned_results if s["action"] == "HOLD/WATCH"]
 
     all_buys.sort(key=lambda x: x["score"], reverse=True)
+    all_sells.sort(key=lambda x: x["score"]) # Lowest score / clearest sell signals first
     all_watch.sort(key=lambda x: x["score"], reverse=True)
 
-    # Select top recommendations (up to 8 buys + 4 watch/sells or balanced list)
+    # Select top recommendations (8 buys + 4 sells)
     selected_buys = all_buys[:8]
-    selected_watch = all_watch[:4]
-    final_selections = selected_buys + selected_watch
+    selected_sells = all_sells[:4]
+
+    # Fill if not enough sells or buys
+    if len(selected_sells) < 4:
+        # Fill from watch list marked as SELL
+        additional_sells = all_watch[:(4 - len(selected_sells))]
+        for item in additional_sells:
+            item["action"] = "SELL"
+        selected_sells += additional_sells
+
+    final_selections = selected_buys + selected_sells
     if len(final_selections) < 12:
         remaining = [s for s in scanned_results if s not in final_selections]
         remaining.sort(key=lambda x: x["score"], reverse=True)
