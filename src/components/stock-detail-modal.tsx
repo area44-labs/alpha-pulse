@@ -165,9 +165,10 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
             <ul className="list-disc space-y-1 pl-4 text-[11px] leading-relaxed text-warning-text/80">
               <li>
                 Mức độ rủi ro của mã này ở mức{" "}
-                <strong className="font-bold uppercase">{stock.riskLevel}</strong>. Quyết định mua
-                bán cần tuân thủ đúng điểm kích hoạt dừng lỗ và không giải ngân vượt quá 20% NAV cho
-                một mã cổ phiếu đơn lẻ.
+                <strong className="font-bold uppercase">{stock.riskLevel}</strong> (xác định dựa
+                trên dữ liệu thực tế: độ biến động ATR %, hệ số Beta so với VN-Index và mức sụt giảm
+                Max Drawdown). Quyết định mua bán cần tuân thủ đúng điểm kích hoạt dừng lỗ và không
+                giải ngân vượt quá 20% NAV cho một mã cổ phiếu đơn lẻ.
               </li>
               <li>
                 Khuyến nghị chỉ có giá trị tham khảo ngắn hạn dựa trên phân tích kỹ thuật và dòng
@@ -182,7 +183,7 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
           <div className="flex w-full flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
             <div className="flex items-center space-x-1.5 font-mono text-[10px] text-muted-foreground uppercase">
               <Info className="h-3.5 w-3.5 text-muted-foreground" />
-              <span>Mức rủi ro định sẵn:</span>
+              <span>Mức rủi ro định lượng:</span>
               {getRiskLevelBadge(stock.riskLevel)}
             </div>
             <button

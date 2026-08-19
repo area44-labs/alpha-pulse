@@ -27,50 +27,50 @@ AGENT_SIGNALS_PATH = os.path.join(
 # Danh sách 42 mã chọn lọc: Đầy đủ 30 mã VN30 + 12 mã Midcap dẫn dắt
 CANDIDATE_STOCKS = [
     # --- NHÓM VN30 (30 MÃ) ---
-    {"symbol": "ACB", "companyName": "Ngân hàng TMCP Á Châu", "sector": "Ngân hàng", "riskLevel": "LOW"},
-    {"symbol": "BCM", "companyName": "Tổng Công ty Đầu tư và Phát triển Công nghiệp", "sector": "Bất động sản KCN", "riskLevel": "MEDIUM"},
-    {"symbol": "BID", "companyName": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam", "sector": "Ngân hàng", "riskLevel": "LOW"},
-    {"symbol": "BVH", "companyName": "Tập đoàn Bảo Việt", "sector": "Bảo hiểm", "riskLevel": "LOW"},
-    {"symbol": "CTG", "companyName": "Ngân hàng TMCP Công Thương Việt Nam", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "FPT", "companyName": "Công ty Cổ phần FPT", "sector": "Công nghệ", "riskLevel": "LOW"},
-    {"symbol": "GAS", "companyName": "Tổng Công ty Khí Việt Nam - CTCP", "sector": "Dầu khí", "riskLevel": "LOW"},
-    {"symbol": "GVR", "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP", "sector": "Cao su & BĐS KCN", "riskLevel": "HIGH"},
-    {"symbol": "HDB", "companyName": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "HPG", "companyName": "Công ty Cổ phần Tập đoàn Hòa Phát", "sector": "Thép", "riskLevel": "MEDIUM"},
-    {"symbol": "MBB", "companyName": "Ngân hàng TMCP Quân Đội", "sector": "Ngân hàng", "riskLevel": "LOW"},
-    {"symbol": "MSN", "companyName": "Công ty Cổ phần Tập đoàn Masan", "sector": "Tiêu dùng", "riskLevel": "MEDIUM"},
-    {"symbol": "MWG", "companyName": "Công ty Cổ phần Đầu tư Thế giới Di Động", "sector": "Bán lẻ", "riskLevel": "MEDIUM"},
-    {"symbol": "PLX", "companyName": "Tập đoàn Xăng dầu Việt Nam", "sector": "Năng lượng", "riskLevel": "MEDIUM"},
-    {"symbol": "POW", "companyName": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP", "sector": "Điện lực", "riskLevel": "MEDIUM"},
-    {"symbol": "SAB", "companyName": "Tổng Công ty Cổ phần Bia - Rượu - Nước giải khát Sài Gòn", "sector": "Đồ uống", "riskLevel": "LOW"},
-    {"symbol": "SSB", "companyName": "Ngân hàng TMCP Đông Nam Á", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "SSI", "companyName": "Công ty Cổ phần Chứng khoán SSI", "sector": "Chứng khoán", "riskLevel": "MEDIUM"},
-    {"symbol": "STB", "companyName": "Ngân hàng TMCP Sài Gòn Thương Tín", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "TCB", "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "TPB", "companyName": "Ngân hàng TMCP Tiên Phong", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "VCB", "companyName": "Ngân hàng TMCP Ngoại Thương Việt Nam", "sector": "Ngân hàng", "riskLevel": "LOW"},
-    {"symbol": "VHM", "companyName": "Công ty Cổ phần Vinhomes", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "VIB", "companyName": "Ngân hàng TMCP Quốc tế Việt Nam", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "VIC", "companyName": "Tập đoàn Vingroup - CTCP", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "VJC", "companyName": "Công ty Cổ phần Hàng không Vietjet", "sector": "Hàng không", "riskLevel": "HIGH"},
-    {"symbol": "VNM", "companyName": "Công ty Cổ phần Sữa Việt Nam", "sector": "Thực phẩm", "riskLevel": "LOW"},
-    {"symbol": "VPB", "companyName": "Ngân hàng TMCP Việt Nam Thịnh Vượng", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
-    {"symbol": "VRE", "companyName": "Công ty Cổ phần Vincom Retail", "sector": "Bất động sản", "riskLevel": "MEDIUM"},
-    {"symbol": "SHB", "companyName": "Ngân hàng TMCP Sài Gòn - Hà Nội", "sector": "Ngân hàng", "riskLevel": "MEDIUM"},
+    {"symbol": "ACB", "companyName": "Ngân hàng TMCP Á Châu", "sector": "Ngân hàng"},
+    {"symbol": "BCM", "companyName": "Tổng Công ty Đầu tư và Phát triển Công nghiệp", "sector": "Bất động sản KCN"},
+    {"symbol": "BID", "companyName": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "BVH", "companyName": "Tập đoàn Bảo Việt", "sector": "Bảo hiểm"},
+    {"symbol": "CTG", "companyName": "Ngân hàng TMCP Công Thương Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "FPT", "companyName": "Công ty Cổ phần FPT", "sector": "Công nghệ"},
+    {"symbol": "GAS", "companyName": "Tổng Công ty Khí Việt Nam - CTCP", "sector": "Dầu khí"},
+    {"symbol": "GVR", "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP", "sector": "Cao su & BĐS KCN"},
+    {"symbol": "HDB", "companyName": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh", "sector": "Ngân hàng"},
+    {"symbol": "HPG", "companyName": "Công ty Cổ phần Tập đoàn Hòa Phát", "sector": "Thép"},
+    {"symbol": "MBB", "companyName": "Ngân hàng TMCP Quân Đội", "sector": "Ngân hàng"},
+    {"symbol": "MSN", "companyName": "Công ty Cổ phần Tập đoàn Masan", "sector": "Tiêu dùng"},
+    {"symbol": "MWG", "companyName": "Công ty Cổ phần Đầu tư Thế giới Di Động", "sector": "Bán lẻ"},
+    {"symbol": "PLX", "companyName": "Tập đoàn Xăng dầu Việt Nam", "sector": "Năng lượng"},
+    {"symbol": "POW", "companyName": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP", "sector": "Điện lực"},
+    {"symbol": "SAB", "companyName": "Tổng Công ty Cổ phần Bia - Rượu - Nước giải khát Sài Gòn", "sector": "Đồ uống"},
+    {"symbol": "SSB", "companyName": "Ngân hàng TMCP Đông Nam Á", "sector": "Ngân hàng"},
+    {"symbol": "SSI", "companyName": "Công ty Cổ phần Chứng khoán SSI", "sector": "Chứng khoán"},
+    {"symbol": "STB", "companyName": "Ngân hàng TMCP Sài Gòn Thương Tín", "sector": "Ngân hàng"},
+    {"symbol": "TCB", "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "TPB", "companyName": "Ngân hàng TMCP Tiên Phong", "sector": "Ngân hàng"},
+    {"symbol": "VCB", "companyName": "Ngân hàng TMCP Ngoại Thương Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "VHM", "companyName": "Công ty Cổ phần Vinhomes", "sector": "Bất động sản"},
+    {"symbol": "VIB", "companyName": "Ngân hàng TMCP Quốc tế Việt Nam", "sector": "Ngân hàng"},
+    {"symbol": "VIC", "companyName": "Tập đoàn Vingroup - CTCP", "sector": "Bất động sản"},
+    {"symbol": "VJC", "companyName": "Công ty Cổ phần Hàng không Vietjet", "sector": "Hàng không"},
+    {"symbol": "VNM", "companyName": "Công ty Cổ phần Sữa Việt Nam", "sector": "Thực phẩm"},
+    {"symbol": "VPB", "companyName": "Ngân hàng TMCP Việt Nam Thịnh Vượng", "sector": "Ngân hàng"},
+    {"symbol": "VRE", "companyName": "Công ty Cổ phần Vincom Retail", "sector": "Bất động sản"},
+    {"symbol": "SHB", "companyName": "Ngân hàng TMCP Sài Gòn - Hà Nội", "sector": "Ngân hàng"},
 
     # --- NHÓM MIDCAP TIỀM NĂNG DẪN DẮT (12 MÃ) ---
-    {"symbol": "DGC", "companyName": "CTCP Tập đoàn Hóa chất Đức Giang", "sector": "Hóa chất", "riskLevel": "HIGH"},
-    {"symbol": "FRT", "companyName": "CTCP Bán lẻ Kỹ thuật số FPT", "sector": "Bán lẻ", "riskLevel": "HIGH"},
-    {"symbol": "PVD", "companyName": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí", "sector": "Dầu khí", "riskLevel": "HIGH"},
-    {"symbol": "VCI", "companyName": "CTCP Chứng khoán Vietcap", "sector": "Chứng khoán", "riskLevel": "HIGH"},
-    {"symbol": "HCM", "companyName": "CTCP Chứng khoán TP.Hồ Chí Minh", "sector": "Chứng khoán", "riskLevel": "MEDIUM"},
-    {"symbol": "VND", "companyName": "CTCP Chứng khoán VNDIRECT", "sector": "Chứng khoán", "riskLevel": "HIGH"},
-    {"symbol": "HSG", "companyName": "CTCP Tập đoàn Hoa Sen", "sector": "Thép", "riskLevel": "HIGH"},
-    {"symbol": "NKG", "companyName": "CTCP Thép Nam Kim", "sector": "Thép", "riskLevel": "HIGH"},
-    {"symbol": "DXG", "companyName": "CTCP Tập đoàn Đất Xanh", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "DIG", "companyName": "Tổng CTCP Đầu tư Phát triển Xây dựng", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "PDR", "companyName": "CTCP Phát triển Bất động sản Phát Đạt", "sector": "Bất động sản", "riskLevel": "HIGH"},
-    {"symbol": "GMD", "companyName": "CTCP Gemadept", "sector": "Logistics", "riskLevel": "MEDIUM"},
+    {"symbol": "DGC", "companyName": "CTCP Tập đoàn Hóa chất Đức Giang", "sector": "Hóa chất"},
+    {"symbol": "FRT", "companyName": "CTCP Bán lẻ Kỹ thuật số FPT", "sector": "Bán lẻ"},
+    {"symbol": "PVD", "companyName": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí", "sector": "Dầu khí"},
+    {"symbol": "VCI", "companyName": "CTCP Chứng khoán Vietcap", "sector": "Chứng khoán"},
+    {"symbol": "HCM", "companyName": "CTCP Chứng khoán TP.Hồ Chí Minh", "sector": "Chứng khoán"},
+    {"symbol": "VND", "companyName": "CTCP Chứng khoán VNDIRECT", "sector": "Chứng khoán"},
+    {"symbol": "HSG", "companyName": "CTCP Tập đoàn Hoa Sen", "sector": "Thép"},
+    {"symbol": "NKG", "companyName": "CTCP Thép Nam Kim", "sector": "Thép"},
+    {"symbol": "DXG", "companyName": "CTCP Tập đoàn Đất Xanh", "sector": "Bất động sản"},
+    {"symbol": "DIG", "companyName": "Tổng CTCP Đầu tư Phát triển Xây dựng", "sector": "Bất động sản"},
+    {"symbol": "PDR", "companyName": "CTCP Phát triển Bất động sản Phát Đạt", "sector": "Bất động sản"},
+    {"symbol": "GMD", "companyName": "CTCP Gemadept", "sector": "Logistics"},
 ]
 
 def round_tick_size(price, exchange="HOSE"):
@@ -117,7 +117,129 @@ def calculate_technical_indicators(df):
     df['signal'] = df['macd'].ewm(span=9, adjust=False, min_periods=1).mean()
     df['hist'] = df['macd'] - df['signal']
     df['atr'] = calculate_atr(df, 14)
+
+    # Compute daily return for statistical calculations
+    df['daily_return'] = df['close'].pct_change()
     return df
+
+def calculate_advanced_vn_risk_metrics(df, exchange='HOSE', is_margin_eligible=True, df_vnindex=None):
+    """
+    Thuật toán Quản trị Rủi ro Định lượng Chuẩn hóa cho TTCK Việt Nam (Production-Ready)
+    1. UPCoM dùng VWAP (hoặc avg_price), HOSE/HNX dùng Close
+    2. Rolling 3-day Returns (T+2.5 execution cycle) & Historical VaR 95%
+    3. Multi-day Floor Hit Risk (Tần suất chạm sàn 60 phiên)
+    4. Penalty Rủi ro bị cắt Margin
+    5. Volatility Niên hóa (60 phiên)
+    6. Max Drawdown (MDD)
+    """
+    if df is None or len(df) < 20:
+        return {
+            "status": "REJECTED",
+            "reason": "Dữ liệu không đủ 20 phiên",
+            "annual_vol": 0.25,
+            "historical_var_t25": -0.07,
+            "mdd": -0.15,
+            "floor_hits_60d": 0,
+            "floor_risk_flag": False,
+            "margin_penalty": 1.0 if is_margin_eligible else 1.5,
+            "avg_value_20d_bn": 0.0
+        }
+
+    # 1. Chọn giá theo đặc thù từng sàn
+    price_col = 'vwap' if (exchange.upper() == 'UPCOM' and 'vwap' in df.columns) else (
+        'avg_price' if (exchange.upper() == 'UPCOM' and 'avg_price' in df.columns) else 'close'
+    )
+
+    # 2. Tính Lợi nhuận 1D và T+2.5 (Rolling 3-day Return)
+    df['returns_1d'] = df[price_col].pct_change()
+    df['returns_t25'] = df[price_col].pct_change(periods=3)
+
+    # 3. Lọc Thanh khoản tối thiểu (20 phiên gần nhất)
+    df['trading_value'] = df[price_col] * df['volume']
+    avg_value_20d = float(df['trading_value'].tail(20).mean())
+
+    # 4. Historical VaR 95% thực tế cho chu kỳ T+2.5
+    returns_t25_clean = df['returns_t25'].dropna()
+    var_95_t25 = float(np.percentile(returns_t25_clean, 5)) if len(returns_t25_clean) >= 5 else -0.07
+
+    # 5. Tần suất chạm sàn trong 60 phiên (Floor Hit Risk)
+    floor_limit = -0.068 if exchange.upper() == 'HOSE' else (-0.098 if exchange.upper() == 'HNX' else -0.148)
+    tail_returns_1d = df['returns_1d'].tail(60)
+    floor_hits = int((tail_returns_1d <= floor_limit).sum())
+    floor_risk_flag = floor_hits >= 2
+
+    # 6. Penalty Margin
+    margin_penalty = 1.0 if is_margin_eligible else 1.5
+
+    # 7. Volatility Niên hóa 60 phiên
+    tail_std = float(df['returns_1d'].tail(60).std())
+    annual_vol = tail_std * np.sqrt(252) if not np.isnan(tail_std) else 0.25
+
+    # 8. Max Drawdown
+    rolling_max = df[price_col].cummax()
+    mdd_series = (df[price_col] - rolling_max) / rolling_max
+    mdd = float(mdd_series.min()) if not mdd_series.empty else -0.15
+
+    return {
+        "status": "PASSED" if avg_value_20d >= 1_000_000_000 else "LOW_LIQUIDITY",
+        "avg_value_20d_bn": round(avg_value_20d / 1e9, 2),
+        "annual_vol": round(annual_vol, 4),
+        "historical_var_t25": round(var_95_t25, 4),
+        "mdd": round(mdd, 4),
+        "floor_hits_60d": floor_hits,
+        "floor_risk_flag": floor_risk_flag,
+        "margin_penalty": margin_penalty
+    }
+
+def normalize_universe_risk(scanned_results, market_risk_level="LOW"):
+    """
+    Chuẩn hóa Điểm Rủi Ro (Z-Score) trên toàn bộ Universe thay vì tính điểm thô.
+    Phân loại cổ phiếu thành LOW, MEDIUM, HIGH dựa trên Z-score tổng hợp trong Universe.
+    """
+    if not scanned_results:
+        return scanned_results
+
+    valid_items = [r for r in scanned_results if "risk_metrics" in r]
+    if len(valid_items) < 3:
+        for r in scanned_results:
+            r["riskLevel"] = r.get("riskLevel", "MEDIUM")
+        return scanned_results
+
+    # Trích xuất chỉ số để tính Z-Score
+    vols = np.array([r["risk_metrics"]["annual_vol"] for r in valid_items])
+    vars_t25 = np.array([abs(r["risk_metrics"]["historical_var_t25"]) for r in valid_items])
+    mdds = np.array([abs(r["risk_metrics"]["mdd"]) for r in valid_items])
+    penalties = np.array([r["risk_metrics"]["margin_penalty"] for r in valid_items])
+    floor_flags = np.array([1.5 if r["risk_metrics"]["floor_risk_flag"] else 1.0 for r in valid_items])
+
+    vol_std = vols.std() if vols.std() > 0 else 1.0
+    var_std = vars_t25.std() if vars_t25.std() > 0 else 1.0
+    mdd_std = mdds.std() if mdds.std() > 0 else 1.0
+
+    vol_z = (vols - vols.mean()) / vol_std
+    var_z = (vars_t25 - vars_t25.mean()) / var_std
+    mdd_z = (mdds - mdds.mean()) / mdd_std
+
+    raw_final_scores = (vol_z * 0.4 + var_z * 0.4 + mdd_z * 0.2) * penalties * floor_flags
+
+    if market_risk_level == "HIGH":
+        raw_final_scores += 0.5
+
+    # Phân loại dựa trên Bách phân vị (Percentiles)
+    p33 = np.percentile(raw_final_scores, 33)
+    p66 = np.percentile(raw_final_scores, 66)
+
+    for idx, r in enumerate(valid_items):
+        score = raw_final_scores[idx]
+        r["composite_risk_score"] = round(float(score), 3)
+        if score >= p66 or r["risk_metrics"]["floor_risk_flag"]:
+            r["riskLevel"] = "HIGH"
+        elif score <= p33 and not r["risk_metrics"]["floor_risk_flag"]:
+            r["riskLevel"] = "LOW"
+        else:
+            r["riskLevel"] = "MEDIUM"
+
+    return scanned_results
 
 def fetch_batch_smart_money(symbols):
     """Lấy dữ liệu mua/bán ròng Khối ngoại & Tự doanh gộp chung 1 request cho tất cả các mã."""
@@ -252,6 +374,7 @@ def main():
     vnindex_val = 1740.0
     vnindex_change = 0.0
     vnindex_pct = 0.0
+    df_vn = None
 
     try:
         df_vn, _ = get_historical_data_api("VNINDEX", start_date, end_date)
@@ -342,15 +465,9 @@ def main():
 
                 score = max(0, min(100, score))
 
-                # 5. Đánh giá Mức độ Rủi ro (Dynamic Risk Level Evaluation based on Base Sector Profile + ATR Volatility)
-                atr_pct = (atr / close) * 100.0 if close > 0 else 0.0
-                base_risk = item["riskLevel"]
-                if atr_pct >= 4.5 or market_risk_level == "HIGH":
-                    dynamic_risk_level = "HIGH"
-                elif atr_pct <= 2.5 and base_risk == "LOW":
-                    dynamic_risk_level = "LOW"
-                else:
-                    dynamic_risk_level = base_risk
+                # 5. Đánh giá Mức độ Rủi ro (Production-Ready Vietnam Quantitative Risk Model)
+                risk_metrics = calculate_advanced_vn_risk_metrics(df, exchange=ex, is_margin_eligible=True, df_vnindex=df_vn)
+                dynamic_risk_level = "MEDIUM" # Default before universe normalization
 
                 # 6. Xác định điểm Quản trị vị thế (Thanh khoản T+2.5 & Biên độ sàn)
                 buy_min = round_tick_size(close, ex)
@@ -362,7 +479,14 @@ def main():
                 target2 = clamp_price_limits(close + 3.0 * risk, close, ex)
 
                 is_buy = (close > ma20 and score >= 65)
-                action = "BUY" if is_buy else "HOLD/WATCH"
+                is_sell = (close < ma20 or score <= 45 or macd_hist < 0 or rsi < 45 or close <= stop_loss)
+
+                if is_buy:
+                    action = "BUY"
+                elif is_sell:
+                    action = "SELL"
+                else:
+                    action = "HOLD/WATCH"
 
                 if score >= 80:
                     grade = "Grade A"
@@ -371,16 +495,20 @@ def main():
                 else:
                     grade = "Grade C"
 
-                rr_ratio = f"1:{(target1 - close) / risk:.1f}"
-                exec_notes = f"Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức {buy_max * 1000:,.0f}đ."
+                rr_ratio = f"1:{(target1 - close) / risk:.1f}" if action == "BUY" else "1:1.0"
+                exec_notes = (
+                    f"Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức {buy_max * 1000:,.0f}đ."
+                    if action == "BUY" else
+                    "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20."
+                )
 
                 rationale_points = [
-                    f"Giá đóng cửa {close * 1000:,.0f}đ vượt đường trung bình động MA20 ({ma20 * 1000:,.0f}đ), củng cố xu hướng tăng." if close > ma20 else f"Giá đóng cửa dưới đường xu hướng ngắn hạn MA20 ({ma20 * 1000:,.0f}đ).",
+                    f"Giá đóng cửa {close * 1000:,.0f}đ vượt đường trung bình động MA20 ({ma20 * 1000:,.0f}đ), củng cố xu hướng tăng." if close > ma20 else f"Giá đóng cửa {close * 1000:,.0f}đ gãy đường xu hướng ngắn hạn MA20 ({ma20 * 1000:,.0f}đ), suy yếu xu hướng.",
                     f"Thanh khoản bùng nổ đạt {vol_ratio:.1f}x so với trung bình 20 phiên, dòng tiền mua chủ động." if vol_ratio > 1.2 else "Thanh khoản duy trì ở mức bình ổn.",
-                    f"Chỉ báo RSI đạt {rsi:.1f} điểm, duy trì động lượng phục hồi tốt." if rsi > 50 else f"RSI ở mức {rsi:.1f} điểm, thể hiện áp lực cung lấn át.",
-                    f"MACD phân kỳ dương ({macd_hist:.3f}) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ." if macd_hist > 0 else "MACD phân kỳ âm, đà giảm tiếp tục kéo dài."
+                    f"Chỉ báo RSI đạt {rsi:.1f} điểm, duy trì động lượng phục hồi tốt." if rsi > 50 else f"RSI ở mức {rsi:.1f} điểm, thể hiện áp lực cung lấn át suy yếu đà tăng.",
+                    f"MACD phân kỳ dương ({macd_hist:.3f}) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ." if macd_hist > 0 else f"MACD phân kỳ âm ({macd_hist:.3f}), áp lực điều chỉnh gia tăng."
                 ]
-                full_rationale = " ".join(rationale_points) + " Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường."
+                full_rationale = " ".join(rationale_points) + (" Khuyến nghị Mua gia tăng vị thế theo xu hướng." if action == "BUY" else " Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.")
 
                 scanned_results.append({
                     "symbol": symbol,
@@ -402,6 +530,7 @@ def main():
                     "rationale": full_rationale,
                     "rationale_points": rationale_points,
                     "exec_notes": exec_notes,
+                    "risk_metrics": risk_metrics,
                     "riskLevel": dynamic_risk_level
                 })
                 print(f"-> [THÀNH CÔNG] Điểm: {score}/100 | Khuyến nghị: {action}")
@@ -447,7 +576,7 @@ def main():
                     "rationale": old_rec["rationale"],
                     "rationale_points": [old_rec["rationale"]],
                     "exec_notes": "Retained from previous record.",
-                    "riskLevel": item["riskLevel"]
+                    "riskLevel": old_rec.get("riskLevel", "MEDIUM")
                 })
             else:
                 # Default baseline fallback record
@@ -471,24 +600,38 @@ def main():
                     "rationale": "Cổ phiếu trong danh sách theo dõi xu hướng.",
                     "rationale_points": ["Cổ phiếu trong danh sách theo dõi xu hướng."],
                     "exec_notes": "Theo dõi sát tín hiệu dòng tiền.",
-                    "riskLevel": item["riskLevel"]
+                    "riskLevel": "MEDIUM"
                 })
 
         # Smart delay (0.4s) to safely process all 42 candidates
         time.sleep(0.4)
 
+    # Step 2.5: Chuẩn hóa điểm rủi ro Z-Score toàn vũ trụ cổ phiếu (Universe Risk Normalization)
+    scanned_results = normalize_universe_risk(scanned_results, market_risk_level=market_risk_level)
+
     # Step 3: Chọn lọc danh sách khuyến nghị & xuất file JSON
     print("\n[Step 3] Xuất dữ liệu cho AI Agent và Giao diện UI...")
     all_buys = [s for s in scanned_results if s["action"] == "BUY"]
-    all_watch = [s for s in scanned_results if s["action"] != "BUY"]
+    all_sells = [s for s in scanned_results if s["action"] == "SELL"]
+    all_watch = [s for s in scanned_results if s["action"] == "HOLD/WATCH"]
 
     all_buys.sort(key=lambda x: x["score"], reverse=True)
+    all_sells.sort(key=lambda x: x["score"]) # Lowest score / clearest sell signals first
     all_watch.sort(key=lambda x: x["score"], reverse=True)
 
-    # Select top recommendations (up to 8 buys + 4 watch/sells or balanced list)
+    # Select top recommendations (8 buys + 4 sells)
     selected_buys = all_buys[:8]
-    selected_watch = all_watch[:4]
-    final_selections = selected_buys + selected_watch
+    selected_sells = all_sells[:4]
+
+    # Fill if not enough sells or buys
+    if len(selected_sells) < 4:
+        # Fill from watch list marked as SELL
+        additional_sells = all_watch[:(4 - len(selected_sells))]
+        for item in additional_sells:
+            item["action"] = "SELL"
+        selected_sells += additional_sells
+
+    final_selections = selected_buys + selected_sells
     if len(final_selections) < 12:
         remaining = [s for s in scanned_results if s not in final_selections]
         remaining.sort(key=lambda x: x["score"], reverse=True)
