@@ -67,7 +67,7 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
               {isBuy ? "BUY" : "SELL"}
             </Badge>
             <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
-              Alpha Pulse Premium
+              Premium Analysis
             </span>
           </div>
           <div className="mt-2 flex flex-wrap items-baseline justify-between gap-2">

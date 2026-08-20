@@ -13,9 +13,7 @@ export function Header({ lastUpdated }: HeaderProps) {
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/90 backdrop-blur-md transition-colors">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Report Identity */}
-        <div className="flex items-center space-x-3.5">
-          <span className="text-sm font-bold tracking-tight text-foreground">Alpha Pulse</span>
-        </div>
+        <div className="flex items-center space-x-3.5" />
 
         {/* Right navigation items */}
         <div className="flex items-center space-x-4">
