@@ -131,9 +131,7 @@ function App() {
                 Phân Tích & Khuyến Nghị Giao Dịch
               </h2>
               <p className="text-xs leading-relaxed text-muted-foreground">
-                Chào mừng bạn đến với{" "}
-                <strong className="font-bold text-foreground">Alpha Pulse</strong>, nền tảng tổng
-                hợp tín hiệu giao dịch cổ phiếu Việt Nam.
+                Chào mừng bạn đến với nền tảng tổng hợp tín hiệu giao dịch cổ phiếu Việt Nam.
               </p>
             </div>
           </div>
