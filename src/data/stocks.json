@@ -36,12 +36,25 @@
       "companyName": "Công ty Cổ phần FPT",
       "sector": "Công nghệ",
       "type": "BUY",
-      "currentPrice": 70.0,
-      "targetBuyPrice": "70.0 - 71.4",
-      "targetSellPrice": 74.9,
-      "stopLossPrice": 65.1,
+      "currentPrice": 69.8,
+      "targetBuyPrice": "69.8 - 71.2",
+      "targetSellPrice": 74.7,
+      "stopLossPrice": 64.9,
       "riskLevel": "MEDIUM",
-      "rationale": "Giá đóng cửa 70,000đ vượt đường trung bình động MA20 (68,515đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 61.2 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.091) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "rationale": "Giá đóng cửa 69,800đ vượt đường trung bình động MA20 (68,505đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 60.6 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.078) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "riskRewardRatio": "1:1.0"
+    },
+    {
+      "symbol": "BCM",
+      "companyName": "Tổng Công ty Đầu tư và Phát triển Công nghiệp",
+      "sector": "Bất động sản KCN",
+      "type": "BUY",
+      "currentPrice": 40.6,
+      "targetBuyPrice": "40.6 - 41.4",
+      "targetSellPrice": 43.45,
+      "stopLossPrice": 37.75,
+      "riskLevel": "HIGH",
+      "rationale": "Giá đóng cửa 40,600đ vượt đường trung bình động MA20 (39,108đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 63.6 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.738) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.0"
     },
     {
@@ -58,42 +71,16 @@
       "riskRewardRatio": "1:1.0"
     },
     {
-      "symbol": "BCM",
-      "companyName": "Tổng Công ty Đầu tư và Phát triển Công nghiệp",
-      "sector": "Bất động sản KCN",
-      "type": "BUY",
-      "currentPrice": 40.55,
-      "targetBuyPrice": "40.5 - 41.4",
-      "targetSellPrice": 43.4,
-      "stopLossPrice": 37.7,
-      "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 40,550đ vượt đường trung bình động MA20 (39,105đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 63.4 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.734) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
-    },
-    {
       "symbol": "CTG",
       "companyName": "Ngân hàng TMCP Công Thương Việt Nam",
       "sector": "Ngân hàng",
       "type": "BUY",
-      "currentPrice": 31.2,
-      "targetBuyPrice": "31.2 - 31.8",
-      "targetSellPrice": 33.4,
-      "stopLossPrice": 29.0,
+      "currentPrice": 31.4,
+      "targetBuyPrice": "31.4 - 32.0",
+      "targetSellPrice": 33.6,
+      "stopLossPrice": 29.2,
       "riskLevel": "LOW",
-      "rationale": "Giá đóng cửa 31,200đ vượt đường trung bình động MA20 (31,143đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 53.8 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.026) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
-    },
-    {
-      "symbol": "GAS",
-      "companyName": "Tổng Công ty Khí Việt Nam - CTCP",
-      "sector": "Dầu khí",
-      "type": "BUY",
-      "currentPrice": 83.0,
-      "targetBuyPrice": "83.0 - 84.7",
-      "targetSellPrice": 88.8,
-      "stopLossPrice": 77.2,
-      "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 83,000đ vượt đường trung bình động MA20 (74,140đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 72.2 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (1.424) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "rationale": "Giá đóng cửa 31,400đ vượt đường trung bình động MA20 (31,153đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 55.6 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.039) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.0"
     },
     {
@@ -101,12 +88,12 @@
       "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP",
       "sector": "Cao su & BĐS KCN",
       "type": "BUY",
-      "currentPrice": 31.7,
-      "targetBuyPrice": "31.7 - 32.4",
-      "targetSellPrice": 33.9,
-      "stopLossPrice": 29.5,
-      "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 31,700đ vượt đường trung bình động MA20 (29,443đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 71.4 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.418) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "currentPrice": 31.45,
+      "targetBuyPrice": "31.4 - 32.1",
+      "targetSellPrice": 33.65,
+      "stopLossPrice": 29.25,
+      "riskLevel": "MEDIUM",
+      "rationale": "Giá đóng cửa 31,450đ vượt đường trung bình động MA20 (29,430đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 69.7 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.402) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.0"
     },
     {
@@ -123,29 +110,16 @@
       "riskRewardRatio": "1:2.0"
     },
     {
-      "symbol": "GMD",
-      "companyName": "CTCP Gemadept",
-      "sector": "Logistics",
-      "type": "BUY",
-      "currentPrice": 78.6,
-      "targetBuyPrice": "78.6 - 80.2",
-      "targetSellPrice": 84.1,
-      "stopLossPrice": 73.1,
-      "riskLevel": "LOW",
-      "rationale": "Giá đóng cửa 78,600đ vượt đường trung bình động MA20 (76,430đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.4x so với trung bình 20 phiên, dòng tiền mua chủ động. Chỉ báo RSI đạt 64.1 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.274) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:2.0"
-    },
-    {
       "symbol": "ACB",
       "companyName": "Ngân hàng TMCP Á Châu",
       "sector": "Ngân hàng",
       "type": "SELL",
-      "currentPrice": 22.0,
+      "currentPrice": 21.95,
       "targetBuyPrice": "Không khuyến nghị",
-      "targetSellPrice": 23.55,
-      "stopLossPrice": 20.45,
+      "targetSellPrice": 23.5,
+      "stopLossPrice": 20.4,
       "riskLevel": "LOW",
-      "rationale": "Giá đóng cửa 22,000đ gãy đường xu hướng ngắn hạn MA20 (22,278đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 51.6 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ âm (-0.072), áp lực điều chỉnh gia tăng. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
+      "rationale": "Giá đóng cửa 21,950đ gãy đường xu hướng ngắn hạn MA20 (22,275đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 50.8 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ âm (-0.075), áp lực điều chỉnh gia tăng. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
       "riskRewardRatio": "1:1.0"
     },
     {
@@ -186,6 +160,32 @@
       "riskLevel": "HIGH",
       "rationale": "Giá đóng cửa 20,950đ gãy đường xu hướng ngắn hạn MA20 (21,195đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. RSI ở mức 41.5 điểm, thể hiện áp lực cung lấn át suy yếu đà tăng. MACD phân kỳ dương (0.073) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
       "riskRewardRatio": "1:2.0"
+    },
+    {
+      "symbol": "BID",
+      "companyName": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
+      "sector": "Ngân hàng",
+      "type": "SELL",
+      "currentPrice": 35.85,
+      "targetBuyPrice": "Không khuyến nghị",
+      "targetSellPrice": 38.35,
+      "stopLossPrice": 33.35,
+      "riskLevel": "LOW",
+      "rationale": "Giá đóng cửa 35,850đ vượt đường trung bình động MA20 (35,376đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 53.4 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.123) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
+      "riskRewardRatio": "1:1.0"
+    },
+    {
+      "symbol": "GAS",
+      "companyName": "Tổng Công ty Khí Việt Nam - CTCP",
+      "sector": "Dầu khí",
+      "type": "SELL",
+      "currentPrice": 83.5,
+      "targetBuyPrice": "Không khuyến nghị",
+      "targetSellPrice": 89.3,
+      "stopLossPrice": 77.7,
+      "riskLevel": "HIGH",
+      "rationale": "Giá đóng cửa 83,500đ vượt đường trung bình động MA20 (74,165đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 73.4 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (1.456) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
+      "riskRewardRatio": "1:1.0"
     }
   ]
 }
