@@ -242,24 +242,27 @@ def normalize_universe_risk(scanned_results, market_risk_level="LOW"):
     return scanned_results
 
 def fetch_batch_smart_money(symbols):
-    """Lấy dữ liệu mua/bán ròng Khối ngoại & Tự doanh gộp chung 1 request cho tất cả các mã."""
+    """Lấy dữ liệu mua/bán ròng Khối ngoại & Tự doanh và Bảng giá thực tế cho tất cả các mã."""
     smart_money_map = {sym: {"foreign_net_val": 0.0, "prop_net_val": 0.0} for sym in symbols}
+    live_price_map = {sym: 0.0 for sym in symbols}
     if not VNSTOCK_AVAILABLE:
-        return smart_money_map
+        return smart_money_map, live_price_map
     try:
         price_board = Trading().price_board(symbols)
         if price_board is not None and not price_board.empty:
             for _, row in price_board.iterrows():
                 sym = row.get('symbol')
+                close = float(row.get('close_price', 0) or row.get('reference_price', 0) or 0)
                 if sym in smart_money_map:
                     f_buy = float(row.get('foreign_buy_volume', 0) or 0)
                     f_sell = float(row.get('foreign_sell_volume', 0) or 0)
-                    close = float(row.get('close_price', 0) or row.get('reference_price', 0) or 0)
                     smart_money_map[sym]["foreign_net_val"] = (f_buy - f_sell) * close
                     smart_money_map[sym]["prop_net_val"] = float(row.get('prop_net_value', 0) or 0)
+                if sym in live_price_map and close > 0:
+                    live_price_map[sym] = close / 1000.0 if close > 1000.0 else close
     except (Exception, SystemExit) as e:
         print(f"  -> Warning: Failed to fetch batch price board: {e}")
-    return smart_money_map
+    return smart_money_map, live_price_map
 
 def check_corporate_events(symbol):
     """Kiểm tra và loại bỏ các mã dính Lịch giao dịch không hưởng quyền (GDKHQ)."""
@@ -399,9 +402,9 @@ def main():
 
     exchange_map = get_exchange_mapping()
 
-    # Pre-fetch Batch Smart Money Signals for all 42 stocks in 1 request
+    # Pre-fetch Batch Smart Money Signals and Live Exchange Price Map for all 42 stocks in 1 request
     all_symbols = [item["symbol"] for item in CANDIDATE_STOCKS]
-    smart_money_batch = fetch_batch_smart_money(all_symbols)
+    smart_money_batch, live_price_map = fetch_batch_smart_money(all_symbols)
 
     # Step 2: Quét toàn bộ danh sách 42 Mã chọn lọc
     scanned_results = []
@@ -422,6 +425,8 @@ def main():
             print(f"-> [LOẠI]: {event_msg}")
             continue
 
+        live_price = live_price_map.get(symbol, 0.0)
+
         # 2. Lấy giá lịch sử
         df, _ = get_historical_data_api(symbol, start_date, end_date)
 
@@ -430,6 +435,12 @@ def main():
                 for col in ['open', 'high', 'low', 'close']:
                     if df[col].iloc[-1] > 1000:
                         df[col] = df[col] / 1000.0
+
+                # Synchronize/rescale historical prices to match real-time live price board
+                if live_price > 0 and df['close'].iloc[-1] > 0:
+                    scale_factor = live_price / df['close'].iloc[-1]
+                    for col in ['open', 'high', 'low', 'close']:
+                        df[col] = df[col] * scale_factor
 
                 df = calculate_technical_indicators(df)
                 close = float(df['close'].iloc[-1])
@@ -555,6 +566,9 @@ def main():
                 if r["symbol"] == symbol:
                     old_rec = r
                     break
+
+            curr_p = live_price if live_price > 0 else (old_rec["currentPrice"] if old_rec else 25.0)
+
             if old_rec:
                 scanned_results.append({
                     "symbol": symbol,
@@ -564,14 +578,14 @@ def main():
                     "action": old_rec["type"],
                     "score": 65,
                     "grade": "Grade B",
-                    "closePrice": round(old_rec["currentPrice"] * 1000, 0),
-                    "currentPrice": old_rec["currentPrice"],
+                    "closePrice": round(curr_p * 1000, 0),
+                    "currentPrice": round(curr_p, 2),
                     "foreignNetBuyBillion": 0.0,
                     "propNetBuyBillion": 0.0,
-                    "buy_zone": {"min": int(old_rec["currentPrice"] * 1000), "max": int(old_rec["currentPrice"] * 1.02 * 1000)},
-                    "stop_loss": int(old_rec["stopLossPrice"] * 1000),
-                    "target_1": int(old_rec["targetSellPrice"] * 1000),
-                    "target_2": int(old_rec["targetSellPrice"] * 1.1 * 1000),
+                    "buy_zone": {"min": int(curr_p * 1000), "max": int(curr_p * 1.02 * 1000)},
+                    "stop_loss": int(curr_p * 0.93 * 1000),
+                    "target_1": int(curr_p * 1.1 * 1000),
+                    "target_2": int(curr_p * 1.2 * 1000),
                     "risk_reward_ratio": "1:2.0",
                     "rationale": old_rec["rationale"],
                     "rationale_points": [old_rec["rationale"]],
@@ -588,14 +602,14 @@ def main():
                     "action": "HOLD/WATCH",
                     "score": 50,
                     "grade": "Grade C",
-                    "closePrice": 25000,
-                    "currentPrice": 25.0,
+                    "closePrice": round(curr_p * 1000, 0),
+                    "currentPrice": round(curr_p, 2),
                     "foreignNetBuyBillion": 0.0,
                     "propNetBuyBillion": 0.0,
-                    "buy_zone": {"min": 25000, "max": 25500},
-                    "stop_loss": 23500,
-                    "target_1": 28000,
-                    "target_2": 30000,
+                    "buy_zone": {"min": int(curr_p * 1000), "max": int(curr_p * 1.02 * 1000)},
+                    "stop_loss": int(curr_p * 0.93 * 1000),
+                    "target_1": int(curr_p * 1.1 * 1000),
+                    "target_2": int(curr_p * 1.2 * 1000),
                     "risk_reward_ratio": "1:2.0",
                     "rationale": "Cổ phiếu trong danh sách theo dõi xu hướng.",
                     "rationale_points": ["Cổ phiếu trong danh sách theo dõi xu hướng."],
