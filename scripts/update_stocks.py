@@ -19,6 +19,7 @@ STOCKS_JSON_PATH = os.path.join(
     "src", "data", "stocks.json"
 )
 
+
 AGENT_SIGNALS_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "src", "data", "agent_signals.json"
@@ -331,25 +332,32 @@ def send_notification(title, message):
         except Exception as e:
             print(f"Failed to send Discord notification: {e}")
 
-def get_historical_data_api(symbol, start_date, end_date):
+def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
     if not VNSTOCK_AVAILABLE:
         return None, None
     sources = ['kbs', 'msn']
-    for source in sources:
-        try:
-            q = VnQuote(symbol=symbol, source=source)
-            df = q.history(start=start_date, end=end_date)
-            if df is not None and not df.empty and "close" in df.columns:
-                df.columns = [c.lower() for c in df.columns]
-                for col in ['open', 'high', 'low', 'close', 'volume']:
-                    if col in df.columns:
-                        df[col] = pd.to_numeric(df[col], errors='coerce')
-                # Verify price scale
-                if df['close'].iloc[-1] < 1.0:
-                    continue
-                return df, source
-        except (Exception, SystemExit):
-            pass
+    for attempt in range(max_retries):
+        for source in sources:
+            try:
+                q = VnQuote(symbol=symbol, source=source)
+                df = q.history(start=start_date, end=end_date)
+                if df is not None and not df.empty and "close" in df.columns:
+                    df.columns = [c.lower() for c in df.columns]
+                    for col in ['open', 'high', 'low', 'close', 'volume']:
+                        if col in df.columns:
+                            df[col] = pd.to_numeric(df[col], errors='coerce')
+                    # Verify price scale
+                    if df['close'].iloc[-1] < 1.0:
+                        continue
+                    return df, source
+            except (Exception, SystemExit) as e:
+                err_str = str(e).lower()
+                if "rate limit" in err_str or "giới hạn api" in err_str or "wait" in err_str:
+                    time.sleep(12)
+                else:
+                    time.sleep(1)
+        if attempt < max_retries - 1:
+            time.sleep(3)
     return None, None
 
 def main():
@@ -706,7 +714,7 @@ def main():
             "riskRewardRatio": item["risk_reward_ratio"]
         })
 
-    # Step 4: Update Market Summary Indices
+    # Step 4: Update Market Summary Indices at the end
     print("\n[Step 4] Fetching fresh stock market summaries...")
     index_symbol_mapping = {
         "vnIndex": "VNINDEX",
@@ -724,7 +732,11 @@ def main():
 
     for index_key, ssi_symbol in index_symbol_mapping.items():
         try:
-            df_idx, _ = get_historical_data_api(ssi_symbol, start_date, end_date)
+            if index_key == "vnIndex" and df_vn is not None and len(df_vn) >= 2:
+                df_idx = df_vn
+            else:
+                df_idx, _ = get_historical_data_api(ssi_symbol, start_date, end_date)
+
             if df_idx is not None and len(df_idx) >= 2:
                 for col in ['open', 'high', 'low', 'close']:
                     if col in df_idx.columns and df_idx[col].iloc[-1] > 10000:
@@ -741,6 +753,7 @@ def main():
                 market_summary[index_key]["change"] = round(change, 2)
                 market_summary[index_key]["changePercent"] = round(change_percent, 2)
                 market_summary[index_key]["volume"] = vol_str
+                print(f"  -> [{index_key}]: {latest_val:.2f} ({change_percent:+.2f}%)")
         except (Exception, SystemExit) as e:
             print(f"  -> Error updating index {ssi_symbol}: {e}")
 

@@ -66,16 +66,17 @@ function App() {
   useEffect(() => {
     const fetchRealData = async () => {
       const baseUrl = import.meta.env.BASE_URL || "/";
+      const timestamp = Date.now();
       const paths = [
-        `${baseUrl}data/stocks.json`,
-        `${baseUrl}stocks.json`,
-        `/data/stocks.json`,
-        `/stocks.json`,
+        `${baseUrl}data/stocks.json?t=${timestamp}`,
+        `${baseUrl}stocks.json?t=${timestamp}`,
+        `/data/stocks.json?t=${timestamp}`,
+        `/stocks.json?t=${timestamp}`,
       ];
 
       for (const path of paths) {
         try {
-          const res = await fetch(path);
+          const res = await fetch(path, { cache: "no-store" });
           if (res.ok) {
             const freshData = await res.json();
             if (freshData && freshData.recommendations && freshData.marketSummary) {
