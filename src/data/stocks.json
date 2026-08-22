@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "21/08/2026",
+  "lastUpdated": "22/08/2026",
   "marketSummary": {
     "vnIndex": {
       "name": "VN-Index",
@@ -136,32 +136,6 @@
       "riskRewardRatio": "1:1.0"
     },
     {
-      "symbol": "TCB",
-      "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam",
-      "sector": "Ngân hàng",
-      "type": "SELL",
-      "currentPrice": 31.65,
-      "targetBuyPrice": "Không khuyến nghị",
-      "targetSellPrice": 34.81,
-      "stopLossPrice": 29.43,
-      "riskLevel": "MEDIUM",
-      "rationale": "Giá đóng cửa 31,650đ vượt đường trung bình động MA20 (29,970đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 73.7 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.360) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
-      "riskRewardRatio": "1:2.0"
-    },
-    {
-      "symbol": "VND",
-      "companyName": "CTCP Chứng khoán VNDIRECT",
-      "sector": "Chứng khoán",
-      "type": "SELL",
-      "currentPrice": 16.9,
-      "targetBuyPrice": "Không khuyến nghị",
-      "targetSellPrice": 18.59,
-      "stopLossPrice": 15.72,
-      "riskLevel": "MEDIUM",
-      "rationale": "Giá đóng cửa 15,800đ gãy đường xu hướng ngắn hạn MA20 (16,482đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. RSI ở mức 33.3 điểm, thể hiện áp lực cung lấn át suy yếu đà tăng. MACD phân kỳ âm (-0.079), áp lực điều chỉnh gia tăng. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
-      "riskRewardRatio": "1:2.0"
-    },
-    {
       "symbol": "HDB",
       "companyName": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh",
       "sector": "Ngân hàng",
@@ -185,6 +159,32 @@
       "stopLossPrice": 20.18,
       "riskLevel": "MEDIUM",
       "rationale": "Cổ phiếu trong danh sách theo dõi xu hướng.",
+      "riskRewardRatio": "1:2.0"
+    },
+    {
+      "symbol": "TCB",
+      "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam",
+      "sector": "Ngân hàng",
+      "type": "SELL",
+      "currentPrice": 31.65,
+      "targetBuyPrice": "Không khuyến nghị",
+      "targetSellPrice": 34.81,
+      "stopLossPrice": 29.43,
+      "riskLevel": "MEDIUM",
+      "rationale": "Giá đóng cửa 31,650đ vượt đường trung bình động MA20 (29,970đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 73.7 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.360) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị phù hợp với phân tích kỹ thuật và dòng tiền chung của thị trường.",
+      "riskRewardRatio": "1:2.0"
+    },
+    {
+      "symbol": "VND",
+      "companyName": "CTCP Chứng khoán VNDIRECT",
+      "sector": "Chứng khoán",
+      "type": "SELL",
+      "currentPrice": 16.9,
+      "targetBuyPrice": "Không khuyến nghị",
+      "targetSellPrice": 18.59,
+      "stopLossPrice": 15.72,
+      "riskLevel": "MEDIUM",
+      "rationale": "Giá đóng cửa 15,800đ gãy đường xu hướng ngắn hạn MA20 (16,482đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. RSI ở mức 33.3 điểm, thể hiện áp lực cung lấn át suy yếu đà tăng. MACD phân kỳ âm (-0.079), áp lực điều chỉnh gia tăng. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
       "riskRewardRatio": "1:2.0"
     }
   ]

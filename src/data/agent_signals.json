@@ -1,5 +1,5 @@
 {
-  "scan_date": "2026-08-21",
+  "scan_date": "2026-08-22",
   "market_context": {
     "vnindex_status": "UPTREND",
     "market_risk_level": "LOW",
@@ -200,6 +200,44 @@
       "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 85,200đ."
     },
     {
+      "ticker": "HDB",
+      "exchange": "HOSE",
+      "action": "SELL",
+      "confidence_score": 65,
+      "grade": "Grade B",
+      "price_data": {
+        "buy_zone": {
+          "min": 27300,
+          "max": 27846
+        },
+        "stop_loss": 25389,
+        "target_1": 30030,
+        "target_2": 32759,
+        "risk_reward_ratio": "1:2.0"
+      },
+      "technical_rationale": ["Cổ phiếu trong danh sách theo dõi xu hướng."],
+      "execution_notes": "Retained from previous record."
+    },
+    {
+      "ticker": "HPG",
+      "exchange": "HOSE",
+      "action": "SELL",
+      "confidence_score": 65,
+      "grade": "Grade B",
+      "price_data": {
+        "buy_zone": {
+          "min": 21700,
+          "max": 22134
+        },
+        "stop_loss": 20181,
+        "target_1": 23870,
+        "target_2": 26040,
+        "risk_reward_ratio": "1:2.0"
+      },
+      "technical_rationale": ["Cổ phiếu trong danh sách theo dõi xu hướng."],
+      "execution_notes": "Retained from previous record."
+    },
+    {
       "ticker": "TCB",
       "exchange": "HOSE",
       "action": "SELL",
@@ -240,44 +278,6 @@
         "Giá đóng cửa 15,800đ gãy đường xu hướng ngắn hạn MA20 (16,482đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. RSI ở mức 33.3 điểm, thể hiện áp lực cung lấn át suy yếu đà tăng. MACD phân kỳ âm (-0.079), áp lực điều chỉnh gia tăng. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục."
       ],
       "execution_notes": "Retained from previous record."
-    },
-    {
-      "ticker": "HDB",
-      "exchange": "HOSE",
-      "action": "SELL",
-      "confidence_score": 50,
-      "grade": "Grade C",
-      "price_data": {
-        "buy_zone": {
-          "min": 27300,
-          "max": 27846
-        },
-        "stop_loss": 25389,
-        "target_1": 30030,
-        "target_2": 32759,
-        "risk_reward_ratio": "1:2.0"
-      },
-      "technical_rationale": ["Cổ phiếu trong danh sách theo dõi xu hướng."],
-      "execution_notes": "Theo dõi sát tín hiệu dòng tiền."
-    },
-    {
-      "ticker": "HPG",
-      "exchange": "HOSE",
-      "action": "SELL",
-      "confidence_score": 50,
-      "grade": "Grade C",
-      "price_data": {
-        "buy_zone": {
-          "min": 21700,
-          "max": 22134
-        },
-        "stop_loss": 20181,
-        "target_1": 23870,
-        "target_2": 26040,
-        "risk_reward_ratio": "1:2.0"
-      },
-      "technical_rationale": ["Cổ phiếu trong danh sách theo dõi xu hướng."],
-      "execution_notes": "Theo dõi sát tín hiệu dòng tiền."
     }
   ]
 }
