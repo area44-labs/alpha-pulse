@@ -152,30 +152,6 @@
       "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 43,500đ."
     },
     {
-      "ticker": "GVR",
-      "exchange": "HOSE",
-      "action": "BUY",
-      "confidence_score": 75,
-      "grade": "Grade B",
-      "price_data": {
-        "buy_zone": {
-          "min": 32100,
-          "max": 32750
-        },
-        "stop_loss": 29850,
-        "target_1": 34350,
-        "target_2": 34350,
-        "risk_reward_ratio": "1:1.0"
-      },
-      "technical_rationale": [
-        "Giá đóng cửa 32,100đ vượt đường trung bình động MA20 (29,725đ), củng cố xu hướng tăng.",
-        "Thanh khoản duy trì ở mức bình ổn.",
-        "Chỉ báo RSI đạt 69.5 điểm, duy trì động lượng phục hồi tốt.",
-        "MACD phân kỳ dương (0.365) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
-      ],
-      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 32,750đ."
-    },
-    {
       "ticker": "GAS",
       "exchange": "HOSE",
       "action": "BUY",
@@ -198,6 +174,27 @@
         "MACD phân kỳ dương (1.336) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
       ],
       "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 85,200đ."
+    },
+    {
+      "ticker": "GVR",
+      "exchange": "HOSE",
+      "action": "BUY",
+      "confidence_score": 65,
+      "grade": "Grade B",
+      "price_data": {
+        "buy_zone": {
+          "min": 32100,
+          "max": 32742
+        },
+        "stop_loss": 29853,
+        "target_1": 35310,
+        "target_2": 38520,
+        "risk_reward_ratio": "1:2.0"
+      },
+      "technical_rationale": [
+        "Giá đóng cửa 32,100đ vượt đường trung bình động MA20 (29,725đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 69.5 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.365) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng."
+      ],
+      "execution_notes": "Retained from previous record."
     },
     {
       "ticker": "HDB",

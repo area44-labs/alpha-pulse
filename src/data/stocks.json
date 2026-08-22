@@ -3,30 +3,30 @@
   "marketSummary": {
     "vnIndex": {
       "name": "VN-Index",
-      "value": 1734.24,
-      "change": 7.55,
-      "changePercent": 0.44,
+      "value": 1768.12,
+      "change": 33.88,
+      "changePercent": 1.95,
       "volume": "18.500 tỷ VNĐ"
     },
     "hoseIndex": {
       "name": "HOSE",
-      "value": 1873.14,
-      "change": -3.0,
-      "changePercent": -0.16,
+      "value": 1927.79,
+      "change": 40.73,
+      "changePercent": 2.16,
       "volume": "15.200 tỷ VNĐ"
     },
     "hnxIndex": {
       "name": "HNX-Index",
-      "value": 283.29,
-      "change": 0.97,
-      "changePercent": 0.34,
+      "value": 284.07,
+      "change": 5.52,
+      "changePercent": 1.98,
       "volume": "1.800 tỷ VNĐ"
     },
     "upcomIndex": {
       "name": "Upcom-Index",
-      "value": 127.37,
-      "change": -0.09,
-      "changePercent": -0.07,
+      "value": 127.52,
+      "change": 0.28,
+      "changePercent": 0.22,
       "volume": "1.500 tỷ VNĐ"
     }
   },
@@ -66,7 +66,7 @@
       "targetBuyPrice": "36.9 - 37.6",
       "targetSellPrice": 39.5,
       "stopLossPrice": 34.3,
-      "riskLevel": "LOW",
+      "riskLevel": "MEDIUM",
       "rationale": "Giá đóng cửa 36,900đ vượt đường trung bình động MA20 (35,536đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 61.0 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.168) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.0"
     },
@@ -79,7 +79,7 @@
       "targetBuyPrice": "65.9 - 67.2",
       "targetSellPrice": 70.5,
       "stopLossPrice": 61.3,
-      "riskLevel": "MEDIUM",
+      "riskLevel": "HIGH",
       "rationale": "Giá đóng cửa 65,900đ vượt đường trung bình động MA20 (64,065đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.4x so với trung bình 20 phiên, dòng tiền mua chủ động. Chỉ báo RSI đạt 54.4 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.233) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.0"
     },
@@ -110,19 +110,6 @@
       "riskRewardRatio": "1:1.0"
     },
     {
-      "symbol": "GVR",
-      "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP",
-      "sector": "Cao su & BĐS KCN",
-      "type": "BUY",
-      "currentPrice": 32.1,
-      "targetBuyPrice": "32.1 - 32.8",
-      "targetSellPrice": 34.35,
-      "stopLossPrice": 29.85,
-      "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 32,100đ vượt đường trung bình động MA20 (29,725đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 69.5 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.365) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
-    },
-    {
       "symbol": "GAS",
       "companyName": "Tổng Công ty Khí Việt Nam - CTCP",
       "sector": "Dầu khí",
@@ -134,6 +121,19 @@
       "riskLevel": "HIGH",
       "rationale": "Giá đóng cửa 83,500đ vượt đường trung bình động MA20 (74,980đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 71.0 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (1.336) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.0"
+    },
+    {
+      "symbol": "GVR",
+      "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP",
+      "sector": "Cao su & BĐS KCN",
+      "type": "BUY",
+      "currentPrice": 32.1,
+      "targetBuyPrice": "32.1 - 32.7",
+      "targetSellPrice": 35.31,
+      "stopLossPrice": 29.85,
+      "riskLevel": "HIGH",
+      "rationale": "Giá đóng cửa 32,100đ vượt đường trung bình động MA20 (29,725đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 69.5 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.365) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "riskRewardRatio": "1:2.0"
     },
     {
       "symbol": "HDB",
