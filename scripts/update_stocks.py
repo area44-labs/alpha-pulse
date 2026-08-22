@@ -410,49 +410,6 @@ def main():
 
     exchange_map = get_exchange_mapping()
 
-    # Step 1.5: Update Market Summary Indices first (before hitting API rate limits during stock loop)
-    print("\n[Step 1.5] Fetching fresh stock market summaries...")
-    index_symbol_mapping = {
-        "vnIndex": "VNINDEX",
-        "hoseIndex": "VN30",
-        "hnxIndex": "HNXINDEX",
-        "upcomIndex": "UPCOMINDEX"
-    }
-
-    market_summary = backup_data.get("marketSummary", {
-        "vnIndex": {"name": "VN-Index", "value": 1788.61, "change": 15.2, "changePercent": 0.86, "volume": "18.500 tỷ VNĐ"},
-        "hoseIndex": {"name": "HOSE", "value": 1934.83, "change": 12.3, "changePercent": 0.64, "volume": "15.200 tỷ VNĐ"},
-        "hnxIndex": {"name": "HNX-Index", "value": 287.99, "change": -2.92, "changePercent": -1.0, "volume": "1.800 tỷ VNĐ"},
-        "upcomIndex": {"name": "Upcom-Index", "value": 127.88, "change": 0.7, "changePercent": 0.55, "volume": "1.500 tỷ VNĐ"}
-    })
-
-    for index_key, ssi_symbol in index_symbol_mapping.items():
-        try:
-            if index_key == "vnIndex" and df_vn is not None and len(df_vn) >= 2:
-                df_idx = df_vn
-            else:
-                df_idx, _ = get_historical_data_api(ssi_symbol, start_date, end_date)
-
-            if df_idx is not None and len(df_idx) >= 2:
-                for col in ['open', 'high', 'low', 'close']:
-                    if col in df_idx.columns and df_idx[col].iloc[-1] > 10000:
-                        df_idx[col] = df_idx[col] / 1000.0
-
-                latest_val = float(df_idx["close"].iloc[-1])
-                prev_val = float(df_idx["close"].iloc[-2])
-                change = latest_val - prev_val
-                change_percent = (change / prev_val) * 100
-
-                vol_str = market_summary[index_key].get("volume", "15.000 tỷ VNĐ")
-
-                market_summary[index_key]["value"] = round(latest_val, 2)
-                market_summary[index_key]["change"] = round(change, 2)
-                market_summary[index_key]["changePercent"] = round(change_percent, 2)
-                market_summary[index_key]["volume"] = vol_str
-                print(f"  -> [{index_key}]: {latest_val:.2f} ({change_percent:+.2f}%)")
-        except (Exception, SystemExit) as e:
-            print(f"  -> Error updating index {ssi_symbol}: {e}")
-
     # Pre-fetch Batch Smart Money Signals and Live Exchange Price Map for all 42 stocks in 1 request
     all_symbols = [item["symbol"] for item in CANDIDATE_STOCKS]
     smart_money_batch, live_price_map = fetch_batch_smart_money(all_symbols)
@@ -757,8 +714,49 @@ def main():
             "riskRewardRatio": item["risk_reward_ratio"]
         })
 
-    # Step 4: Finalize output files
-    print("\n[Step 4] Writing final output files...")
+    # Step 4: Update Market Summary Indices at the end
+    print("\n[Step 4] Fetching fresh stock market summaries...")
+    index_symbol_mapping = {
+        "vnIndex": "VNINDEX",
+        "hoseIndex": "VN30",
+        "hnxIndex": "HNXINDEX",
+        "upcomIndex": "UPCOMINDEX"
+    }
+
+    market_summary = backup_data.get("marketSummary", {
+        "vnIndex": {"name": "VN-Index", "value": 1788.61, "change": 15.2, "changePercent": 0.86, "volume": "18.500 tỷ VNĐ"},
+        "hoseIndex": {"name": "HOSE", "value": 1934.83, "change": 12.3, "changePercent": 0.64, "volume": "15.200 tỷ VNĐ"},
+        "hnxIndex": {"name": "HNX-Index", "value": 287.99, "change": -2.92, "changePercent": -1.0, "volume": "1.800 tỷ VNĐ"},
+        "upcomIndex": {"name": "Upcom-Index", "value": 127.88, "change": 0.7, "changePercent": 0.55, "volume": "1.500 tỷ VNĐ"}
+    })
+
+    for index_key, ssi_symbol in index_symbol_mapping.items():
+        try:
+            if index_key == "vnIndex" and df_vn is not None and len(df_vn) >= 2:
+                df_idx = df_vn
+            else:
+                df_idx, _ = get_historical_data_api(ssi_symbol, start_date, end_date)
+
+            if df_idx is not None and len(df_idx) >= 2:
+                for col in ['open', 'high', 'low', 'close']:
+                    if col in df_idx.columns and df_idx[col].iloc[-1] > 10000:
+                        df_idx[col] = df_idx[col] / 1000.0
+
+                latest_val = float(df_idx["close"].iloc[-1])
+                prev_val = float(df_idx["close"].iloc[-2])
+                change = latest_val - prev_val
+                change_percent = (change / prev_val) * 100
+
+                vol_str = market_summary[index_key].get("volume", "15.000 tỷ VNĐ")
+
+                market_summary[index_key]["value"] = round(latest_val, 2)
+                market_summary[index_key]["change"] = round(change, 2)
+                market_summary[index_key]["changePercent"] = round(change_percent, 2)
+                market_summary[index_key]["volume"] = vol_str
+                print(f"  -> [{index_key}]: {latest_val:.2f} ({change_percent:+.2f}%)")
+        except (Exception, SystemExit) as e:
+            print(f"  -> Error updating index {ssi_symbol}: {e}")
+
     local_now = datetime.now()
     formatted_date = local_now.strftime("%d/%m/%Y")
 

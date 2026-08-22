@@ -71,6 +71,19 @@
       "riskRewardRatio": "1:1.0"
     },
     {
+      "symbol": "SSI",
+      "companyName": "Công ty Cổ phần Chứng khoán SSI",
+      "sector": "Chứng khoán",
+      "type": "BUY",
+      "currentPrice": 20.75,
+      "targetBuyPrice": "20.8 - 21.1",
+      "targetSellPrice": 22.2,
+      "stopLossPrice": 19.3,
+      "riskLevel": "MEDIUM",
+      "rationale": "Giá đóng cửa 20,750đ vượt đường trung bình động MA20 (19,467đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.9x so với trung bình 20 phiên, dòng tiền mua chủ động. Chỉ báo RSI đạt 65.5 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.129) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "riskRewardRatio": "1:1.0"
+    },
+    {
       "symbol": "SHB",
       "companyName": "Ngân hàng TMCP Sài Gòn - Hà Nội",
       "sector": "Ngân hàng",
@@ -97,6 +110,19 @@
       "riskRewardRatio": "1:1.0"
     },
     {
+      "symbol": "DXG",
+      "companyName": "CTCP Tập đoàn Đất Xanh",
+      "sector": "Bất động sản",
+      "type": "BUY",
+      "currentPrice": 11.55,
+      "targetBuyPrice": "11.6 - 11.8",
+      "targetSellPrice": 12.35,
+      "stopLossPrice": 10.75,
+      "riskLevel": "HIGH",
+      "rationale": "Giá đóng cửa 11,550đ vượt đường trung bình động MA20 (10,856đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.3x so với trung bình 20 phiên, dòng tiền mua chủ động. Chỉ báo RSI đạt 60.6 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.106) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "riskRewardRatio": "1:1.0"
+    },
+    {
       "symbol": "ACB",
       "companyName": "Ngân hàng TMCP Á Châu",
       "sector": "Ngân hàng",
@@ -107,32 +133,6 @@
       "stopLossPrice": 21.15,
       "riskLevel": "LOW",
       "rationale": "Giá đóng cửa 22,750đ vượt đường trung bình động MA20 (22,288đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 53.1 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ âm (-0.011), áp lực điều chỉnh gia tăng. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
-    },
-    {
-      "symbol": "BID",
-      "companyName": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
-      "sector": "Ngân hàng",
-      "type": "BUY",
-      "currentPrice": 36.9,
-      "targetBuyPrice": "36.9 - 37.6",
-      "targetSellPrice": 39.5,
-      "stopLossPrice": 34.3,
-      "riskLevel": "MEDIUM",
-      "rationale": "Giá đóng cửa 36,900đ vượt đường trung bình động MA20 (35,536đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 61.0 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.168) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
-    },
-    {
-      "symbol": "MWG",
-      "companyName": "Công ty Cổ phần Đầu tư Thế giới Di Động",
-      "sector": "Bán lẻ",
-      "type": "BUY",
-      "currentPrice": 75.0,
-      "targetBuyPrice": "75.0 - 76.5",
-      "targetSellPrice": 80.2,
-      "stopLossPrice": 69.8,
-      "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 75,000đ vượt đường trung bình động MA20 (71,206đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Chỉ báo RSI đạt 60.9 điểm, duy trì động lượng phục hồi tốt. MACD phân kỳ dương (0.450) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.0"
     },
     {
