@@ -336,25 +336,32 @@ def send_notification(title, message):
         except Exception as e:
             print(f"Failed to send Discord notification: {e}")
 
-def get_historical_data_api(symbol, start_date, end_date):
+def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
     if not VNSTOCK_AVAILABLE:
         return None, None
     sources = ['kbs', 'msn']
-    for source in sources:
-        try:
-            q = VnQuote(symbol=symbol, source=source)
-            df = q.history(start=start_date, end=end_date)
-            if df is not None and not df.empty and "close" in df.columns:
-                df.columns = [c.lower() for c in df.columns]
-                for col in ['open', 'high', 'low', 'close', 'volume']:
-                    if col in df.columns:
-                        df[col] = pd.to_numeric(df[col], errors='coerce')
-                # Verify price scale
-                if df['close'].iloc[-1] < 1.0:
-                    continue
-                return df, source
-        except (Exception, SystemExit):
-            pass
+    for attempt in range(max_retries):
+        for source in sources:
+            try:
+                q = VnQuote(symbol=symbol, source=source)
+                df = q.history(start=start_date, end=end_date)
+                if df is not None and not df.empty and "close" in df.columns:
+                    df.columns = [c.lower() for c in df.columns]
+                    for col in ['open', 'high', 'low', 'close', 'volume']:
+                        if col in df.columns:
+                            df[col] = pd.to_numeric(df[col], errors='coerce')
+                    # Verify price scale
+                    if df['close'].iloc[-1] < 1.0:
+                        continue
+                    return df, source
+            except (Exception, SystemExit) as e:
+                err_str = str(e).lower()
+                if "rate limit" in err_str or "giới hạn api" in err_str or "wait" in err_str:
+                    time.sleep(12)
+                else:
+                    time.sleep(1)
+        if attempt < max_retries - 1:
+            time.sleep(3)
     return None, None
 
 def main():
