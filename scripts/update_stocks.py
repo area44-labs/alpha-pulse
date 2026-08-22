@@ -1,9 +1,11 @@
-import os
 import json
+import logging
+import os
 import time
-from datetime import datetime, timedelta
-import pandas as pd
+from datetime import datetime, timedelta, timezone
+
 import numpy as np
+import pandas as pd
 import requests
 
 try:
@@ -438,7 +440,7 @@ def fetch_batch_smart_money(symbols):
                 if sym in live_price_map and close > 0:
                     live_price_map[sym] = close / 1000.0 if close > 1000.0 else close
     except (Exception, SystemExit) as e:
-        print(f"  -> Warning: Failed to fetch batch price board: {e}")
+        logging.warning("Failed to fetch batch price board: %s", e)
     return smart_money_map, live_price_map
 
 
@@ -461,8 +463,8 @@ def check_corporate_events(symbol):
             if not recent_events.empty:
                 event_name = recent_events.iloc[0].get("event_name", "Sự kiện quyền")
                 return True, f"Cảnh báo: [{event_name}] gần ngày GDKHQ"
-    except (Exception, SystemExit):
-        pass
+    except (Exception, SystemExit) as e:
+        logging.debug("Error checking corporate events for %s: %s", symbol, e)
     return False, "Bình thường"
 
 
@@ -482,7 +484,7 @@ def get_exchange_mapping():
                     "organ_name": row.get("organ_name", ""),
                 }
     except (Exception, SystemExit) as e:
-        print(f"Warning: Failed to retrieve symbols by exchange: {e}")
+        logging.warning("Failed to retrieve symbols by exchange: %s", e)
     return mapping
 
 
@@ -503,7 +505,7 @@ def send_notification(title, message):
             requests.post(url, json=payload, timeout=5)
             print("Telegram notification sent successfully.")
         except Exception as e:
-            print(f"Failed to send Telegram notification: {e}")
+            logging.warning("Failed to send Telegram notification: %s", e)
 
     if discord_webhook:
         try:
@@ -511,7 +513,7 @@ def send_notification(title, message):
             requests.post(discord_webhook, json=payload, timeout=5)
             print("Discord notification sent successfully.")
         except Exception as e:
-            print(f"Failed to send Discord notification: {e}")
+            logging.warning("Failed to send Discord notification: %s", e)
 
 
 def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
@@ -533,6 +535,9 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
                         continue
                     return df, source
             except (Exception, SystemExit) as e:
+                logging.debug(
+                    "Error fetching quote for %s from %s: %s", symbol, source, e
+                )
                 err_str = str(e).lower()
                 if (
                     "rate limit" in err_str
@@ -560,9 +565,9 @@ def main():
                 backup_data = json.load(f)
             print("Successfully loaded original stocks.json as backup.")
     except Exception as e:
-        print(f"Warning: Failed to load stocks.json: {e}")
+        logging.warning("Failed to load stocks.json: %s", e)
 
-    end_date_dt = datetime.now()
+    end_date_dt = datetime.now(timezone.utc)
     start_date_dt = end_date_dt - timedelta(days=365)
     start_date, end_date = (
         start_date_dt.strftime("%Y-%m-%d"),
@@ -602,7 +607,7 @@ def main():
                 "  -> WARNING: Failed to fetch VNINDEX. Falling back to backup context."
             )
     except (Exception, SystemExit) as e:
-        print(f"  -> Lỗi lấy dữ liệu VN-Index: {e}")
+        logging.warning("Lỗi lấy dữ liệu VN-Index: %s", e)
 
     exchange_map = get_exchange_mapping()
 
@@ -811,7 +816,7 @@ def main():
                     )
 
             except (Exception, SystemExit) as e:
-                print(f"-> [LỖI TÍNH TOÁN]: {e}")
+                logging.error("Lỗi tính toán cho ticker %s: %s", symbol, e)
         else:
             print("-> [KHÔNG DỮ LIỆU/DỰ PHÒNG] Khôi phục từ dữ liệu backup...")
             old_rec = None
@@ -926,7 +931,7 @@ def main():
 
     # Generate Agent Readiness JSON format
     agent_signals = {
-        "scan_date": datetime.now().strftime("%Y-%m-%d"),
+        "scan_date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "market_context": {
             "vnindex_status": vnindex_status,
             "market_risk_level": market_risk_level,
@@ -1055,9 +1060,9 @@ def main():
                 market_summary[index_key]["volume"] = vol_str
                 print(f"  -> [{index_key}]: {latest_val:.2f} ({change_percent:+.2f}%)")
         except (Exception, SystemExit) as e:
-            print(f"  -> Error updating index {ssi_symbol}: {e}")
+            logging.warning("Error updating index %s: %s", ssi_symbol, e)
 
-    local_now = datetime.now()
+    local_now = datetime.now(timezone.utc)
     formatted_date = local_now.strftime("%d/%m/%Y")
 
     output_json = {

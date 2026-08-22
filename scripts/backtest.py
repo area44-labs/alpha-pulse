@@ -1,7 +1,9 @@
+import logging
 import time
+from datetime import datetime, timedelta, timezone
+
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
 
 try:
     from vnstock.api.quote import Quote as VnQuote
@@ -43,8 +45,8 @@ def get_historical_data(symbol, start_date, end_date):
                     for col in ["open", "high", "low", "close"]:
                         df[col] = df[col] / 1000.0
                 return df
-        except Exception:
-            pass
+        except (Exception, SystemExit) as e:
+            logging.debug("Error fetching historical data for %s: %s", symbol, e)
         time.sleep(0.5)
     return None
 
@@ -156,22 +158,9 @@ def run_backtest_on_symbol(symbol, df):
                     }
                 )
                 in_position = False
-            elif days_held >= 3 and current_close < df["ma20"].iloc[i]:
-                pnl = (current_close - entry_price) / entry_price
-                trades.append(
-                    {
-                        "ticker": symbol,
-                        "entry_date": str(df.index[entry_idx]).split(" ")[0],
-                        "exit_date": current_date,
-                        "entry_price": entry_price,
-                        "exit_price": current_close,
-                        "pnl": pnl,
-                        "result": "WIN" if pnl > 0 else "LOSS",
-                        "days_held": days_held,
-                    }
-                )
-                in_position = False
-            elif days_held >= 15:
+            elif (
+                days_held >= 3 and current_close < df["ma20"].iloc[i]
+            ) or days_held >= 15:
                 pnl = (current_close - entry_price) / entry_price
                 trades.append(
                     {
@@ -220,7 +209,7 @@ def generate_highly_accurate_simulated_backtest():
     np.random.shuffle(all_pnls)
 
     trades = []
-    current_dt = datetime.now() - timedelta(days=3 * 365)
+    current_dt = datetime.now(timezone.utc) - timedelta(days=3 * 365)
 
     for idx, pnl in enumerate(all_pnls):
         current_dt += timedelta(days=int(np.random.choice([2, 3, 4, 5])))
@@ -298,7 +287,7 @@ def main():
 
     # 1. Attempt live historical backtest (may be limited by API rate limits)
     all_trades = []
-    end_date_dt = datetime.now()
+    end_date_dt = datetime.now(timezone.utc)
     start_date_dt = end_date_dt - timedelta(days=365)  # Fetch 1 year live if possible
 
     start_date = start_date_dt.strftime("%Y-%m-%d")
@@ -321,7 +310,7 @@ def main():
             else:
                 live_success = False
                 print(f"  -> Symbol {symbol} load failed or empty. Skipping live run.")
-        except Exception as e:
+        except (Exception, SystemExit) as e:
             live_success = False
             print(f"  -> Error loading symbol {symbol}: {e}")
         time.sleep(1.0)
