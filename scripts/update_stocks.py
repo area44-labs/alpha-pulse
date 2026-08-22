@@ -19,6 +19,11 @@ STOCKS_JSON_PATH = os.path.join(
     "src", "data", "stocks.json"
 )
 
+PUBLIC_STOCKS_JSON_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "public", "data", "stocks.json"
+)
+
 AGENT_SIGNALS_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "src", "data", "agent_signals.json"
@@ -758,6 +763,12 @@ def main():
         json.dump(output_json, f, ensure_ascii=False, indent=2)
         f.write("\n")
     print(f"  -> UI Stocks JSON written to: {STOCKS_JSON_PATH}")
+
+    os.makedirs(os.path.dirname(PUBLIC_STOCKS_JSON_PATH), exist_ok=True)
+    with open(PUBLIC_STOCKS_JSON_PATH, "w", encoding="utf-8") as f:
+        json.dump(output_json, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    print(f"  -> Public UI Stocks JSON written to: {PUBLIC_STOCKS_JSON_PATH}")
 
     # Output active DataFrame to terminal
     df_res = pd.DataFrame(scanned_results)

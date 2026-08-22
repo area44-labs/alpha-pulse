@@ -1,7 +1,8 @@
 {
   "name": "@area44/alpha-pulse",
   "framework": "vite",
-  "buildCommand": "vite build",
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm run build",
   "outputDirectory": "dist",
   "github": {
     "autoJobCancelation": true
