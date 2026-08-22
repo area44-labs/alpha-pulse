@@ -17,3 +17,13 @@ jobs:
 
       - name: Run lint/format scripts
         uses: area44/workflows/lint-format@7912709bf2aa6a2c6c03fddf2df233e7367234ce # v5.1.0
+
+      - name: Run Ruff check (Python linter)
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: "check"
+
+      - name: Run Ruff format (Python formatter)
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: "format --check"
