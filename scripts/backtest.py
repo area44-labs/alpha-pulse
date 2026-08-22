@@ -12,6 +12,8 @@ try:
 except ImportError:
     VNSTOCK_AVAILABLE = False
 
+logger = logging.getLogger(__name__)
+
 # List of high-liquidity stocks for backtesting (standardized list of Vietnamese leaders)
 BACKTEST_STOCKS = ["TCB", "SSI", "HPG", "FPT", "STB", "MWG", "VHM", "VNM"]
 
@@ -45,8 +47,8 @@ def get_historical_data(symbol, start_date, end_date):
                     for col in ["open", "high", "low", "close"]:
                         df[col] = df[col] / 1000.0
                 return df
-        except (Exception, SystemExit) as e:
-            logging.debug("Error fetching historical data for %s: %s", symbol, e)
+        except Exception as e:  # noqa: BLE001
+            logger.debug("Error fetching historical data for %s: %s", symbol, e)
         time.sleep(0.5)
     return None
 
@@ -310,7 +312,7 @@ def main():
             else:
                 live_success = False
                 print(f"  -> Symbol {symbol} load failed or empty. Skipping live run.")
-        except (Exception, SystemExit) as e:
+        except Exception as e:  # noqa: BLE001
             live_success = False
             print(f"  -> Error loading symbol {symbol}: {e}")
         time.sleep(1.0)

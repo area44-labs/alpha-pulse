@@ -16,6 +16,8 @@ try:
 except ImportError:
     VNSTOCK_AVAILABLE = False
 
+logger = logging.getLogger(__name__)
+
 STOCKS_JSON_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "src",
@@ -439,8 +441,8 @@ def fetch_batch_smart_money(symbols):
                     )
                 if sym in live_price_map and close > 0:
                     live_price_map[sym] = close / 1000.0 if close > 1000.0 else close
-    except (Exception, SystemExit) as e:
-        logging.warning("Failed to fetch batch price board: %s", e)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("Failed to fetch batch price board: %s", e)
     return smart_money_map, live_price_map
 
 
@@ -463,8 +465,8 @@ def check_corporate_events(symbol):
             if not recent_events.empty:
                 event_name = recent_events.iloc[0].get("event_name", "Sự kiện quyền")
                 return True, f"Cảnh báo: [{event_name}] gần ngày GDKHQ"
-    except (Exception, SystemExit) as e:
-        logging.debug("Error checking corporate events for %s: %s", symbol, e)
+    except Exception as e:  # noqa: BLE001
+        logger.debug("Error checking corporate events for %s: %s", symbol, e)
     return False, "Bình thường"
 
 
@@ -483,8 +485,8 @@ def get_exchange_mapping():
                     "exchange": ex,
                     "organ_name": row.get("organ_name", ""),
                 }
-    except (Exception, SystemExit) as e:
-        logging.warning("Failed to retrieve symbols by exchange: %s", e)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("Failed to retrieve symbols by exchange: %s", e)
     return mapping
 
 
@@ -504,16 +506,16 @@ def send_notification(title, message):
             }
             requests.post(url, json=payload, timeout=5)
             print("Telegram notification sent successfully.")
-        except Exception as e:
-            logging.warning("Failed to send Telegram notification: %s", e)
+        except Exception as e:  # noqa: BLE001
+            logger.warning("Failed to send Telegram notification: %s", e)
 
     if discord_webhook:
         try:
             payload = {"content": f"⚠️ **{title}**\n\n{message}"}
             requests.post(discord_webhook, json=payload, timeout=5)
             print("Discord notification sent successfully.")
-        except Exception as e:
-            logging.warning("Failed to send Discord notification: %s", e)
+        except Exception as e:  # noqa: BLE001
+            logger.warning("Failed to send Discord notification: %s", e)
 
 
 def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
@@ -534,8 +536,8 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
                     if df["close"].iloc[-1] < 1.0:
                         continue
                     return df, source
-            except (Exception, SystemExit) as e:
-                logging.debug(
+            except Exception as e:  # noqa: BLE001
+                logger.debug(
                     "Error fetching quote for %s from %s: %s", symbol, source, e
                 )
                 err_str = str(e).lower()
@@ -564,8 +566,8 @@ def main():
             with open(STOCKS_JSON_PATH, "r", encoding="utf-8") as f:
                 backup_data = json.load(f)
             print("Successfully loaded original stocks.json as backup.")
-    except Exception as e:
-        logging.warning("Failed to load stocks.json: %s", e)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("Failed to load stocks.json: %s", e)
 
     end_date_dt = datetime.now(timezone.utc)
     start_date_dt = end_date_dt - timedelta(days=365)
@@ -606,8 +608,8 @@ def main():
             print(
                 "  -> WARNING: Failed to fetch VNINDEX. Falling back to backup context."
             )
-    except (Exception, SystemExit) as e:
-        logging.warning("Lỗi lấy dữ liệu VN-Index: %s", e)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("Lỗi lấy dữ liệu VN-Index: %s", e)
 
     exchange_map = get_exchange_mapping()
 
@@ -815,8 +817,8 @@ def main():
                         {"symbol": symbol, "close": close, "reasons": exit_reasons}
                     )
 
-            except (Exception, SystemExit) as e:
-                logging.error("Lỗi tính toán cho ticker %s: %s", symbol, e)
+            except Exception as e:  # noqa: BLE001
+                logger.error("Lỗi tính toán cho ticker %s: %s", symbol, e)
         else:
             print("-> [KHÔNG DỮ LIỆU/DỰ PHÒNG] Khôi phục từ dữ liệu backup...")
             old_rec = None
@@ -1059,8 +1061,8 @@ def main():
                 market_summary[index_key]["changePercent"] = round(change_percent, 2)
                 market_summary[index_key]["volume"] = vol_str
                 print(f"  -> [{index_key}]: {latest_val:.2f} ({change_percent:+.2f}%)")
-        except (Exception, SystemExit) as e:
-            logging.warning("Error updating index %s: %s", ssi_symbol, e)
+        except Exception as e:  # noqa: BLE001
+            logger.warning("Error updating index %s: %s", ssi_symbol, e)
 
     local_now = datetime.now(timezone.utc)
     formatted_date = local_now.strftime("%d/%m/%Y")
