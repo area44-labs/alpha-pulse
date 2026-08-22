@@ -22,8 +22,10 @@ jobs:
         uses: astral-sh/ruff-action@v3
         with:
           args: "check"
+          src: "scripts"
 
       - name: Run Ruff format (Python formatter)
         uses: astral-sh/ruff-action@v3
         with:
           args: "format --check"
+          src: "scripts"
