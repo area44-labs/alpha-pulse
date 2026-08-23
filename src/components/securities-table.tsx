@@ -2,7 +2,14 @@ import { ArrowUpRight, HelpCircle, FileText } from "lucide-react";
 import * as React from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { Select } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableHeader,
@@ -189,18 +196,27 @@ export function SecuritiesTable({ selectedSector, onSectorChange }: SecuritiesTa
     <div className="space-y-4">
       {/* Sector filter select */}
       <div className="flex justify-start">
-        <div className="w-full sm:w-64">
+        <div className="w-full space-y-1.5 sm:w-64">
+          <span className="block font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+            LỌC THEO NGÀNH NGHỀ
+          </span>
           <Select
-            label="LỌC THEO NGÀNH NGHỀ"
-            value={selectedSector}
-            onChange={(e) => onSectorChange(e.target.value)}
+            value={selectedSector || "ALL"}
+            onValueChange={(val) => onSectorChange(val === "ALL" ? "" : (val ?? ""))}
           >
-            <option value="">Tất cả ngành nghề</option>
-            {SECTORS.map((sec) => (
-              <option key={sec} value={sec}>
-                {sec}
-              </option>
-            ))}
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Tất cả ngành nghề" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">Tất cả ngành nghề</SelectItem>
+                {SECTORS.map((sec) => (
+                  <SelectItem key={sec} value={sec}>
+                    {sec}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
           </Select>
         </div>
       </div>
