@@ -201,15 +201,15 @@ export function SecuritiesTable({ selectedSector, onSectorChange }: SecuritiesTa
             LỌC THEO NGÀNH NGHỀ
           </span>
           <Select
-            value={selectedSector || "ALL"}
-            onValueChange={(val) => onSectorChange(val === "ALL" ? "" : (val ?? ""))}
+            value={selectedSector || "Tất cả ngành nghề"}
+            onValueChange={(val) => onSectorChange(val === "Tất cả ngành nghề" ? "" : (val ?? ""))}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Tất cả ngành nghề" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="ALL">Tất cả ngành nghề</SelectItem>
+                <SelectItem value="Tất cả ngành nghề">Tất cả ngành nghề</SelectItem>
                 {SECTORS.map((sec) => (
                   <SelectItem key={sec} value={sec}>
                     {sec}
