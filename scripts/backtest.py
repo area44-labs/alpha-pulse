@@ -33,7 +33,7 @@ def get_historical_data(symbol, start_date, end_date):
     """Fetches historical OHLCV data using multiple fallbacks."""
     if not VNSTOCK_AVAILABLE:
         return None
-    for source in ["KBS", "MSN", "VCI"]:
+    for source in ["kbs", "msn"]:
         try:
             q = VnQuote(symbol=symbol, source=source)
             df = q.history(start=start_date, end=end_date)
@@ -47,9 +47,20 @@ def get_historical_data(symbol, start_date, end_date):
                     for col in ["open", "high", "low", "close"]:
                         df[col] = df[col] / 1000.0
                 return df
-        except Exception as e:  # noqa: BLE001
-            logger.debug("Error fetching historical data for %s: %s", symbol, e)
-        time.sleep(0.5)
+        except (Exception, SystemExit, BaseException) as e:
+            err_str = str(e).lower()
+            logger.debug("Error fetching historical data for %s: %s", symbol, err_str)
+            if (
+                "rate limit" in err_str
+                or "giới hạn api" in err_str
+                or "wait" in err_str
+                or "systemexit" in err_str
+                or "quota" in err_str
+                or "429" in err_str
+            ):
+                time.sleep(10)
+            else:
+                time.sleep(1)
     return None
 
 
