@@ -441,7 +441,7 @@ def fetch_batch_smart_money(symbols):
                     )
                 if sym in live_price_map and close > 0:
                     live_price_map[sym] = close / 1000.0 if close > 1000.0 else close
-    except Exception as e:  # noqa: BLE001
+    except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
         logger.warning("Failed to fetch batch price board: %s", e)
     return smart_money_map, live_price_map
 
@@ -451,7 +451,7 @@ def check_corporate_events(symbol):
     if not VNSTOCK_AVAILABLE:
         return False, "Bình thường"
     try:
-        company = Company(symbol=symbol, source="VCI")
+        company = Company(symbol=symbol)
         df_events = company.events()
         if df_events is not None and not df_events.empty:
             df_events["event_date"] = pd.to_datetime(
@@ -465,7 +465,7 @@ def check_corporate_events(symbol):
             if not recent_events.empty:
                 event_name = recent_events.iloc[0].get("event_name", "Sự kiện quyền")
                 return True, f"Cảnh báo: [{event_name}] gần ngày GDKHQ"
-    except Exception as e:  # noqa: BLE001
+    except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
         logger.debug("Error checking corporate events for %s: %s", symbol, e)
     return False, "Bình thường"
 
@@ -485,7 +485,7 @@ def get_exchange_mapping():
                     "exchange": ex,
                     "organ_name": row.get("organ_name", ""),
                 }
-    except Exception as e:  # noqa: BLE001
+    except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
         logger.warning("Failed to retrieve symbols by exchange: %s", e)
     return mapping
 
@@ -536,17 +536,20 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
                     if df["close"].iloc[-1] < 1.0:
                         continue
                     return df, source
-            except Exception as e:  # noqa: BLE001
-                logger.debug(
-                    "Error fetching quote for %s from %s: %s", symbol, source, e
-                )
+            except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
                 err_str = str(e).lower()
+                logger.debug(
+                    "Error fetching quote for %s from %s: %s", symbol, source, err_str
+                )
                 if (
                     "rate limit" in err_str
                     or "giới hạn api" in err_str
                     or "wait" in err_str
+                    or "systemexit" in err_str
+                    or "quota" in err_str
+                    or "429" in err_str
                 ):
-                    time.sleep(12)
+                    time.sleep(10)
                 else:
                     time.sleep(1)
         if attempt < max_retries - 1:
@@ -893,8 +896,8 @@ def main():
                     }
                 )
 
-        # Smart delay (0.4s) to safely process all 42 candidates
-        time.sleep(0.4)
+        # Rate limit compliant delay (~2.5s) to safely pace requests
+        time.sleep(2.5)
 
     # Step 2.5: Chuẩn hóa điểm rủi ro Z-Score toàn vũ trụ cổ phiếu (Universe Risk Normalization)
     scanned_results = normalize_universe_risk(
