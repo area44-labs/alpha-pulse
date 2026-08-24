@@ -9,7 +9,7 @@ import pandas as pd
 import requests
 
 try:
-    from vnstock import Listing, Trading
+    from vnstock import Company, Listing, Trading
     from vnstock.api.quote import Quote as VnQuote
 
     VNSTOCK_AVAILABLE = True
@@ -448,7 +448,25 @@ def fetch_batch_smart_money(symbols):
 
 def check_corporate_events(symbol):
     """Kiểm tra và loại bỏ các mã dính Lịch giao dịch không hưởng quyền (GDKHQ)."""
-    # Skipped network requests per symbol to conserve API rate limit budget
+    if not VNSTOCK_AVAILABLE:
+        return False, "Bình thường"
+    try:
+        company = Company(symbol=symbol)
+        df_events = company.events()
+        if df_events is not None and not df_events.empty:
+            df_events["event_date"] = pd.to_datetime(
+                df_events["public_date"], errors="coerce"
+            )
+            now = pd.Timestamp.now()
+            recent_events = df_events[
+                (df_events["event_date"] >= now - pd.Timedelta(days=2))
+                & (df_events["event_date"] <= now + pd.Timedelta(days=3))
+            ]
+            if not recent_events.empty:
+                event_name = recent_events.iloc[0].get("event_name", "Sự kiện quyền")
+                return True, f"Cảnh báo: [{event_name}] gần ngày GDKHQ"
+    except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
+        logger.debug("Error checking corporate events for %s: %s", symbol, e)
     return False, "Bình thường"
 
 
