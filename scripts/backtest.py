@@ -47,7 +47,7 @@ def get_historical_data(symbol, start_date, end_date):
                     for col in ["open", "high", "low", "close"]:
                         df[col] = df[col] / 1000.0
                 return df
-        except (Exception, SystemExit, BaseException) as e:
+        except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
             err_str = str(e).lower()
             logger.debug("Error fetching historical data for %s: %s", symbol, err_str)
             if (

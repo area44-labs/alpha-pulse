@@ -9,7 +9,7 @@ import pandas as pd
 import requests
 
 try:
-    from vnstock import Company, Listing, Trading
+    from vnstock import Listing, Trading
     from vnstock.api.quote import Quote as VnQuote
 
     VNSTOCK_AVAILABLE = True
@@ -441,7 +441,7 @@ def fetch_batch_smart_money(symbols):
                     )
                 if sym in live_price_map and close > 0:
                     live_price_map[sym] = close / 1000.0 if close > 1000.0 else close
-    except (Exception, SystemExit, BaseException) as e:
+    except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
         logger.warning("Failed to fetch batch price board: %s", e)
     return smart_money_map, live_price_map
 
@@ -467,7 +467,7 @@ def get_exchange_mapping():
                     "exchange": ex,
                     "organ_name": row.get("organ_name", ""),
                 }
-    except (Exception, SystemExit, BaseException) as e:
+    except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
         logger.warning("Failed to retrieve symbols by exchange: %s", e)
     return mapping
 
@@ -518,7 +518,7 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
                     if df["close"].iloc[-1] < 1.0:
                         continue
                     return df, source
-            except (Exception, SystemExit, BaseException) as e:
+            except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
                 err_str = str(e).lower()
                 logger.debug(
                     "Error fetching quote for %s from %s: %s", symbol, source, err_str
