@@ -333,9 +333,8 @@ def detect_divergence(df, lookback=40):
 
     # Bổ sung kiểm tra phụ: Nếu 5 phiên gần nhất RSI tăng từ vùng oversold (<35) trong khi giá tạo đáy mới
     last_5 = df_sub.tail(5)
-    if not rsi_bullish:
-        if (last_5["low"].iloc[-1] <= last_5["low"].min()) and (last_5["rsi"].iloc[-1] > last_5["rsi"].iloc[0] + 3.0) and (last_5["rsi"].min() < 40):
-            rsi_bullish = True
+    if not rsi_bullish and (last_5["low"].iloc[-1] <= last_5["low"].min()) and (last_5["rsi"].iloc[-1] > last_5["rsi"].iloc[0] + 3.0) and (last_5["rsi"].min() < 40):
+        rsi_bullish = True
 
     return {
         "rsi_bullish": rsi_bullish,
@@ -413,7 +412,7 @@ def calculate_multi_timeframe_analysis(df_daily):
         "rsi_bullish": rsi_1h_bullish,
         "rsi_bearish": rsi_1h_bearish,
         "macd_bullish": macd_1h_bullish,
-        "macd_bearish": macd_bearish,
+        "macd_bearish": macd_1h_bearish,
     }
 
     tf_summary = {
@@ -881,18 +880,13 @@ def main():
                     score -= 5
 
                 # Thưởng/Phạt điểm dựa trên Phân Kỳ Đa Khung Thời Gian (1H, 1D, 1W, 1M)
-                has_any_bullish_div = False
-                has_any_bearish_div = False
-
                 for tf in ["1h", "1d", "1w", "1m"]:
                     div = tf_summary[tf]["divergence"]
                     weight = 5 if tf in ["1w", "1m"] else (4 if tf == "1d" else 3)
                     if div["rsi_bullish"] or div["macd_bullish"]:
                         score += weight
-                        has_any_bullish_div = True
                     if div["rsi_bearish"] or div["macd_bearish"]:
                         score -= weight
-                        has_any_bearish_div = True
 
                 score = max(0, min(100, score))
 
