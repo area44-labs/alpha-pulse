@@ -281,7 +281,12 @@ def detect_divergence(df, lookback=40):
     - Bearish Divergence: Giá tạo đỉnh sau cao hơn (hoặc bằng), nhưng RSI/MACD tạo đỉnh sau thấp hơn.
     """
     if len(df) < 15:
-        return {"rsi_bullish": False, "rsi_bearish": False, "macd_bullish": False, "macd_bearish": False}
+        return {
+            "rsi_bullish": False,
+            "rsi_bearish": False,
+            "macd_bullish": False,
+            "macd_bearish": False,
+        }
 
     df_sub = df.tail(lookback).reset_index(drop=True)
     n = len(df_sub)
@@ -292,12 +297,20 @@ def detect_divergence(df, lookback=40):
 
     for i in range(2, n - 2):
         # Đáy giá
-        if df_sub["low"].iloc[i] <= df_sub["low"].iloc[i - 1] and df_sub["low"].iloc[i] <= df_sub["low"].iloc[i - 2] and \
-           df_sub["low"].iloc[i] <= df_sub["low"].iloc[i + 1] and df_sub["low"].iloc[i] <= df_sub["low"].iloc[i + 2]:
+        if (
+            df_sub["low"].iloc[i] <= df_sub["low"].iloc[i - 1]
+            and df_sub["low"].iloc[i] <= df_sub["low"].iloc[i - 2]
+            and df_sub["low"].iloc[i] <= df_sub["low"].iloc[i + 1]
+            and df_sub["low"].iloc[i] <= df_sub["low"].iloc[i + 2]
+        ):
             troughs.append(i)
         # Đỉnh giá
-        if df_sub["high"].iloc[i] >= df_sub["high"].iloc[i - 1] and df_sub["high"].iloc[i] >= df_sub["high"].iloc[i - 2] and \
-           df_sub["high"].iloc[i] >= df_sub["high"].iloc[i + 1] and df_sub["high"].iloc[i] >= df_sub["high"].iloc[i + 2]:
+        if (
+            df_sub["high"].iloc[i] >= df_sub["high"].iloc[i - 1]
+            and df_sub["high"].iloc[i] >= df_sub["high"].iloc[i - 2]
+            and df_sub["high"].iloc[i] >= df_sub["high"].iloc[i + 1]
+            and df_sub["high"].iloc[i] >= df_sub["high"].iloc[i + 2]
+        ):
             peaks.append(i)
 
     rsi_bullish = False
@@ -333,7 +346,12 @@ def detect_divergence(df, lookback=40):
 
     # Bổ sung kiểm tra phụ: Nếu 5 phiên gần nhất RSI tăng từ vùng oversold (<35) trong khi giá tạo đáy mới
     last_5 = df_sub.tail(5)
-    if not rsi_bullish and (last_5["low"].iloc[-1] <= last_5["low"].min()) and (last_5["rsi"].iloc[-1] > last_5["rsi"].iloc[0] + 3.0) and (last_5["rsi"].min() < 40):
+    if (
+        not rsi_bullish
+        and (last_5["low"].iloc[-1] <= last_5["low"].min())
+        and (last_5["rsi"].iloc[-1] > last_5["rsi"].iloc[0] + 3.0)
+        and (last_5["rsi"].min() < 40)
+    ):
         rsi_bullish = True
 
     return {
@@ -367,25 +385,37 @@ def calculate_multi_timeframe_analysis(df_daily):
         df_weekly = df_d
         df_monthly = df_d
     else:
-        df_weekly = df_resample.resample("W").agg({
-            "open": "first",
-            "high": "max",
-            "low": "min",
-            "close": "last",
-            "volume": "sum"
-        }).dropna()
+        df_weekly = (
+            df_resample.resample("W")
+            .agg(
+                {
+                    "open": "first",
+                    "high": "max",
+                    "low": "min",
+                    "close": "last",
+                    "volume": "sum",
+                }
+            )
+            .dropna()
+        )
     df_w = calculate_single_tf_indicators(df_weekly)
     div_w = detect_divergence(df_w, lookback=30)
 
     # Resample Monthly
     if isinstance(df_resample.index, pd.DatetimeIndex):
-        df_monthly = df_resample.resample("ME").agg({
-            "open": "first",
-            "high": "max",
-            "low": "min",
-            "close": "last",
-            "volume": "sum"
-        }).dropna()
+        df_monthly = (
+            df_resample.resample("ME")
+            .agg(
+                {
+                    "open": "first",
+                    "high": "max",
+                    "low": "min",
+                    "close": "last",
+                    "volume": "sum",
+                }
+            )
+            .dropna()
+        )
     df_m = calculate_single_tf_indicators(df_monthly)
     div_m = detect_divergence(df_m, lookback=24)
 
@@ -398,14 +428,26 @@ def calculate_multi_timeframe_analysis(df_daily):
     macd_1h_bearish = False
 
     if len(tail3) >= 3:
-        if tail3["close"].iloc[-1] <= tail3["close"].iloc[0] * 1.005 and tail3["rsi"].iloc[-1] > tail3["rsi"].iloc[0] + 2.0:
+        if (
+            tail3["close"].iloc[-1] <= tail3["close"].iloc[0] * 1.005
+            and tail3["rsi"].iloc[-1] > tail3["rsi"].iloc[0] + 2.0
+        ):
             rsi_1h_bullish = True
-        elif tail3["close"].iloc[-1] >= tail3["close"].iloc[0] * 0.995 and tail3["rsi"].iloc[-1] < tail3["rsi"].iloc[0] - 2.0:
+        elif (
+            tail3["close"].iloc[-1] >= tail3["close"].iloc[0] * 0.995
+            and tail3["rsi"].iloc[-1] < tail3["rsi"].iloc[0] - 2.0
+        ):
             rsi_1h_bearish = True
 
-        if tail3["hist"].iloc[-1] > tail3["hist"].iloc[0] + 0.02 and tail3["close"].iloc[-1] <= tail3["close"].iloc[0]:
+        if (
+            tail3["hist"].iloc[-1] > tail3["hist"].iloc[0] + 0.02
+            and tail3["close"].iloc[-1] <= tail3["close"].iloc[0]
+        ):
             macd_1h_bullish = True
-        elif tail3["hist"].iloc[-1] < tail3["hist"].iloc[0] - 0.02 and tail3["close"].iloc[-1] >= tail3["close"].iloc[0]:
+        elif (
+            tail3["hist"].iloc[-1] < tail3["hist"].iloc[0] - 0.02
+            and tail3["close"].iloc[-1] >= tail3["close"].iloc[0]
+        ):
             macd_1h_bearish = True
 
     div_1h = {
@@ -428,12 +470,16 @@ def calculate_multi_timeframe_analysis(df_daily):
         },
         "1w": {
             "rsi": round(float(df_w["rsi"].iloc[-1]) if not df_w.empty else 50.0, 1),
-            "macd_hist": round(float(df_w["hist"].iloc[-1]) if not df_w.empty else 0.0, 3),
+            "macd_hist": round(
+                float(df_w["hist"].iloc[-1]) if not df_w.empty else 0.0, 3
+            ),
             "divergence": div_w,
         },
         "1m": {
             "rsi": round(float(df_m["rsi"].iloc[-1]) if not df_m.empty else 50.0, 1),
-            "macd_hist": round(float(df_m["hist"].iloc[-1]) if not df_m.empty else 0.0, 3),
+            "macd_hist": round(
+                float(df_m["hist"].iloc[-1]) if not df_m.empty else 0.0, 3
+            ),
             "divergence": div_m,
         },
     }
@@ -938,7 +984,12 @@ def main():
                 )
 
                 # Diễn giải tín hiệu Phân Kỳ Đa Khung Thời Gian (1H, 1D, 1W, 1M)
-                tf_names = {"1h": "khung giờ (1H)", "1d": "khung ngày (1D)", "1w": "khung tuần (1W)", "1m": "khung tháng (1M)"}
+                tf_names = {
+                    "1h": "khung giờ (1H)",
+                    "1d": "khung ngày (1D)",
+                    "1w": "khung tuần (1W)",
+                    "1m": "khung tháng (1M)",
+                }
                 div_bull_details = []
                 div_bear_details = []
 
@@ -946,15 +997,23 @@ def main():
                     d_info = tf_summary[tf_k]["divergence"]
                     sigs_bull = []
                     sigs_bear = []
-                    if d_info["rsi_bullish"]: sigs_bull.append("RSI")
-                    if d_info["macd_bullish"]: sigs_bull.append("MACD")
+                    if d_info["rsi_bullish"]:
+                        sigs_bull.append("RSI")
+                    if d_info["macd_bullish"]:
+                        sigs_bull.append("MACD")
                     if sigs_bull:
-                        div_bull_details.append(f"{'/'.join(sigs_bull)} phân kỳ dương {tf_lbl}")
+                        div_bull_details.append(
+                            f"{'/'.join(sigs_bull)} phân kỳ dương {tf_lbl}"
+                        )
 
-                    if d_info["rsi_bearish"]: sigs_bear.append("RSI")
-                    if d_info["macd_bearish"]: sigs_bear.append("MACD")
+                    if d_info["rsi_bearish"]:
+                        sigs_bear.append("RSI")
+                    if d_info["macd_bearish"]:
+                        sigs_bear.append("MACD")
                     if sigs_bear:
-                        div_bear_details.append(f"{'/'.join(sigs_bear)} phân kỳ âm {tf_lbl}")
+                        div_bear_details.append(
+                            f"{'/'.join(sigs_bear)} phân kỳ âm {tf_lbl}"
+                        )
 
                 if div_bull_details:
                     divergence_rationale = f"Tín hiệu xác nhận: Xuất hiện {', '.join(div_bull_details)}, báo hiệu lực cầu đảo chiều tăng điểm rất mạnh."
