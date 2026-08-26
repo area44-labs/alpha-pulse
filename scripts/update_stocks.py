@@ -249,28 +249,247 @@ def calculate_atr(df, period=14):
     return tr.rolling(window=period, min_periods=1).mean()
 
 
-def calculate_technical_indicators(df):
-    df["ma20"] = df["close"].rolling(window=20, min_periods=1).mean()
-    df["ma50"] = df["close"].rolling(window=50, min_periods=1).mean()
-    df["vol_ma20"] = df["volume"].rolling(window=20, min_periods=1).mean()
+def calculate_single_tf_indicators(df):
+    """Tính toán RSI và MACD trên một DataFrame OHLCV bất kỳ."""
+    df_calc = df.copy()
+    df_calc["ma20"] = df_calc["close"].rolling(window=20, min_periods=1).mean()
+    df_calc["ma50"] = df_calc["close"].rolling(window=50, min_periods=1).mean()
+    df_calc["vol_ma20"] = df_calc["volume"].rolling(window=20, min_periods=1).mean()
 
-    delta = df["close"].diff()
+    delta = df_calc["close"].diff()
     gain = delta.clip(lower=0)
     loss = -delta.clip(upper=0)
     avg_gain = gain.rolling(window=14, min_periods=1).mean()
     avg_loss = loss.rolling(window=14, min_periods=1).mean().replace(0, 0.00001)
-    df["rsi"] = (100 - (100 / (1 + (avg_gain / avg_loss)))).fillna(50)
+    df_calc["rsi"] = (100 - (100 / (1 + (avg_gain / avg_loss)))).fillna(50)
 
-    df["ema12"] = df["close"].ewm(span=12, adjust=False, min_periods=1).mean()
-    df["ema26"] = df["close"].ewm(span=26, adjust=False, min_periods=1).mean()
-    df["macd"] = df["ema12"] - df["ema26"]
-    df["signal"] = df["macd"].ewm(span=9, adjust=False, min_periods=1).mean()
-    df["hist"] = df["macd"] - df["signal"]
-    df["atr"] = calculate_atr(df, 14)
+    df_calc["ema12"] = df_calc["close"].ewm(span=12, adjust=False, min_periods=1).mean()
+    df_calc["ema26"] = df_calc["close"].ewm(span=26, adjust=False, min_periods=1).mean()
+    df_calc["macd"] = df_calc["ema12"] - df_calc["ema26"]
+    df_calc["signal"] = df_calc["macd"].ewm(span=9, adjust=False, min_periods=1).mean()
+    df_calc["hist"] = df_calc["macd"] - df_calc["signal"]
+    df_calc["atr"] = calculate_atr(df_calc, 14)
+    df_calc["daily_return"] = df_calc["close"].pct_change()
+    return df_calc
 
-    # Compute daily return for statistical calculations
-    df["daily_return"] = df["close"].pct_change()
-    return df
+
+def detect_divergence(df, lookback=40):
+    """
+    Phát hiện Phân Kỳ Dương (Bullish Divergence) và Phân Kỳ Âm (Bearish Divergence)
+    cho RSI và MACD Histogram.
+    - Bullish Divergence: Giá tạo đáy sau thấp hơn (hoặc bằng), nhưng RSI/MACD tạo đáy sau cao hơn.
+    - Bearish Divergence: Giá tạo đỉnh sau cao hơn (hoặc bằng), nhưng RSI/MACD tạo đỉnh sau thấp hơn.
+    """
+    if len(df) < 15:
+        return {
+            "rsi_bullish": False,
+            "rsi_bearish": False,
+            "macd_bullish": False,
+            "macd_bearish": False,
+        }
+
+    df_sub = df.tail(lookback).reset_index(drop=True)
+    n = len(df_sub)
+
+    # Tìm các điểm đáy local (tại i với window 2)
+    troughs = []
+    peaks = []
+
+    for i in range(2, n - 2):
+        # Đáy giá
+        if (
+            df_sub["low"].iloc[i] <= df_sub["low"].iloc[i - 1]
+            and df_sub["low"].iloc[i] <= df_sub["low"].iloc[i - 2]
+            and df_sub["low"].iloc[i] <= df_sub["low"].iloc[i + 1]
+            and df_sub["low"].iloc[i] <= df_sub["low"].iloc[i + 2]
+        ):
+            troughs.append(i)
+        # Đỉnh giá
+        if (
+            df_sub["high"].iloc[i] >= df_sub["high"].iloc[i - 1]
+            and df_sub["high"].iloc[i] >= df_sub["high"].iloc[i - 2]
+            and df_sub["high"].iloc[i] >= df_sub["high"].iloc[i + 1]
+            and df_sub["high"].iloc[i] >= df_sub["high"].iloc[i + 2]
+        ):
+            peaks.append(i)
+
+    rsi_bullish = False
+    macd_bullish = False
+    rsi_bearish = False
+    macd_bearish = False
+
+    # Phân kỳ Dương (Bullish Divergence): So sánh 2 đáy gần nhất
+    if len(troughs) >= 2:
+        t1, t2 = troughs[-2], troughs[-1]
+        p1, p2 = df_sub["low"].iloc[t1], df_sub["low"].iloc[t2]
+        rsi1, rsi2 = df_sub["rsi"].iloc[t1], df_sub["rsi"].iloc[t2]
+        macd1, macd2 = df_sub["hist"].iloc[t1], df_sub["hist"].iloc[t2]
+
+        # Đáy giá mới thấp hơn/bằng đáy cũ nhưng RSI/MACD cao hơn
+        if p2 <= p1 * 1.01 and rsi2 > rsi1 + 1.5:
+            rsi_bullish = True
+        if p2 <= p1 * 1.01 and macd2 > macd1 + 0.05:
+            macd_bullish = True
+
+    # Phân kỳ Âm (Bearish Divergence): So sánh 2 đỉnh gần nhất
+    if len(peaks) >= 2:
+        pk1, pk2 = peaks[-2], peaks[-1]
+        p1, p2 = df_sub["high"].iloc[pk1], df_sub["high"].iloc[pk2]
+        rsi1, rsi2 = df_sub["rsi"].iloc[pk1], df_sub["rsi"].iloc[pk2]
+        macd1, macd2 = df_sub["hist"].iloc[pk1], df_sub["hist"].iloc[pk2]
+
+        # Đỉnh giá mới cao hơn/bằng đỉnh cũ nhưng RSI/MACD thấp hơn
+        if p2 >= p1 * 0.99 and rsi2 < rsi1 - 1.5:
+            rsi_bearish = True
+        if p2 >= p1 * 0.99 and macd2 < macd1 - 0.05:
+            macd_bearish = True
+
+    # Bổ sung kiểm tra phụ: Nếu 5 phiên gần nhất RSI tăng từ vùng oversold (<35) trong khi giá tạo đáy mới
+    last_5 = df_sub.tail(5)
+    if (
+        not rsi_bullish
+        and (last_5["low"].iloc[-1] <= last_5["low"].min())
+        and (last_5["rsi"].iloc[-1] > last_5["rsi"].iloc[0] + 3.0)
+        and (last_5["rsi"].min() < 40)
+    ):
+        rsi_bullish = True
+
+    return {
+        "rsi_bullish": rsi_bullish,
+        "rsi_bearish": rsi_bearish,
+        "macd_bullish": macd_bullish,
+        "macd_bearish": macd_bearish,
+    }
+
+
+def calculate_multi_timeframe_analysis(df_daily):
+    """
+    Phân tích đa khung thời gian: 1H (Khung giờ), 1D (Khung ngày), 1W (Khung tuần), 1M (Khung tháng).
+    Resample dữ liệu daily thành Weekly & Monthly và tính RSI/MACD cùng phân kỳ trên từng khung.
+    Khung 1H được ước tính dựa trên động lượng ngắn hạn (3-5 phiên gần nhất).
+    """
+    df_d = calculate_single_tf_indicators(df_daily)
+    div_d = detect_divergence(df_d)
+
+    # Chuẩn bị DatetimeIndex cho việc Resample Weekly/Monthly
+    df_resample = df_d.copy()
+    if not isinstance(df_resample.index, pd.DatetimeIndex):
+        if "time" in df_resample.columns:
+            df_resample["date_dt"] = pd.to_datetime(df_resample["time"])
+            df_resample = df_resample.set_index("date_dt")
+        elif "date" in df_resample.columns:
+            df_resample["date_dt"] = pd.to_datetime(df_resample["date"])
+            df_resample = df_resample.set_index("date_dt")
+
+    if not isinstance(df_resample.index, pd.DatetimeIndex):
+        df_weekly = df_d
+        df_monthly = df_d
+    else:
+        df_weekly = (
+            df_resample.resample("W")
+            .agg(
+                {
+                    "open": "first",
+                    "high": "max",
+                    "low": "min",
+                    "close": "last",
+                    "volume": "sum",
+                }
+            )
+            .dropna()
+        )
+    df_w = calculate_single_tf_indicators(df_weekly)
+    div_w = detect_divergence(df_w, lookback=30)
+
+    # Resample Monthly
+    if isinstance(df_resample.index, pd.DatetimeIndex):
+        df_monthly = (
+            df_resample.resample("ME")
+            .agg(
+                {
+                    "open": "first",
+                    "high": "max",
+                    "low": "min",
+                    "close": "last",
+                    "volume": "sum",
+                }
+            )
+            .dropna()
+        )
+    df_m = calculate_single_tf_indicators(df_monthly)
+    div_m = detect_divergence(df_m, lookback=24)
+
+    # Khung 1H (Ước tính từ động lượng ngắn hạn 3 phiên gần nhất)
+    # Tín hiệu phân kỳ 1H: nếu trong 3 phiên gần nhất giá điều chỉnh nhẹ/đi ngang nhưng RSI & MACD ngắn hạn ngóc lên
+    tail3 = df_d.tail(3)
+    rsi_1h_bullish = False
+    rsi_1h_bearish = False
+    macd_1h_bullish = False
+    macd_1h_bearish = False
+
+    if len(tail3) >= 3:
+        if (
+            tail3["close"].iloc[-1] <= tail3["close"].iloc[0] * 1.005
+            and tail3["rsi"].iloc[-1] > tail3["rsi"].iloc[0] + 2.0
+        ):
+            rsi_1h_bullish = True
+        elif (
+            tail3["close"].iloc[-1] >= tail3["close"].iloc[0] * 0.995
+            and tail3["rsi"].iloc[-1] < tail3["rsi"].iloc[0] - 2.0
+        ):
+            rsi_1h_bearish = True
+
+        if (
+            tail3["hist"].iloc[-1] > tail3["hist"].iloc[0] + 0.02
+            and tail3["close"].iloc[-1] <= tail3["close"].iloc[0]
+        ):
+            macd_1h_bullish = True
+        elif (
+            tail3["hist"].iloc[-1] < tail3["hist"].iloc[0] - 0.02
+            and tail3["close"].iloc[-1] >= tail3["close"].iloc[0]
+        ):
+            macd_1h_bearish = True
+
+    div_1h = {
+        "rsi_bullish": rsi_1h_bullish,
+        "rsi_bearish": rsi_1h_bearish,
+        "macd_bullish": macd_1h_bullish,
+        "macd_bearish": macd_1h_bearish,
+    }
+
+    tf_summary = {
+        "1h": {
+            "rsi": round(float(df_d["rsi"].iloc[-1]), 1),
+            "macd_hist": round(float(df_d["hist"].iloc[-1]), 3),
+            "divergence": div_1h,
+        },
+        "1d": {
+            "rsi": round(float(df_d["rsi"].iloc[-1]), 1),
+            "macd_hist": round(float(df_d["hist"].iloc[-1]), 3),
+            "divergence": div_d,
+        },
+        "1w": {
+            "rsi": round(float(df_w["rsi"].iloc[-1]) if not df_w.empty else 50.0, 1),
+            "macd_hist": round(
+                float(df_w["hist"].iloc[-1]) if not df_w.empty else 0.0, 3
+            ),
+            "divergence": div_w,
+        },
+        "1m": {
+            "rsi": round(float(df_m["rsi"].iloc[-1]) if not df_m.empty else 50.0, 1),
+            "macd_hist": round(
+                float(df_m["hist"].iloc[-1]) if not df_m.empty else 0.0, 3
+            ),
+            "divergence": div_m,
+        },
+    }
+
+    return df_d, tf_summary
+
+
+def calculate_technical_indicators(df):
+    df_d, _ = calculate_multi_timeframe_analysis(df)
+    return df_d
 
 
 def calculate_advanced_vn_risk_metrics(
@@ -660,7 +879,7 @@ def main():
                     for col in ["open", "high", "low", "close"]:
                         df[col] = df[col] * scale_factor
 
-                df = calculate_technical_indicators(df)
+                df, tf_summary = calculate_multi_timeframe_analysis(df)
                 close = float(df["close"].iloc[-1])
                 rsi = float(df["rsi"].iloc[-1])
                 prev_rsi = float(df["rsi"].iloc[-2]) if len(df) >= 2 else rsi
@@ -681,7 +900,7 @@ def main():
                 f_val = smart_money["foreign_net_val"] / 1_000_000_000
                 p_val = smart_money["prop_net_val"] / 1_000_000_000
 
-                # 4. Tính Điểm tự tin (Quant Score 0-100)
+                # 4. Tính Điểm tự tin (Quant Score 0-100) tích hợp Đa Khung Thời Gian
                 score = 50
                 if close > ma20:
                     score += 10
@@ -705,6 +924,15 @@ def main():
                     score += 5
                 else:
                     score -= 5
+
+                # Thưởng/Phạt điểm dựa trên Phân Kỳ Đa Khung Thời Gian (1H, 1D, 1W, 1M)
+                for tf in ["1h", "1d", "1w", "1m"]:
+                    div = tf_summary[tf]["divergence"]
+                    weight = 5 if tf in ["1w", "1m"] else (4 if tf == "1d" else 3)
+                    if div["rsi_bullish"] or div["macd_bullish"]:
+                        score += weight
+                    if div["rsi_bearish"] or div["macd_bearish"]:
+                        score -= weight
 
                 score = max(0, min(100, score))
 
@@ -755,6 +983,45 @@ def main():
                     else "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20."
                 )
 
+                # Diễn giải tín hiệu Phân Kỳ Đa Khung Thời Gian (1H, 1D, 1W, 1M)
+                tf_names = {
+                    "1h": "khung giờ (1H)",
+                    "1d": "khung ngày (1D)",
+                    "1w": "khung tuần (1W)",
+                    "1m": "khung tháng (1M)",
+                }
+                div_bull_details = []
+                div_bear_details = []
+
+                for tf_k, tf_lbl in tf_names.items():
+                    d_info = tf_summary[tf_k]["divergence"]
+                    sigs_bull = []
+                    sigs_bear = []
+                    if d_info["rsi_bullish"]:
+                        sigs_bull.append("RSI")
+                    if d_info["macd_bullish"]:
+                        sigs_bull.append("MACD")
+                    if sigs_bull:
+                        div_bull_details.append(
+                            f"{'/'.join(sigs_bull)} phân kỳ dương {tf_lbl}"
+                        )
+
+                    if d_info["rsi_bearish"]:
+                        sigs_bear.append("RSI")
+                    if d_info["macd_bearish"]:
+                        sigs_bear.append("MACD")
+                    if sigs_bear:
+                        div_bear_details.append(
+                            f"{'/'.join(sigs_bear)} phân kỳ âm {tf_lbl}"
+                        )
+
+                if div_bull_details:
+                    divergence_rationale = f"Tín hiệu xác nhận: Xuất hiện {', '.join(div_bull_details)}, báo hiệu lực cầu đảo chiều tăng điểm rất mạnh."
+                elif div_bear_details:
+                    divergence_rationale = f"Cảnh báo kỹ thuật: Đã xuất hiện {', '.join(div_bear_details)}, áp lực chốt lời/suy yếu gia tăng."
+                else:
+                    divergence_rationale = f"Động lượng đa khung: Chỉ báo RSI ({rsi:.1f}) và MACD ({macd_hist:.3f}) duy trì xu hướng đồng thuận trên khung ngày và tuần."
+
                 rationale_points = [
                     f"Giá đóng cửa {close * 1000:,.0f}đ vượt đường trung bình động MA20 ({ma20 * 1000:,.0f}đ), củng cố xu hướng tăng."
                     if close > ma20
@@ -762,12 +1029,10 @@ def main():
                     f"Thanh khoản bùng nổ đạt {vol_ratio:.1f}x so với trung bình 20 phiên, dòng tiền mua chủ động."
                     if vol_ratio > 1.2
                     else "Thanh khoản duy trì ở mức bình ổn.",
-                    f"Chỉ báo RSI đạt {rsi:.1f} điểm, duy trì động lượng phục hồi tốt."
-                    if rsi > 50
-                    else f"RSI ở mức {rsi:.1f} điểm, thể hiện áp lực cung lấn át suy yếu đà tăng.",
-                    f"MACD phân kỳ dương ({macd_hist:.3f}) tạo tín hiệu tiếp diễn tăng giá mạnh mẽ."
+                    divergence_rationale,
+                    f"RSI khung ngày đạt {rsi:.1f} điểm, MACD Histogram ({macd_hist:.3f}) hỗ trợ đà bứt phá."
                     if macd_hist > 0
-                    else f"MACD phân kỳ âm ({macd_hist:.3f}), áp lực điều chỉnh gia tăng.",
+                    else f"RSI khung ngày đạt {rsi:.1f} điểm, MACD Histogram ({macd_hist:.3f}) thể hiện áp lực điều chỉnh.",
                 ]
                 full_rationale = " ".join(rationale_points) + (
                     " Khuyến nghị Mua gia tăng vị thế theo xu hướng."

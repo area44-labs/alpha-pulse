@@ -149,11 +149,22 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
           <div className="space-y-2">
             <h4 className="flex items-center font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
               <Sparkles className="mr-2 h-3.5 w-3.5 text-muted-foreground" />
-              Lý do khuyến nghị chi tiết
+              Lý do khuyến nghị chi tiết & Động lượng RSI / MACD Đa Khung Thời Gian
             </h4>
-            <p className="rounded-sm border border-border bg-background p-4 text-[11px] leading-relaxed text-foreground">
-              {stock.rationale}
-            </p>
+            <div className="space-y-2 rounded-sm border border-border bg-background p-4 text-[11px] leading-relaxed text-foreground">
+              <p>{stock.rationale}</p>
+              <div className="mt-3 border-t border-border/60 pt-3">
+                <span className="mb-1 block font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
+                  Đánh giá RSI & MACD Đa Khung (1H / 1D / 1W / 1M):
+                </span>
+                <p className="text-[10px] leading-normal text-muted-foreground">
+                  Hệ thống phân tích tự động kiểm tra hiện tượng Phân kỳ Dương (báo hiệu đảo chiều
+                  tăng) và Phân kỳ Âm (báo hiệu áp lực chốt lời/suy yếu) trên 4 khung thời gian:
+                  Khung giờ (1H), Khung ngày (1D), Khung tuần (1W) và Khung tháng (1M) để củng cố
+                  tín hiệu khuyến nghị.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Risk & Safety warning */}
