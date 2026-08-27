@@ -49,6 +49,50 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
     }
   };
 
+  const parseDivergenceBadges = (rationale: string) => {
+    const bullMatches: string[] = [];
+    const bearMatches: string[] = [];
+
+    if (rationale.includes("phân kỳ dương khung giờ (1H)")) bullMatches.push("1H Dương");
+    if (rationale.includes("phân kỳ dương khung ngày (1D)")) bullMatches.push("1D Dương");
+    if (rationale.includes("phân kỳ dương khung tuần (1W)")) bullMatches.push("1W Dương");
+    if (rationale.includes("phân kỳ dương khung tháng (1M)")) bullMatches.push("1M Dương");
+
+    if (rationale.includes("phân kỳ âm khung giờ (1H)")) bearMatches.push("1H Âm");
+    if (rationale.includes("phân kỳ âm khung ngày (1D)")) bearMatches.push("1D Âm");
+    if (rationale.includes("phân kỳ âm khung tuần (1W)")) bearMatches.push("1W Âm");
+    if (rationale.includes("phân kỳ âm khung tháng (1M)")) bearMatches.push("1M Âm");
+
+    if (bullMatches.length === 0 && bearMatches.length === 0) {
+      return (
+        <Badge variant="outline" className="font-mono text-[9px]">
+          Đồng thuận
+        </Badge>
+      );
+    }
+
+    return (
+      <div className="flex flex-wrap items-center justify-center gap-1">
+        {bullMatches.map((b) => (
+          <span
+            key={b}
+            className="inline-flex items-center rounded border border-trend-up-border bg-trend-up-bg px-1.5 py-0.5 font-mono text-[9px] font-bold text-trend-up-text"
+          >
+            📈 {b}
+          </span>
+        ))}
+        {bearMatches.map((b) => (
+          <span
+            key={b}
+            className="inline-flex items-center rounded border border-trend-down-border bg-trend-down-bg px-1.5 py-0.5 font-mono text-[9px] font-bold text-trend-down-text"
+          >
+            📉 {b}
+          </span>
+        ))}
+      </div>
+    );
+  };
+
   const renderTable = (data: Stock[]) => {
     if (data.length === 0) {
       return (
@@ -79,6 +123,14 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                 <div className="flex items-center justify-end gap-1">
                   Giá hiện tại
                   <Tooltip content="Giá giao dịch khớp lệnh thực tế gần nhất (VND)">
+                    <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
+                  </Tooltip>
+                </div>
+              </TableHead>
+              <TableHead className="h-auto px-4 py-3 text-center font-bold text-muted-foreground">
+                <div className="flex items-center justify-center gap-1">
+                  Tín hiệu Phân Kỳ
+                  <Tooltip content="Trạng thái Phân kỳ Dương (báo hiệu đà tăng), Phân kỳ Âm (báo hiệu áp lực giảm) trên từng khung thời gian (1H/1D/1W/1M)">
                     <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
@@ -157,6 +209,11 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                       {(stock.currentPrice * 1000).toLocaleString("vi-VN")}
                     </span>
                     <span className="ml-0.5 text-[10px] text-subtle-foreground">đ</span>
+                  </TableCell>
+
+                  {/* Divergence Column */}
+                  <TableCell className="px-4 py-3 text-center">
+                    {parseDivergenceBadges(stock.rationale)}
                   </TableCell>
 
                   {/* Buy/Sell Zone */}
