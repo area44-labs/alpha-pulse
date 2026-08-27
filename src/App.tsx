@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
 
-import { DivergenceSummaryTable } from "@/components/divergence-summary-table";
 import { Header } from "@/components/header";
 import { MarketSummary } from "@/components/market-summary";
 import { SecuritiesTable } from "@/components/securities-table";
@@ -159,20 +158,6 @@ function App() {
             onSelectStock={handleSelectStock}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
-          />
-        </div>
-
-        {/* Multi-timeframe Divergence Summary Section */}
-        <div className="space-y-4 pt-4">
-          <div className="flex items-center space-x-2">
-            <div className="h-1.5 w-1.5 bg-foreground" />
-            <h2 className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
-              Bảng Trạng Thái Phân Kỳ Đa Khung Thời Gian (1H / 1D / 1W)
-            </h2>
-          </div>
-          <DivergenceSummaryTable
-            stocks={stocksData.recommendations}
-            onSelectStock={handleSelectStock}
           />
         </div>
 

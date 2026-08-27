@@ -24,6 +24,12 @@ interface Stock {
   riskRewardRatio?: string;
   riskLevel: "LOW" | "MEDIUM" | "HIGH";
   rationale: string;
+  divergenceByTf?: {
+    H?: "BULLISH" | "BEARISH" | "NONE";
+    D?: "BULLISH" | "BEARISH" | "NONE";
+    W?: "BULLISH" | "BEARISH" | "NONE";
+    T?: "BULLISH" | "BEARISH" | "NONE";
+  };
 }
 
 interface StockTableProps {
@@ -49,21 +55,58 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
     }
   };
 
-  const parseDivergenceBadges = (rationale: string) => {
-    const bullMatches: string[] = [];
-    const bearMatches: string[] = [];
+  const parseDivergenceBadges = (stock: Stock) => {
+    const badges: { code: string; label: string; type: "BULLISH" | "BEARISH" }[] = [];
 
-    if (rationale.includes("phân kỳ dương khung giờ (1H)")) bullMatches.push("1H Dương");
-    if (rationale.includes("phân kỳ dương khung ngày (1D)")) bullMatches.push("1D Dương");
-    if (rationale.includes("phân kỳ dương khung tuần (1W)")) bullMatches.push("1W Dương");
-    if (rationale.includes("phân kỳ dương khung tháng (1M)")) bullMatches.push("1M Dương");
+    const tfMap: {
+      code: keyof NonNullable<Stock["divergenceByTf"]>;
+      label: string;
+      phraseBull: string;
+      phraseBear: string;
+    }[] = [
+      {
+        code: "H",
+        label: "H (Giờ)",
+        phraseBull: "phân kỳ dương khung giờ (1H)",
+        phraseBear: "phân kỳ âm khung giờ (1H)",
+      },
+      {
+        code: "D",
+        label: "D (Ngày)",
+        phraseBull: "phân kỳ dương khung ngày (1D)",
+        phraseBear: "phân kỳ âm khung ngày (1D)",
+      },
+      {
+        code: "W",
+        label: "W (Tuần)",
+        phraseBull: "phân kỳ dương khung tuần (1W)",
+        phraseBear: "phân kỳ âm khung tuần (1W)",
+      },
+      {
+        code: "T",
+        label: "T (Tháng)",
+        phraseBull: "phân kỳ dương khung tháng (1M)",
+        phraseBear: "phân kỳ âm khung tháng (1M)",
+      },
+    ];
 
-    if (rationale.includes("phân kỳ âm khung giờ (1H)")) bearMatches.push("1H Âm");
-    if (rationale.includes("phân kỳ âm khung ngày (1D)")) bearMatches.push("1D Âm");
-    if (rationale.includes("phân kỳ âm khung tuần (1W)")) bearMatches.push("1W Âm");
-    if (rationale.includes("phân kỳ âm khung tháng (1M)")) bearMatches.push("1M Âm");
+    tfMap.forEach(({ code, phraseBull, phraseBear }) => {
+      let status: "BULLISH" | "BEARISH" | "NONE" = "NONE";
+      if (stock.divergenceByTf && stock.divergenceByTf[code]) {
+        status = stock.divergenceByTf[code]!;
+      } else {
+        if (stock.rationale.includes(phraseBull)) status = "BULLISH";
+        else if (stock.rationale.includes(phraseBear)) status = "BEARISH";
+      }
 
-    if (bullMatches.length === 0 && bearMatches.length === 0) {
+      if (status === "BULLISH") {
+        badges.push({ code, label: `${code} Dương`, type: "BULLISH" });
+      } else if (status === "BEARISH") {
+        badges.push({ code, label: `${code} Âm`, type: "BEARISH" });
+      }
+    });
+
+    if (badges.length === 0) {
       return (
         <Badge variant="outline" className="font-mono text-[9px]">
           Đồng thuận
@@ -73,20 +116,16 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
 
     return (
       <div className="flex flex-wrap items-center justify-center gap-1">
-        {bullMatches.map((b) => (
+        {badges.map((b) => (
           <span
-            key={b}
-            className="inline-flex items-center rounded border border-trend-up-border bg-trend-up-bg px-1.5 py-0.5 font-mono text-[9px] font-bold text-trend-up-text"
+            key={b.code}
+            className={`inline-flex items-center rounded px-1.5 py-0.5 font-mono text-[9px] font-bold ${
+              b.type === "BULLISH"
+                ? "border border-trend-up-border bg-trend-up-bg text-trend-up-text"
+                : "border border-trend-down-border bg-trend-down-bg text-trend-down-text"
+            }`}
           >
-            📈 {b}
-          </span>
-        ))}
-        {bearMatches.map((b) => (
-          <span
-            key={b}
-            className="inline-flex items-center rounded border border-trend-down-border bg-trend-down-bg px-1.5 py-0.5 font-mono text-[9px] font-bold text-trend-down-text"
-          >
-            📉 {b}
+            {b.type === "BULLISH" ? `📈 ${b.label}` : `📉 ${b.label}`}
           </span>
         ))}
       </div>
@@ -213,7 +252,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
 
                   {/* Divergence Column */}
                   <TableCell className="px-4 py-3 text-center">
-                    {parseDivergenceBadges(stock.rationale)}
+                    {parseDivergenceBadges(stock)}
                   </TableCell>
 
                   {/* Buy/Sell Zone */}

@@ -42,7 +42,8 @@
       "stopLossPrice": 20.9,
       "riskLevel": "LOW",
       "rationale": "Giá đóng cửa 22,500đ vượt đường trung bình động MA20 (22,288đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Cảnh báo kỹ thuật: Đã xuất hiện RSI phân kỳ âm khung ngày (1D), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 51.5 điểm, MACD Histogram (0.029) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "NONE", "D": "BEARISH", "W": "NONE", "T": "NONE" }
     },
     {
       "symbol": "FPT",
@@ -55,7 +56,8 @@
       "stopLossPrice": 67.1,
       "riskLevel": "MEDIUM",
       "rationale": "Giá đóng cửa 72,200đ vượt đường trung bình động MA20 (70,348đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Cảnh báo kỹ thuật: Đã xuất hiện MACD phân kỳ âm khung tuần (1W), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 56.3 điểm, MACD Histogram (0.332) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "NONE", "D": "NONE", "W": "BEARISH", "T": "NONE" }
     },
     {
       "symbol": "HDB",
@@ -68,7 +70,8 @@
       "stopLossPrice": 25.7,
       "riskLevel": "LOW",
       "rationale": "Giá đóng cửa 27,650đ vượt đường trung bình động MA20 (26,764đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung ngày (1D), RSI/MACD phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 63.9 điểm, MACD Histogram (0.094) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "NONE", "D": "BULLISH", "W": "BULLISH", "T": "NONE" }
     },
     {
       "symbol": "HPG",
@@ -81,7 +84,8 @@
       "stopLossPrice": 20.65,
       "riskLevel": "LOW",
       "rationale": "Giá đóng cửa 22,200đ vượt đường trung bình động MA20 (21,754đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Cảnh báo kỹ thuật: Đã xuất hiện RSI/MACD phân kỳ âm khung ngày (1D), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 53.5 điểm, MACD Histogram (0.115) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "NONE", "D": "BEARISH", "W": "NONE", "T": "NONE" }
     },
     {
       "symbol": "SSB",
@@ -94,7 +98,8 @@
       "stopLossPrice": 14.8,
       "riskLevel": "LOW",
       "rationale": "Giá đóng cửa 15,900đ vượt đường trung bình động MA20 (15,373đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung giờ (1H), RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 69.8 điểm, MACD Histogram (0.095) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "BULLISH", "D": "NONE", "W": "BULLISH", "T": "NONE" }
     },
     {
       "symbol": "TCB",
@@ -107,7 +112,8 @@
       "stopLossPrice": 31.5,
       "riskLevel": "MEDIUM",
       "rationale": "Giá đóng cửa 33,850đ vượt đường trung bình động MA20 (31,007đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.5x so với trung bình 20 phiên, dòng tiền mua chủ động. Động lượng đa khung: Chỉ báo RSI (76.6) và MACD (0.336) duy trì xu hướng đồng thuận trên khung ngày và tuần. RSI khung ngày đạt 76.6 điểm, MACD Histogram (0.336) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "NONE", "D": "NONE", "W": "NONE", "T": "NONE" }
     },
     {
       "symbol": "VIC",
@@ -120,7 +126,8 @@
       "stopLossPrice": 213.9,
       "riskLevel": "HIGH",
       "rationale": "Giá đóng cửa 230,000đ vượt đường trung bình động MA20 (211,985đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Cảnh báo kỹ thuật: Đã xuất hiện MACD phân kỳ âm khung tuần (1W), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 61.9 điểm, MACD Histogram (2.848) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "NONE", "D": "NONE", "W": "BEARISH", "T": "NONE" }
     },
     {
       "symbol": "VPB",
@@ -133,7 +140,8 @@
       "stopLossPrice": 25.4,
       "riskLevel": "LOW",
       "rationale": "Giá đóng cửa 27,300đ vượt đường trung bình động MA20 (25,550đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.6x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung ngày (1D), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 73.0 điểm, MACD Histogram (0.268) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "NONE", "D": "BULLISH", "W": "NONE", "T": "NONE" }
     },
     {
       "symbol": "POW",
@@ -146,7 +154,8 @@
       "stopLossPrice": 12.3,
       "riskLevel": "MEDIUM",
       "rationale": "Giá đóng cửa 13,200đ gãy đường xu hướng ngắn hạn MA20 (13,538đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 37.5 điểm, MACD Histogram (-0.011) thể hiện áp lực điều chỉnh. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "NONE", "D": "NONE", "W": "BULLISH", "T": "NONE" }
     },
     {
       "symbol": "BVH",
@@ -159,7 +168,8 @@
       "stopLossPrice": 59.6,
       "riskLevel": "MEDIUM",
       "rationale": "Giá đóng cửa 64,100đ gãy đường xu hướng ngắn hạn MA20 (65,115đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. Cảnh báo kỹ thuật: Đã xuất hiện RSI/MACD phân kỳ âm khung giờ (1H), RSI/MACD phân kỳ âm khung ngày (1D), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 40.5 điểm, MACD Histogram (-0.377) thể hiện áp lực điều chỉnh. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "BEARISH", "D": "BEARISH", "W": "NONE", "T": "NONE" }
     },
     {
       "symbol": "CTG",
@@ -172,7 +182,8 @@
       "stopLossPrice": 29.55,
       "riskLevel": "LOW",
       "rationale": "Giá đóng cửa 31,800đ vượt đường trung bình động MA20 (31,780đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung ngày (1D), RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 42.2 điểm, MACD Histogram (0.048) hỗ trợ đà bứt phá. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
-      "riskRewardRatio": "1:1.0"
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": { "H": "NONE", "D": "BULLISH", "W": "BULLISH", "T": "NONE" }
     },
     {
       "symbol": "DXG",
@@ -185,7 +196,8 @@
       "stopLossPrice": 11.21,
       "riskLevel": "MEDIUM",
       "rationale": "Cổ phiếu trong danh sách theo dõi xu hướng.",
-      "riskRewardRatio": "1:2.0"
+      "riskRewardRatio": "1:2.0",
+      "divergenceByTf": { "H": "NONE", "D": "NONE", "W": "NONE", "T": "NONE" }
     }
   ]
 }
