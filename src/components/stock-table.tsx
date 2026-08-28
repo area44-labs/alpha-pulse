@@ -24,6 +24,12 @@ interface Stock {
   riskRewardRatio?: string;
   riskLevel: "LOW" | "MEDIUM" | "HIGH";
   rationale: string;
+  divergenceByTf?: {
+    H?: "BULLISH" | "BEARISH" | "NONE";
+    D?: "BULLISH" | "BEARISH" | "NONE";
+    W?: "BULLISH" | "BEARISH" | "NONE";
+    T?: "BULLISH" | "BEARISH" | "NONE";
+  };
 }
 
 interface StockTableProps {
@@ -47,6 +53,83 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
       case "HIGH":
         return <Badge variant="destructive">Cao</Badge>;
     }
+  };
+
+  const parseDivergenceBadges = (stock: Stock) => {
+    const badges: { code: string; label: string; type: "BULLISH" | "BEARISH" }[] = [];
+
+    const tfMap: {
+      code: keyof NonNullable<Stock["divergenceByTf"]>;
+      label: string;
+      phraseBull: string;
+      phraseBear: string;
+    }[] = [
+      {
+        code: "H",
+        label: "H (Giờ)",
+        phraseBull: "phân kỳ dương khung giờ (1H)",
+        phraseBear: "phân kỳ âm khung giờ (1H)",
+      },
+      {
+        code: "D",
+        label: "D (Ngày)",
+        phraseBull: "phân kỳ dương khung ngày (1D)",
+        phraseBear: "phân kỳ âm khung ngày (1D)",
+      },
+      {
+        code: "W",
+        label: "W (Tuần)",
+        phraseBull: "phân kỳ dương khung tuần (1W)",
+        phraseBear: "phân kỳ âm khung tuần (1W)",
+      },
+      {
+        code: "T",
+        label: "T (Tháng)",
+        phraseBull: "phân kỳ dương khung tháng (1M)",
+        phraseBear: "phân kỳ âm khung tháng (1M)",
+      },
+    ];
+
+    tfMap.forEach(({ code, phraseBull, phraseBear }) => {
+      let status: "BULLISH" | "BEARISH" | "NONE" = "NONE";
+      if (stock.divergenceByTf && stock.divergenceByTf[code]) {
+        status = stock.divergenceByTf[code]!;
+      } else {
+        if (stock.rationale.includes(phraseBull)) status = "BULLISH";
+        else if (stock.rationale.includes(phraseBear)) status = "BEARISH";
+      }
+
+      if (status === "BULLISH") {
+        badges.push({ code, label: `${code} Dương`, type: "BULLISH" });
+      } else if (status === "BEARISH") {
+        badges.push({ code, label: `${code} Âm`, type: "BEARISH" });
+      }
+    });
+
+    if (badges.length === 0) {
+      return (
+        <Badge variant="outline" className="font-mono text-[9px]">
+          Đồng thuận
+        </Badge>
+      );
+    }
+
+    return (
+      <div className="flex flex-wrap items-center justify-center gap-1">
+        {badges.map((b) => (
+          <span
+            key={b.code}
+            className={`inline-flex items-center rounded px-1.5 py-0.5 font-mono text-[9px] font-bold ${
+              b.type === "BULLISH"
+                ? "border border-trend-up-border bg-trend-up-bg text-trend-up-text"
+                : "border border-trend-down-border bg-trend-down-bg text-trend-down-text"
+            }`}
+          >
+            {b.type === "BULLISH" ? `📈 ${b.label}` : `📉 ${b.label}`}
+          </span>
+        ))}
+      </div>
+    );
   };
 
   const renderTable = (data: Stock[]) => {
@@ -79,6 +162,14 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                 <div className="flex items-center justify-end gap-1">
                   Giá hiện tại
                   <Tooltip content="Giá giao dịch khớp lệnh thực tế gần nhất (VND)">
+                    <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
+                  </Tooltip>
+                </div>
+              </TableHead>
+              <TableHead className="h-auto px-4 py-3 text-center font-bold text-muted-foreground">
+                <div className="flex items-center justify-center gap-1">
+                  Tín hiệu Phân Kỳ
+                  <Tooltip content="Trạng thái Phân kỳ Dương (báo hiệu đà tăng), Phân kỳ Âm (báo hiệu áp lực giảm) trên từng khung thời gian (1H/1D/1W/1M)">
                     <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
@@ -157,6 +248,11 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                       {(stock.currentPrice * 1000).toLocaleString("vi-VN")}
                     </span>
                     <span className="ml-0.5 text-[10px] text-subtle-foreground">đ</span>
+                  </TableCell>
+
+                  {/* Divergence Column */}
+                  <TableCell className="px-4 py-3 text-center">
+                    {parseDivergenceBadges(stock)}
                   </TableCell>
 
                   {/* Buy/Sell Zone */}

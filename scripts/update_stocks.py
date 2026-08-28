@@ -1040,6 +1040,18 @@ def main():
                     else " Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục."
                 )
 
+                # Format divergence status for H (1H), D (1D), W (1W), T (1M/Tháng)
+                divergence_by_tf = {}
+                tf_mapping = [("1h", "H"), ("1d", "D"), ("1w", "W"), ("1m", "T")]
+                for tf_k, tf_code in tf_mapping:
+                    div = tf_summary[tf_k]["divergence"]
+                    if div["rsi_bullish"] or div["macd_bullish"]:
+                        divergence_by_tf[tf_code] = "BULLISH"
+                    elif div["rsi_bearish"] or div["macd_bearish"]:
+                        divergence_by_tf[tf_code] = "BEARISH"
+                    else:
+                        divergence_by_tf[tf_code] = "NONE"
+
                 scanned_results.append(
                     {
                         "symbol": symbol,
@@ -1066,6 +1078,7 @@ def main():
                         "exec_notes": exec_notes,
                         "risk_metrics": risk_metrics,
                         "riskLevel": dynamic_risk_level,
+                        "divergenceByTf": divergence_by_tf,
                     }
                 )
                 print(f"-> [THÀNH CÔNG] Điểm: {score}/100 | Khuyến nghị: {action}")
@@ -1259,6 +1272,10 @@ def main():
                 "riskLevel": item["riskLevel"],
                 "rationale": item["rationale"],
                 "riskRewardRatio": item["risk_reward_ratio"],
+                "divergenceByTf": item.get(
+                    "divergenceByTf",
+                    {"H": "NONE", "D": "NONE", "W": "NONE", "T": "NONE"},
+                ),
             }
         )
 
