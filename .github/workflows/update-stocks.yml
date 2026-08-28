@@ -20,15 +20,15 @@ jobs:
       - name: Install pnpm
         uses: pnpm/setup@84cb39b217b10273981911c288cd62326dc7c6d2 # v2
         with:
-          version: 11
-          runtime: node@24
+          version: 11.24.0
+          runtime: node@24.20.0
           install: true
           cache: true
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
-          python-version: '3.12'
+          python-version: '3.14.7'
           cache: 'pip'
 
       - name: Install Python dependencies
