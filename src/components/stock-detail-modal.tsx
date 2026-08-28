@@ -145,72 +145,14 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
             </div>
           </div>
 
-          {/* Technical rationale & Multi-Timeframe Divergence Guide */}
+          {/* Technical rationale */}
           <div className="space-y-2">
             <h4 className="flex items-center font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
               <Sparkles className="mr-2 h-3.5 w-3.5 text-muted-foreground" />
-              Lý do khuyến nghị & Hướng dẫn Phân kỳ Đa Khung (1H / 1D / 1W / 1M)
+              Lý do khuyến nghị
             </h4>
-            <div className="space-y-3 rounded-sm border border-border bg-background p-4 text-[11px] leading-relaxed text-foreground">
+            <div className="rounded-sm border border-border bg-background p-4 text-[11px] leading-relaxed text-foreground">
               <p className="font-medium text-foreground">{stock.rationale}</p>
-
-              {/* Multi-timeframe divergence breakdown */}
-              <div className="mt-3 space-y-2.5 border-t border-border/60 pt-3">
-                <span className="block font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
-                  Chi tiết Phân Kỳ Âm / Dương & Nguyên lý Mua / Bán theo Khung Thời Gian:
-                </span>
-
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                  <div className="rounded border border-trend-up-border/40 bg-trend-up-bg/20 p-2.5">
-                    <span className="flex items-center gap-1 text-[11px] font-bold text-trend-up-text">
-                      <span>📈</span> Phân Kỳ Dương (Bullish Divergence)
-                    </span>
-                    <p className="mt-1 text-[10px] leading-normal text-muted-foreground">
-                      <strong className="text-foreground">Dấu hiệu:</strong> Giá tạo đáy mới thấp
-                      hơn (hoặc bằng), nhưng RSI / MACD Histogram tạo đáy sau cao hơn.
-                    </p>
-                    <p className="mt-1 text-[10px] leading-normal font-medium text-trend-up-text">
-                      💡 <strong>Tại sao nên MUA:</strong> Báo hiệu lực bán đã kiệt sức và dòng tiền
-                      bắt đáy quay trở lại, áp lực suy giảm kết thúc và xác suất đảo chiều tăng rất
-                      cao.
-                    </p>
-                  </div>
-
-                  <div className="rounded border border-trend-down-border/40 bg-trend-down-bg/20 p-2.5">
-                    <span className="flex items-center gap-1 text-[11px] font-bold text-trend-down-text">
-                      <span>📉</span> Phân Kỳ Âm (Bearish Divergence)
-                    </span>
-                    <p className="mt-1 text-[10px] leading-normal text-muted-foreground">
-                      <strong className="text-foreground">Dấu hiệu:</strong> Giá đẩy đỉnh mới cao
-                      hơn (hoặc bằng), nhưng RSI / MACD Histogram tạo đỉnh sau thấp hơn.
-                    </p>
-                    <p className="mt-1 text-[10px] leading-normal font-medium text-trend-down-text">
-                      💡 <strong>Tại sao nên BÁN:</strong> Báo hiệu động lượng mua đã suy yếu, phe
-                      mua hụt hơi dù giá tăng, nguy cơ đảo chiều giảm mạnh/chốt lời lớn.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="rounded bg-muted/40 p-2.5 text-[10px] leading-normal text-muted-foreground">
-                  <span className="mb-1 block font-semibold tracking-wider text-foreground uppercase">
-                    Ứng dụng Khung Thời Gian (Timeframes):
-                  </span>
-                  <ul className="list-disc space-y-0.5 pl-4">
-                    <li>
-                      <strong className="text-foreground">Khung 1H (Giờ):</strong> Tín hiệu điểm
-                      vào/ra lệnh siêu ngắn hạn, lướt T+2.5.
-                    </li>
-                    <li>
-                      <strong className="text-foreground">Khung 1D (Ngày):</strong> Khung chuẩn xác
-                      nhận xu hướng ngắn-trung hạn (1-4 tuần).
-                    </li>
-                    <li>
-                      <strong className="text-foreground">Khung 1W (Tuần) & 1M (Tháng):</strong> Xác
-                      định chu kỳ sóng lớn trung-dài hạn; Phân kỳ trên 1W/1M có độ tin cậy cao nhất.
-                    </li>
-                  </ul>
-                </div>
-              </div>
             </div>
           </div>
 
