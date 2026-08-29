@@ -910,8 +910,14 @@ def main():
                     score += 10
                 if vol_ratio > 1.2:
                     score += 10
-                if 50 <= rsi <= 70:
+                # Cải tiến 2: Vùng an toàn RSI & Phạt rủi ro Quá mua (Overbought)
+                if 45 <= rsi <= 68:
                     score += 10
+                elif rsi > 78:
+                    score -= 15
+                elif rsi > 70:
+                    score -= 10
+
                 if f_val > 5.0:
                     score += 10
                 elif f_val < -5.0:
@@ -925,14 +931,29 @@ def main():
                 else:
                     score -= 5
 
-                # Thưởng/Phạt điểm dựa trên Phân Kỳ Đa Khung Thời Gian (1H, 1D, 1W, 1M)
+                # Cải tiến 1: Thưởng/Phạt điểm & Khống chế Phân Kỳ Đa Khung Thời Gian
+                has_major_bearish_divergence = False
                 for tf in ["1h", "1d", "1w", "1m"]:
                     div = tf_summary[tf]["divergence"]
-                    weight = 5 if tf in ["1w", "1m"] else (4 if tf == "1d" else 3)
+                    if tf == "1w":
+                        weight_bull, weight_bear = 12, 15
+                    elif tf == "1d":
+                        weight_bull, weight_bear = 8, 12
+                    elif tf == "1m":
+                        weight_bull, weight_bear = 10, 10
+                    else:  # 1h
+                        weight_bull, weight_bear = 3, 5
+
                     if div["rsi_bullish"] or div["macd_bullish"]:
-                        score += weight
+                        score += weight_bull
                     if div["rsi_bearish"] or div["macd_bearish"]:
-                        score -= weight
+                        score -= weight_bear
+                        if tf in ["1d", "1w"]:
+                            has_major_bearish_divergence = True
+
+                # Quy tắc khống chế (Hard Cap): Nếu dính Phân kỳ âm 1D hoặc 1W, khống chế score < 65
+                if has_major_bearish_divergence:
+                    score = min(score, 60)
 
                 score = max(0, min(100, score))
 
@@ -945,7 +966,11 @@ def main():
                 # 6. Xác định điểm Quản trị vị thế (Thanh khoản T+2.5 & Biên độ sàn)
                 buy_min = round_tick_size(close, ex)
                 buy_max = clamp_price_limits(close * 1.02, close, ex)
-                sl_raw = min(close - 2.0 * atr, close * 0.93)
+                # Cải tiến 3: Tối ưu hoá điểm Dừng lỗ Cắt lỗ Đa yếu tố (T+2.5 Dynamic Stop Loss)
+                lowest_low_5d = float(df["low"].tail(5).min())
+                sl_atr = close - 1.8 * atr
+                sl_ma20 = ma20 * 0.98
+                sl_raw = min(sl_atr, lowest_low_5d, sl_ma20, close * 0.93)
                 stop_loss = clamp_price_limits(sl_raw, close, ex)
                 risk = max(close - stop_loss, close * 0.05)
                 target1 = clamp_price_limits(close + 2.0 * risk, close, ex)
@@ -978,9 +1003,9 @@ def main():
                     f"1:{(target1 - close) / risk:.1f}" if action == "BUY" else "1:1.0"
                 )
                 exec_notes = (
-                    f"Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức {buy_max * 1000:,.0f}đ."
+                    f"Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức {buy_max * 1000:,.0f}đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
                     if action == "BUY"
-                    else "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20."
+                    else "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20 hoặc xuất hiện cảnh báo phân kỳ âm."
                 )
 
                 # Diễn giải tín hiệu Phân Kỳ Đa Khung Thời Gian (1H, 1D, 1W, 1M)
