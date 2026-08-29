@@ -931,6 +931,16 @@ def main():
                 else:
                     score -= 5
 
+                # Cải tiến bổ sung: Sức mạnh tương quan RS (Relative Strength vs VN-Index 20 phiên)
+                if df_vn is not None and len(df_vn) >= 20 and len(df) >= 20:
+                    stock_ret_20 = (df["close"].iloc[-1] - df["close"].iloc[-20]) / df["close"].iloc[-20]
+                    vn_ret_20 = (df_vn["close"].iloc[-1] - df_vn["close"].iloc[-20]) / df_vn["close"].iloc[-20]
+                    rs_diff = stock_ret_20 - vn_ret_20
+                    if rs_diff > 0.05:  # Vượt trội so với thị trường > 5%
+                        score += 5
+                    elif rs_diff < -0.05:  # Yếu hơn thị trường > 5%
+                        score -= 5
+
                 # Cải tiến 1: Thưởng/Phạt điểm & Khống chế Phân Kỳ Đa Khung Thời Gian
                 has_major_bearish_divergence = False
                 for tf in ["1h", "1d", "1w", "1m"]:
