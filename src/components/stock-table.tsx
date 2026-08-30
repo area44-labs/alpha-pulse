@@ -40,7 +40,7 @@ interface StockTableProps {
 }
 
 export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: StockTableProps) {
-  // Separate stocks into BUY and SELL
+  // Phân loại danh sách cổ phiếu theo tín hiệu Mua (BUY) và Bán (SELL)
   const buyStocks = stocks.filter((s) => s.type === "BUY");
   const sellStocks = stocks.filter((s) => s.type === "SELL");
 
@@ -55,6 +55,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
     }
   };
 
+  // Hàm trích xuất và hiển thị badge tín hiệu Phân kỳ đa khung thời gian (1H, 1D, 1W, 1M)
   const parseDivergenceBadges = (stock: Stock) => {
     const badges: { code: string; label: string; type: "BULLISH" | "BEARISH" }[] = [];
 
@@ -204,7 +205,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
             {data.map((stock) => {
               const isBuy = stock.type === "BUY";
 
-              // Compute target return and loss risk
+              // Tính toán phần trăm lợi nhuận kỳ vọng và rủi ro cắt lỗ
               const returnPct = isBuy
                 ? ((stock.targetSellPrice - stock.currentPrice) / stock.currentPrice) * 100
                 : ((stock.currentPrice - stock.targetSellPrice) / stock.currentPrice) * 100;
