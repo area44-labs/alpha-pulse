@@ -1,5 +1,5 @@
 {
-  "scan_date": "2026-08-29",
+  "scan_date": "2026-08-30",
   "market_context": {
     "vnindex_status": "UPTREND",
     "market_risk_level": "LOW",
@@ -18,10 +18,10 @@
           "min": 31950,
           "max": 32600
         },
-        "stop_loss": 29700,
+        "stop_loss": 31200,
         "target_1": 34200,
         "target_2": 34200,
-        "risk_reward_ratio": "1:1.0"
+        "risk_reward_ratio": "1:1.4"
       },
       "technical_rationale": [
         "Giá đóng cửa 31,950đ vượt đường trung bình động MA20 (31,835đ), củng cố xu hướng tăng.",
@@ -42,10 +42,10 @@
           "min": 33400,
           "max": 34050
         },
-        "stop_loss": 31050,
+        "stop_loss": 31650,
         "target_1": 35750,
         "target_2": 35750,
-        "risk_reward_ratio": "1:1.0"
+        "risk_reward_ratio": "1:1.3"
       },
       "technical_rationale": [
         "Giá đóng cửa 33,400đ vượt đường trung bình động MA20 (30,425đ), củng cố xu hướng tăng.",
@@ -66,10 +66,10 @@
           "min": 27800,
           "max": 28350
         },
-        "stop_loss": 25850,
+        "stop_loss": 26750,
         "target_1": 29750,
         "target_2": 29750,
-        "risk_reward_ratio": "1:1.0"
+        "risk_reward_ratio": "1:1.4"
       },
       "technical_rationale": [
         "Giá đóng cửa 27,800đ vượt đường trung bình động MA20 (25,928đ), củng cố xu hướng tăng.",
@@ -90,10 +90,10 @@
           "min": 26100,
           "max": 26600
         },
-        "stop_loss": 24250,
+        "stop_loss": 24700,
         "target_1": 27950,
         "target_2": 27950,
-        "risk_reward_ratio": "1:1.0"
+        "risk_reward_ratio": "1:1.3"
       },
       "technical_rationale": [
         "Giá đóng cửa 26,100đ vượt đường trung bình động MA20 (25,224đ), củng cố xu hướng tăng.",
@@ -114,10 +114,10 @@
           "min": 11400,
           "max": 11650
         },
-        "stop_loss": 10600,
+        "stop_loss": 10750,
         "target_1": 12200,
         "target_2": 12200,
-        "risk_reward_ratio": "1:1.0"
+        "risk_reward_ratio": "1:1.2"
       },
       "technical_rationale": [
         "Giá đóng cửa 11,400đ vượt đường trung bình động MA20 (10,788đ), củng cố xu hướng tăng.",
@@ -138,10 +138,10 @@
           "min": 17100,
           "max": 17450
         },
-        "stop_loss": 15900,
+        "stop_loss": 16400,
         "target_1": 18300,
         "target_2": 18300,
-        "risk_reward_ratio": "1:1.0"
+        "risk_reward_ratio": "1:1.4"
       },
       "technical_rationale": [
         "Giá đóng cửa 17,100đ vượt đường trung bình động MA20 (16,435đ), củng cố xu hướng tăng.",
@@ -162,10 +162,10 @@
           "min": 145900,
           "max": 148800
         },
-        "stop_loss": 135700,
+        "stop_loss": 140600,
         "target_1": 156100,
         "target_2": 156100,
-        "risk_reward_ratio": "1:1.0"
+        "risk_reward_ratio": "1:1.4"
       },
       "technical_rationale": [
         "Giá đóng cửa 145,900đ vượt đường trung bình động MA20 (140,795đ), củng cố xu hướng tăng.",
@@ -186,10 +186,10 @@
           "min": 22850,
           "max": 23300
         },
-        "stop_loss": 21250,
+        "stop_loss": 21600,
         "target_1": 24450,
         "target_2": 24450,
-        "risk_reward_ratio": "1:1.0"
+        "risk_reward_ratio": "1:1.3"
       },
       "technical_rationale": [
         "Giá đóng cửa 22,850đ vượt đường trung bình động MA20 (22,018đ), củng cố xu hướng tăng.",
@@ -210,7 +210,7 @@
           "min": 64000,
           "max": 65300
         },
-        "stop_loss": 59500,
+        "stop_loss": 64000,
         "target_1": 68500,
         "target_2": 68500,
         "risk_reward_ratio": "1:1.0"
@@ -234,7 +234,7 @@
           "min": 75500,
           "max": 77000
         },
-        "stop_loss": 70200,
+        "stop_loss": 75500,
         "target_1": 80800,
         "target_2": 80800,
         "risk_reward_ratio": "1:1.0"
@@ -258,7 +258,7 @@
           "min": 13100,
           "max": 13350
         },
-        "stop_loss": 12200,
+        "stop_loss": 13200,
         "target_1": 14000,
         "target_2": 14000,
         "risk_reward_ratio": "1:1.0"
@@ -282,7 +282,7 @@
           "min": 62300,
           "max": 63500
         },
-        "stop_loss": 57900,
+        "stop_loss": 62100,
         "target_1": 66700,
         "target_2": 66700,
         "risk_reward_ratio": "1:1.0"

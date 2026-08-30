@@ -933,8 +933,12 @@ def main():
 
                 # Cải tiến bổ sung: Sức mạnh tương quan RS (Relative Strength vs VN-Index 20 phiên)
                 if df_vn is not None and len(df_vn) >= 20 and len(df) >= 20:
-                    stock_ret_20 = (df["close"].iloc[-1] - df["close"].iloc[-20]) / df["close"].iloc[-20]
-                    vn_ret_20 = (df_vn["close"].iloc[-1] - df_vn["close"].iloc[-20]) / df_vn["close"].iloc[-20]
+                    stock_ret_20 = (df["close"].iloc[-1] - df["close"].iloc[-20]) / df[
+                        "close"
+                    ].iloc[-20]
+                    vn_ret_20 = (
+                        df_vn["close"].iloc[-1] - df_vn["close"].iloc[-20]
+                    ) / df_vn["close"].iloc[-20]
                     rs_diff = stock_ret_20 - vn_ret_20
                     if rs_diff > 0.05:  # Vượt trội so với thị trường > 5%
                         score += 5
@@ -977,10 +981,11 @@ def main():
                 buy_min = round_tick_size(close, ex)
                 buy_max = clamp_price_limits(close * 1.02, close, ex)
                 # Cải tiến 3: Tối ưu hoá điểm Dừng lỗ Cắt lỗ Đa yếu tố (T+2.5 Dynamic Stop Loss)
+                # Dùng max(...) để chọn hỗ trợ kỹ thuật sát nhất, khống chế lỗ tối đa <= 7% (close * 0.93)
                 lowest_low_5d = float(df["low"].tail(5).min())
                 sl_atr = close - 1.8 * atr
                 sl_ma20 = ma20 * 0.98
-                sl_raw = min(sl_atr, lowest_low_5d, sl_ma20, close * 0.93)
+                sl_raw = max(sl_atr, lowest_low_5d, sl_ma20, close * 0.93)
                 stop_loss = clamp_price_limits(sl_raw, close, ex)
                 risk = max(close - stop_loss, close * 0.05)
                 target1 = clamp_price_limits(close + 2.0 * risk, close, ex)
