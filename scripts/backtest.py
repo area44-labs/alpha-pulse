@@ -17,6 +17,7 @@ def parse_wait_seconds(err_str):
         return int(match_sec.group(1)) + 2
     return 15
 
+
 try:
     from vnstock.api.quote import Quote as VnQuote
 
