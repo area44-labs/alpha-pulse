@@ -27,7 +27,7 @@ Execute these steps sequentially. If a step fails, attempt to auto-remediate. If
 ### 3. Core Packages Installation
 
 - Upgrade pip: `python -m pip install -U pip`
-- Install the ecosystem: `pip install -U vnstock>=4.0.5 vnai>=2.5.6`
+- Install the ecosystem: `pip install -U vnstock>=4.0.7 vnai>=2.5.6`
 
 ### 4. Jupyter Notebook Integration (Local Only)
 
