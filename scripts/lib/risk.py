@@ -74,7 +74,9 @@ def calculate_t25_risk_metrics(
         df_calc["trading_value"] = df_calc[price_col] * df_calc["volume"]
         avg_val_20d = float(df_calc["trading_value"].tail(20).mean())
         if avg_val_20d > 0:
-            val_in_billion = avg_val_20d / 1e9 if avg_val_20d > 1e6 else avg_val_20d * 1000 / 1e9
+            val_in_billion = (
+                avg_val_20d / 1e9 if avg_val_20d > 1e6 else avg_val_20d * 1000 / 1e9
+            )
             liquidity_score = float(min(100.0, round(val_in_billion * 10.0, 1)))
         else:
             liquidity_score = 0.0
@@ -84,7 +86,9 @@ def calculate_t25_risk_metrics(
     return {
         "var_t25": round(var_95_t25, 4) if var_95_t25 is not None else None,
         "es_t25": round(es_95_t25, 4) if es_95_t25 is not None else None,
-        "volatility_60d": round(volatility_60d, 4) if volatility_60d is not None else None,
+        "volatility_60d": round(volatility_60d, 4)
+        if volatility_60d is not None
+        else None,
         "max_drawdown": round(max_dd, 4) if max_dd is not None else None,
         "liquidity_score": liquidity_score,
     }
