@@ -6,7 +6,6 @@ from datetime import datetime, timedelta, timezone
 
 import numpy as np
 import pandas as pd
-import requests
 
 try:
     from vnstock import Company, Listing, Trading
@@ -710,8 +709,6 @@ def get_exchange_mapping():
     return mapping
 
 
-
-
 def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
     if not VNSTOCK_AVAILABLE:
         return None, None
@@ -1401,7 +1398,6 @@ def main():
             if c in df_sorted.columns
         ]
         print(df_sorted[cols_to_print].to_string(index=False))
-
 
     print("\n=====================================================================")
     print("HOÀN THÀNH CẬP NHẬT DỮ LIỆU ALPHA PULSE!")
