@@ -1,11 +1,23 @@
 import json
 import logging
 import os
+import re
 import time
 from datetime import datetime, timedelta, timezone
 
 import numpy as np
 import pandas as pd
+
+
+def parse_wait_seconds(err_str):
+    """Bóc tách số giây cần chờ từ thông báo lỗi Rate Limit của vnstock."""
+    match = re.search(r"chờ\s+(\d+)\s+giây", err_str, re.IGNORECASE)
+    if match:
+        return int(match.group(1)) + 2
+    match_sec = re.search(r"wait\s+(\d+)\s+sec", err_str, re.IGNORECASE)
+    if match_sec:
+        return int(match_sec.group(1)) + 2
+    return 15
 
 try:
     from vnstock import Company, Listing, Trading
@@ -643,25 +655,41 @@ def fetch_batch_smart_money(symbols):
     live_price_map = {sym: 0.0 for sym in symbols}
     if not VNSTOCK_AVAILABLE:
         return smart_money_map, live_price_map
-    try:
-        price_board = Trading().price_board(symbols)
-        if price_board is not None and not price_board.empty:
-            for _, row in price_board.iterrows():
-                sym = row.get("symbol")
-                close = float(
-                    row.get("close_price", 0) or row.get("reference_price", 0) or 0
-                )
-                if sym in smart_money_map:
-                    f_buy = float(row.get("foreign_buy_volume", 0) or 0)
-                    f_sell = float(row.get("foreign_sell_volume", 0) or 0)
-                    smart_money_map[sym]["foreign_net_val"] = (f_buy - f_sell) * close
-                    smart_money_map[sym]["prop_net_val"] = float(
-                        row.get("prop_net_value", 0) or 0
+    for attempt in range(3):
+        try:
+            price_board = Trading().price_board(symbols)
+            if price_board is not None and not price_board.empty:
+                for _, row in price_board.iterrows():
+                    sym = row.get("symbol")
+                    close = float(
+                        row.get("close_price", 0) or row.get("reference_price", 0) or 0
                     )
-                if sym in live_price_map and close > 0:
-                    live_price_map[sym] = close / 1000.0 if close > 1000.0 else close
-    except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
-        logger.warning("Failed to fetch batch price board: %s", e)
+                    if sym in smart_money_map:
+                        f_buy = float(row.get("foreign_buy_volume", 0) or 0)
+                        f_sell = float(row.get("foreign_sell_volume", 0) or 0)
+                        smart_money_map[sym]["foreign_net_val"] = (f_buy - f_sell) * close
+                        smart_money_map[sym]["prop_net_val"] = float(
+                            row.get("prop_net_value", 0) or 0
+                        )
+                    if sym in live_price_map and close > 0:
+                        live_price_map[sym] = close / 1000.0 if close > 1000.0 else close
+                break
+        except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
+            err_str = str(e).lower()
+            logger.warning("Failed to fetch batch price board (attempt %d): %s", attempt + 1, e)
+            if (
+                "rate limit" in err_str
+                or "giới hạn api" in err_str
+                or "wait" in err_str
+                or "systemexit" in err_str
+                or "quota" in err_str
+                or "429" in err_str
+                or "yêu cầu api" in err_str
+            ):
+                wait_sec = parse_wait_seconds(str(e))
+                time.sleep(wait_sec)
+            else:
+                time.sleep(2)
     return smart_money_map, live_price_map
 
 
@@ -670,7 +698,7 @@ def check_corporate_events(symbol):
     if not VNSTOCK_AVAILABLE:
         return False, "Bình thường"
     try:
-        company = Company(symbol=symbol)
+        company = Company(symbol=symbol, source="VCI")
         df_events = company.events()
         if df_events is not None and not df_events.empty:
             df_events["event_date"] = pd.to_datetime(
@@ -685,6 +713,18 @@ def check_corporate_events(symbol):
                 event_name = recent_events.iloc[0].get("event_name", "Sự kiện quyền")
                 return True, f"Cảnh báo: [{event_name}] gần ngày GDKHQ"
     except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
+        err_str = str(e).lower()
+        if (
+            "rate limit" in err_str
+            or "giới hạn api" in err_str
+            or "wait" in err_str
+            or "systemexit" in err_str
+            or "quota" in err_str
+            or "429" in err_str
+            or "yêu cầu api" in err_str
+        ):
+            wait_sec = parse_wait_seconds(str(e))
+            time.sleep(wait_sec)
         logger.debug("Error checking corporate events for %s: %s", symbol, e)
     return False, "Bình thường"
 
@@ -694,25 +734,41 @@ def get_exchange_mapping():
     mapping = {}
     if not VNSTOCK_AVAILABLE:
         return mapping
-    try:
-        df = Listing().symbols_by_exchange("HOSE")
-        if df is not None and not df.empty:
-            stocks_df = df[df["type"] == "stock"]
-            for _, row in stocks_df.iterrows():
-                ex = row.get("exchange") or "HOSE"
-                mapping[row["symbol"]] = {
-                    "exchange": ex,
-                    "organ_name": row.get("organ_name", ""),
-                }
-    except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
-        logger.warning("Failed to retrieve symbols by exchange: %s", e)
+    for attempt in range(2):
+        try:
+            df = Listing().symbols_by_exchange("HOSE")
+            if df is not None and not df.empty:
+                stocks_df = df[df["type"] == "stock"]
+                for _, row in stocks_df.iterrows():
+                    ex = row.get("exchange") or "HOSE"
+                    mapping[row["symbol"]] = {
+                        "exchange": ex,
+                        "organ_name": row.get("organ_name", ""),
+                    }
+                break
+        except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
+            err_str = str(e).lower()
+            logger.warning("Failed to retrieve symbols by exchange: %s", e)
+            if (
+                "rate limit" in err_str
+                or "giới hạn api" in err_str
+                or "wait" in err_str
+                or "systemexit" in err_str
+                or "quota" in err_str
+                or "429" in err_str
+                or "yêu cầu api" in err_str
+            ):
+                wait_sec = parse_wait_seconds(str(e))
+                time.sleep(wait_sec)
+            else:
+                time.sleep(2)
     return mapping
 
 
-def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
+def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
     if not VNSTOCK_AVAILABLE:
         return None, None
-    sources = ["kbs", "msn"]
+    sources = ["msn", "kbs"]
     for attempt in range(max_retries):
         for source in sources:
             try:
@@ -739,12 +795,15 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
                     or "systemexit" in err_str
                     or "quota" in err_str
                     or "429" in err_str
+                    or "yêu cầu api" in err_str
                 ):
-                    time.sleep(10)
+                    wait_sec = parse_wait_seconds(str(e))
+                    logger.info("Rate limit hit for %s (%s). Sleeping %d seconds...", symbol, source, wait_sec)
+                    time.sleep(wait_sec)
                 else:
-                    time.sleep(1)
+                    time.sleep(0.2)
         if attempt < max_retries - 1:
-            time.sleep(3)
+            time.sleep(0.5)
     return None, None
 
 
@@ -1186,8 +1245,8 @@ def main():
                     }
                 )
 
-        # Rate limit compliant delay (~2.5s) to safely pace requests
-        time.sleep(2.5)
+        # Fast execution delay (~0.1s)
+        time.sleep(0.1)
 
     # Step 2.5: Chuẩn hóa điểm rủi ro Z-Score toàn vũ trụ cổ phiếu (Universe Risk Normalization)
     scanned_results = normalize_universe_risk(

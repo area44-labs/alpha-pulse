@@ -1,9 +1,21 @@
 import logging
+import re
 import time
 from datetime import datetime, timedelta, timezone
 
 import numpy as np
 import pandas as pd
+
+
+def parse_wait_seconds(err_str):
+    """Bóc tách số giây cần chờ từ thông báo lỗi Rate Limit của vnstock."""
+    match = re.search(r"chờ\s+(\d+)\s+giây", err_str, re.IGNORECASE)
+    if match:
+        return int(match.group(1)) + 2
+    match_sec = re.search(r"wait\s+(\d+)\s+sec", err_str, re.IGNORECASE)
+    if match_sec:
+        return int(match_sec.group(1)) + 2
+    return 15
 
 try:
     from vnstock.api.quote import Quote as VnQuote
@@ -57,8 +69,10 @@ def get_historical_data(symbol, start_date, end_date):
                 or "systemexit" in err_str
                 or "quota" in err_str
                 or "429" in err_str
+                or "yêu cầu api" in err_str
             ):
-                time.sleep(10)
+                wait_sec = parse_wait_seconds(str(e))
+                time.sleep(wait_sec)
             else:
                 time.sleep(1)
     return None
