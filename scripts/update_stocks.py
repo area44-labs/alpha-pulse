@@ -32,7 +32,7 @@ AGENT_SIGNALS_PATH = os.path.join(
     "agent_signals.json",
 )
 
-# Vũ vũ cổ phiếu chọn lọc (42 mã): Bao gồm 30 mã thuộc VN30 và 12 mã Midcap tiêu biểu
+# Vũ trụ cổ phiếu chọn lọc (42 mã): Bao gồm 30 mã thuộc VN30 và 12 mã Midcap tiêu biểu
 CANDIDATE_STOCKS = [
     # --- NHÓM VN30 (30 MÃ) ---
     {"symbol": "ACB", "companyName": "Ngân hàng TMCP Á Châu", "sector": "Ngân hàng"},
