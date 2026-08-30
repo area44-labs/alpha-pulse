@@ -596,7 +596,7 @@ def calculate_advanced_vn_risk_metrics(
 
 def normalize_universe_risk(scanned_results, market_risk_level="LOW"):
     """
-    Chuẩn hóa Điểm Rủi ro (Z-Score Normalization) trên toàn bộ danh mục theo dõi.
+    Chuẩn hóa Điểm Rủi ro (Z-Score Normalization) trên toàn bộ danh mục cổ phiếu theo dõi.
     Phân loại cổ phiếu thành các mức rủi ro THẤP (LOW), TRUNG BÌNH (MEDIUM), CAO (HIGH).
     """
     if not scanned_results:
@@ -1037,7 +1037,15 @@ def main():
                 target1 = clamp_price_limits(close + 2.0 * risk, close, ex)
                 target2 = clamp_price_limits(close + 3.0 * risk, close, ex)
 
-                is_buy = close > ma20 and score >= 65
+                # Cải tiến: Bộ lọc Trạng thái Thị trường Thích ứng (Market Regime Adaptive Filter)
+                # Khi thị trường ở xu hướng giảm (DOWNTREND) hoặc Rủi ro CAO (HIGH), siết chặt điều kiện MUA (score >= 75)
+                min_buy_score = (
+                    75
+                    if market_risk_level == "HIGH" or vnindex_status == "DOWNTREND"
+                    else 65
+                )
+
+                is_buy = close > ma20 and score >= min_buy_score
                 is_sell = (
                     close < ma20
                     or score <= 45
@@ -1263,7 +1271,7 @@ def main():
         # Pacing execution delay (~1.0s) to comply with API rate limits (Guest tier: 20 req/min)
         time.sleep(1.0)
 
-    # Step 2.5: Chuẩn hóa điểm rủi ro Z-Score toàn vũ trụ cổ phiếu (Universe Risk Normalization)
+    # Step 2.5: Chuẩn hóa điểm rủi ro Z-Score toàn danh mục cổ phiếu (Universe Risk Normalization)
     scanned_results = normalize_universe_risk(
         scanned_results, market_risk_level=market_risk_level
     )
