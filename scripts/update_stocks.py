@@ -710,32 +710,6 @@ def get_exchange_mapping():
     return mapping
 
 
-def send_notification(title, message):
-    """Gửi cảnh báo tín hiệu qua ứng dụng Telegram hoặc Discord nếu cấu hình môi trường khả dụng."""
-    telegram_token = os.environ.get("TELEGRAM_BOT_TOKEN")
-    telegram_chat_id = os.environ.get("TELEGRAM_CHAT_ID")
-    discord_webhook = os.environ.get("DISCORD_WEBHOOK_URL")
-
-    if telegram_token and telegram_chat_id:
-        try:
-            url = f"https://api.telegram.org/bot{telegram_token}/sendMessage"
-            payload = {
-                "chat_id": telegram_chat_id,
-                "text": f"⚠️ *{title}*\n\n{message}",
-                "parse_mode": "Markdown",
-            }
-            requests.post(url, json=payload, timeout=5)
-            print("Telegram notification sent successfully.")
-        except Exception as e:  # noqa: BLE001
-            logger.warning("Failed to send Telegram notification: %s", e)
-
-    if discord_webhook:
-        try:
-            payload = {"content": f"⚠️ **{title}**\n\n{message}"}
-            requests.post(discord_webhook, json=payload, timeout=5)
-            print("Discord notification sent successfully.")
-        except Exception as e:  # noqa: BLE001
-            logger.warning("Failed to send Discord notification: %s", e)
 
 
 def get_historical_data_api(symbol, start_date, end_date, max_retries=3):
@@ -1428,41 +1402,6 @@ def main():
         ]
         print(df_sorted[cols_to_print].to_string(index=False))
 
-    # Trigger Notifications
-    print("\n[Step 5] Triggering notifications...")
-    alert_lines = []
-    if exit_scanner_alerts:
-        alert_lines.append("🔴 **[CẢNH BÁO BÁN - PORTFOLIO EXIT ALERTS]**")
-        for alert in exit_scanner_alerts[:5]:
-            reasons_str = "; ".join(alert["reasons"])
-            alert_lines.append(
-                f"• **{alert['symbol']}**: Giá {alert['close'] * 1000:,.0f}đ - {reasons_str}"
-            )
-        alert_lines.append("")
-
-    grade_a_buys = [
-        s
-        for s in agent_signals["signals"]
-        if s["action"] == "BUY" and s["grade"] == "Grade A"
-    ]
-    if grade_a_buys:
-        alert_lines.append("💚 **[CƠ HỘI MUA TỐT - GRADE A SIGNAL DETECTED]**")
-        for signal in grade_a_buys:
-            bz = signal["price_data"]["buy_zone"]
-            tp = signal["price_data"]["target_1"]
-            sl = signal["price_data"]["stop_loss"]
-            alert_lines.append(
-                f"• **{signal['ticker']}** ({signal['exchange']}): Vùng mua: {bz['min']:,.0f}đ - {bz['max']:,.0f}đ | "
-                f"Mục tiêu: {tp:,.0f}đ | Cắt lỗ: {sl:,.0f}đ (RR {signal['price_data']['risk_reward_ratio']})"
-            )
-    else:
-        alert_lines.append(
-            "ℹ️ Không tìm thấy tín hiệu Mua Grade A (Thị trường rủi ro cao hoặc không có mã bứt phá)."
-        )
-
-    notification_title = f"Alpha Pulse Stock Signal Alert - {formatted_date}"
-    notification_msg = "\n".join(alert_lines)
-    send_notification(notification_title, notification_msg)
 
     print("\n=====================================================================")
     print("HOÀN THÀNH CẬP NHẬT DỮ LIỆU ALPHA PULSE!")
