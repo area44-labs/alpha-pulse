@@ -1,0 +1,1498 @@
+{
+  "schema_version": "2.0",
+  "generated_at": "2026-08-30T17:59:07.467396+00:00",
+  "source_date": "2026-08-30",
+  "market": {
+    "regime": "BULL",
+    "regime_score": 73.0,
+    "confidence": 0.85,
+    "metrics": {
+      "vnindex_value": 1832.12,
+      "vnindex_change_pct": 0.03,
+      "vn30_change_pct": 0.19,
+      "market_breadth_ratio": 0.0,
+      "volatility": 0.1583,
+      "volume_20d_ratio": 1.03
+    }
+  },
+  "summary": {
+    "total_scanned": 42,
+    "buy_count": 0,
+    "watch_count": 0,
+    "hold_count": 0,
+    "sell_count": 0,
+    "avoid_count": 42
+  },
+  "recommendations": [
+    {
+      "symbol": "ACB",
+      "company_name": "Ngân hàng TMCP Á Châu",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "BCM",
+      "company_name": "Tổng Công ty Đầu tư và Phát triển Công nghiệp",
+      "exchange": "HOSE",
+      "sector": "Bất động sản KCN",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "BID",
+      "company_name": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "BVH",
+      "company_name": "Tập đoàn Bảo Việt",
+      "exchange": "HOSE",
+      "sector": "Bảo hiểm",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "CTG",
+      "company_name": "Ngân hàng TMCP Công Thương Việt Nam",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "FPT",
+      "company_name": "Công ty Cổ phần FPT",
+      "exchange": "HOSE",
+      "sector": "Công nghệ",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "GAS",
+      "company_name": "Tổng Công ty Khí Việt Nam - CTCP",
+      "exchange": "HOSE",
+      "sector": "Dầu khí",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "GVR",
+      "company_name": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP",
+      "exchange": "HOSE",
+      "sector": "Cao su & BĐS KCN",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "HDB",
+      "company_name": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "HPG",
+      "company_name": "Công ty Cổ phần Tập đoàn Hòa Phát",
+      "exchange": "HOSE",
+      "sector": "Thép",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "MBB",
+      "company_name": "Ngân hàng TMCP Quân Đội",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "MSN",
+      "company_name": "Công ty Cổ phần Tập đoàn Masan",
+      "exchange": "HOSE",
+      "sector": "Tiêu dùng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "MWG",
+      "company_name": "Công ty Cổ phần Đầu tư Thế giới Di Động",
+      "exchange": "HOSE",
+      "sector": "Bán lẻ",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "PLX",
+      "company_name": "Tập đoàn Xăng dầu Việt Nam",
+      "exchange": "HOSE",
+      "sector": "Năng lượng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "POW",
+      "company_name": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP",
+      "exchange": "HOSE",
+      "sector": "Điện lực",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "SAB",
+      "company_name": "Tổng Công ty Cổ phần Bia - Rượu - Nước giải khát Sài Gòn",
+      "exchange": "HOSE",
+      "sector": "Đồ uống",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "SSB",
+      "company_name": "Ngân hàng TMCP Đông Nam Á",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "SSI",
+      "company_name": "Công ty Cổ phần Chứng khoán SSI",
+      "exchange": "HOSE",
+      "sector": "Chứng khoán",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "STB",
+      "company_name": "Ngân hàng TMCP Sài Gòn Thương Tín",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "TCB",
+      "company_name": "Ngân hàng TMCP Kỹ thương Việt Nam",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "TPB",
+      "company_name": "Ngân hàng TMCP Tiên Phong",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VCB",
+      "company_name": "Ngân hàng TMCP Ngoại Thương Việt Nam",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VHM",
+      "company_name": "Công ty Cổ phần Vinhomes",
+      "exchange": "HOSE",
+      "sector": "Bất động sản",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VIB",
+      "company_name": "Ngân hàng TMCP Quốc tế Việt Nam",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VIC",
+      "company_name": "Tập đoàn Vingroup - CTCP",
+      "exchange": "HOSE",
+      "sector": "Bất động sản",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VJC",
+      "company_name": "Công ty Cổ phần Hàng không Vietjet",
+      "exchange": "HOSE",
+      "sector": "Hàng không",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VNM",
+      "company_name": "Công ty Cổ phần Sữa Việt Nam",
+      "exchange": "HOSE",
+      "sector": "Thực phẩm",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VPB",
+      "company_name": "Ngân hàng TMCP Việt Nam Thịnh Vượng",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VRE",
+      "company_name": "Công ty Cổ phần Vincom Retail",
+      "exchange": "HOSE",
+      "sector": "Bất động sản",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "SHB",
+      "company_name": "Ngân hàng TMCP Sài Gòn - Hà Nội",
+      "exchange": "HOSE",
+      "sector": "Ngân hàng",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "DGC",
+      "company_name": "CTCP Tập đoàn Hóa chất Đức Giang",
+      "exchange": "HOSE",
+      "sector": "Hóa chất",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "FRT",
+      "company_name": "CTCP Bán lẻ Kỹ thuật số FPT",
+      "exchange": "HOSE",
+      "sector": "Bán lẻ",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "PVD",
+      "company_name": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí",
+      "exchange": "HOSE",
+      "sector": "Dầu khí",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VCI",
+      "company_name": "CTCP Chứng khoán Vietcap",
+      "exchange": "HOSE",
+      "sector": "Chứng khoán",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "HCM",
+      "company_name": "CTCP Chứng khoán TP.Hồ Chí Minh",
+      "exchange": "HOSE",
+      "sector": "Chứng khoán",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "VND",
+      "company_name": "CTCP Chứng khoán VNDIRECT",
+      "exchange": "HOSE",
+      "sector": "Chứng khoán",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "HSG",
+      "company_name": "CTCP Tập đoàn Hoa Sen",
+      "exchange": "HOSE",
+      "sector": "Thép",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "NKG",
+      "company_name": "CTCP Thép Nam Kim",
+      "exchange": "HOSE",
+      "sector": "Thép",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "DXG",
+      "company_name": "CTCP Tập đoàn Đất Xanh",
+      "exchange": "HOSE",
+      "sector": "Bất động sản",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "DIG",
+      "company_name": "Tổng CTCP Đầu tư Phát triển Xây dựng",
+      "exchange": "HOSE",
+      "sector": "Bất động sản",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "PDR",
+      "company_name": "CTCP Phát triển Bất động sản Phát Đạt",
+      "exchange": "HOSE",
+      "sector": "Bất động sản",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    },
+    {
+      "symbol": "GMD",
+      "company_name": "CTCP Gemadept",
+      "exchange": "HOSE",
+      "sector": "Logistics",
+      "action": "AVOID",
+      "alpha_score": null,
+      "risk_adjusted_alpha": null,
+      "risk_level": null,
+      "expected_return": {
+        "expected_return_5d": null,
+        "expected_return_10d": null,
+        "expected_return_20d": null
+      },
+      "risk_metrics": {
+        "var_t25": null,
+        "es_t25": null,
+        "volatility_60d": null,
+        "max_drawdown": null,
+        "liquidity_score": null
+      },
+      "trade_plan": {
+        "current_price": null,
+        "entry_low": null,
+        "entry_high": null,
+        "stop_loss": null,
+        "tp1": null,
+        "tp2": null,
+        "risk_reward": null,
+        "position_percent": null
+      },
+      "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
+      "warnings": ["Không có dữ liệu giao dịch để phân tích."],
+      "divergence": null
+    }
+  ]
+}
