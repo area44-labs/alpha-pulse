@@ -33,7 +33,7 @@ AGENT_SIGNALS_PATH = os.path.join(
     "agent_signals.json",
 )
 
-# Danh sách 42 mã chọn lọc: Đầy đủ 30 mã VN30 + 12 mã Midcap dẫn dắt
+# Vũ vũ cổ phiếu chọn lọc (42 mã): Bao gồm 30 mã thuộc VN30 và 12 mã Midcap tiêu biểu
 CANDIDATE_STOCKS = [
     # --- NHÓM VN30 (30 MÃ) ---
     {"symbol": "ACB", "companyName": "Ngân hàng TMCP Á Châu", "sector": "Ngân hàng"},
@@ -219,7 +219,7 @@ CANDIDATE_STOCKS = [
 
 
 def round_tick_size(price, exchange="HOSE"):
-    """Làm tròn giá theo quy định bước giá từng sàn."""
+    """Làm tròn giá theo đúng bước giá quy định của từng sàn giao dịch (HOSE, HNX, UPCoM)."""
     if exchange == "HOSE":
         if price < 10.0:
             step = 0.01
@@ -233,7 +233,7 @@ def round_tick_size(price, exchange="HOSE"):
 
 
 def clamp_price_limits(price, ref_price, exchange="HOSE"):
-    """Bảo đảm giá không vượt quá biên độ Trần/Sàn của phiên kế tiếp."""
+    """Đảm bảo mức giá tính toán nằm trong biên độ Trần / Sàn cho phép của phiên kế tiếp."""
     pct = 0.07 if exchange == "HOSE" else (0.10 if exchange == "HNX" else 0.15)
     floor_p = round_tick_size(ref_price * (1 - pct), exchange)
     ceiling_p = round_tick_size(ref_price * (1 + pct), exchange)
@@ -241,6 +241,7 @@ def clamp_price_limits(price, ref_price, exchange="HOSE"):
 
 
 def calculate_atr(df, period=14):
+    """Tính chỉ báo ATR (Average True Range) để đo lường mức độ biến động giá."""
     high, low, close = df["high"], df["low"], df["close"]
     close_prev = close.shift(1)
     tr = pd.concat(
@@ -250,7 +251,7 @@ def calculate_atr(df, period=14):
 
 
 def calculate_single_tf_indicators(df):
-    """Tính toán RSI và MACD trên một DataFrame OHLCV bất kỳ."""
+    """Tính toán các chỉ báo kỹ thuật cơ bản (MA20, MA50, RSI, MACD, ATR) trên DataFrame OHLCV."""
     df_calc = df.copy()
     df_calc["ma20"] = df_calc["close"].rolling(window=20, min_periods=1).mean()
     df_calc["ma50"] = df_calc["close"].rolling(window=50, min_periods=1).mean()
@@ -275,10 +276,10 @@ def calculate_single_tf_indicators(df):
 
 def detect_divergence(df, lookback=40):
     """
-    Phát hiện Phân Kỳ Dương (Bullish Divergence) và Phân Kỳ Âm (Bearish Divergence)
-    cho RSI và MACD Histogram.
-    - Bullish Divergence: Giá tạo đáy sau thấp hơn (hoặc bằng), nhưng RSI/MACD tạo đáy sau cao hơn.
-    - Bearish Divergence: Giá tạo đỉnh sau cao hơn (hoặc bằng), nhưng RSI/MACD tạo đỉnh sau thấp hơn.
+    Nhận diện tín hiệu Phân kỳ Dương (Bullish Divergence) và Phân kỳ Âm (Bearish Divergence)
+    cho chỉ báo RSI và MACD Histogram.
+    - Phân kỳ Dương: Giá tạo đáy mới thấp hơn/bằng đáy cũ nhưng RSI/MACD tạo đáy mới cao hơn.
+    - Phân kỳ Âm: Giá tạo đỉnh mới cao hơn/bằng đỉnh cũ nhưng RSI/MACD tạo đỉnh mới thấp hơn.
     """
     if len(df) < 15:
         return {
@@ -364,9 +365,9 @@ def detect_divergence(df, lookback=40):
 
 def calculate_multi_timeframe_analysis(df_daily):
     """
-    Phân tích đa khung thời gian: 1H (Khung giờ), 1D (Khung ngày), 1W (Khung tuần), 1M (Khung tháng).
-    Resample dữ liệu daily thành Weekly & Monthly và tính RSI/MACD cùng phân kỳ trên từng khung.
-    Khung 1H được ước tính dựa trên động lượng ngắn hạn (3-5 phiên gần nhất).
+    Phân tích xu hướng & động lượng trên đa khung thời gian: 1H, 1D, 1W, 1M.
+    Chuyển đổi dữ liệu ngày thành dữ liệu Tuần & Tháng, đồng thời tính chỉ báo và tín hiệu phân kỳ.
+    Khung 1H được ước lượng từ biến động 3 phiên gần nhất.
     """
     df_d = calculate_single_tf_indicators(df_daily)
     div_d = detect_divergence(df_d)
@@ -496,13 +497,13 @@ def calculate_advanced_vn_risk_metrics(
     df, exchange="HOSE", is_margin_eligible=True, df_vnindex=None
 ):
     """
-    Thuật toán Quản trị Rủi ro Định lượng Chuẩn hóa cho TTCK Việt Nam (Production-Ready)
-    1. UPCoM dùng VWAP (hoặc avg_price), HOSE/HNX dùng Close
-    2. Rolling 3-day Returns (T+2.5 execution cycle) & Historical VaR 95%
-    3. Multi-day Floor Hit Risk (Tần suất chạm sàn 60 phiên)
-    4. Penalty Rủi ro bị cắt Margin
-    5. Volatility Niên hóa (60 phiên)
-    6. Max Drawdown (MDD)
+    Mô hình Đánh giá Rủi ro Định lượng Chuẩn hóa dành riêng cho thị trường Việt Nam:
+    1. Giá tham chiếu: Sử dụng VWAP đối với sàn UPCoM, Giá đóng cửa đối với HOSE/HNX.
+    2. Lợi nhuận cuộn 3 phiên (Chu kỳ thanh toán T+2.5) & Giá trị rủi ro VaR 95%.
+    3. Tần suất chạm giá sàn trong 60 phiên gần nhất (Floor Hit Risk).
+    4. Hệ số phạt đối với cổ phiếu không được cấp Margin.
+    5. Biến động giá niên hóa (Annualized Volatility 60 phiên).
+    6. Mức sụt giảm tối đa (Max Drawdown - MDD).
     """
     if df is None or len(df) < 20:
         return {
@@ -580,8 +581,8 @@ def calculate_advanced_vn_risk_metrics(
 
 def normalize_universe_risk(scanned_results, market_risk_level="LOW"):
     """
-    Chuẩn hóa Điểm Rủi Ro (Z-Score) trên toàn bộ Universe thay vì tính điểm thô.
-    Phân loại cổ phiếu thành LOW, MEDIUM, HIGH dựa trên Z-score tổng hợp trong Universe.
+    Chuẩn hóa Điểm Rủi ro (Z-Score Normalization) trên toàn bộ danh mục theo dõi.
+    Phân loại cổ phiếu thành các mức rủi ro THẤP (LOW), TRUNG BÌNH (MEDIUM), CAO (HIGH).
     """
     if not scanned_results:
         return scanned_results
@@ -636,7 +637,7 @@ def normalize_universe_risk(scanned_results, market_risk_level="LOW"):
 
 
 def fetch_batch_smart_money(symbols):
-    """Lấy dữ liệu mua/bán ròng Khối ngoại & Tự doanh và Bảng giá thực tế cho tất cả các mã."""
+    """Lấy dữ liệu giao dịch khớp lệnh, dòng tiền Khối ngoại & Tự doanh cho danh sách mã cổ phiếu."""
     smart_money_map = {
         sym: {"foreign_net_val": 0.0, "prop_net_val": 0.0} for sym in symbols
     }
@@ -666,7 +667,7 @@ def fetch_batch_smart_money(symbols):
 
 
 def check_corporate_events(symbol):
-    """Kiểm tra và loại bỏ các mã dính Lịch giao dịch không hưởng quyền (GDKHQ)."""
+    """Kiểm tra lịch sự kiện doanh nghiệp (giao dịch không hưởng quyền) để cảnh báo hoặc tạm dừng khuyến nghị."""
     if not VNSTOCK_AVAILABLE:
         return False, "Bình thường"
     try:
@@ -690,7 +691,7 @@ def check_corporate_events(symbol):
 
 
 def get_exchange_mapping():
-    """Maps symbols to their respective exchange & name."""
+    """Lấy thông tin sàn giao dịch (HOSE, HNX, UPCoM) và tên doanh nghiệp cho từng mã cổ phiếu."""
     mapping = {}
     if not VNSTOCK_AVAILABLE:
         return mapping
@@ -710,7 +711,7 @@ def get_exchange_mapping():
 
 
 def send_notification(title, message):
-    """Sends notification alerts to Telegram or Discord if configured."""
+    """Gửi cảnh báo tín hiệu qua ứng dụng Telegram hoặc Discord nếu cấu hình môi trường khả dụng."""
     telegram_token = os.environ.get("TELEGRAM_BOT_TOKEN")
     telegram_chat_id = os.environ.get("TELEGRAM_CHAT_ID")
     discord_webhook = os.environ.get("DISCORD_WEBHOOK_URL")

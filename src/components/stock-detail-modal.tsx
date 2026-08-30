@@ -35,7 +35,7 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
 
   const isBuy = stock.type === "BUY";
 
-  // Calculate percentages
+  // Tính toán tỷ lệ phần trăm lợi nhuận kỳ vọng và mức sụt giảm cắt lỗ
   const targetProfitPercent = isBuy
     ? ((stock.targetSellPrice - stock.currentPrice) / stock.currentPrice) * 100
     : ((stock.currentPrice - stock.targetSellPrice) / stock.currentPrice) * 100;

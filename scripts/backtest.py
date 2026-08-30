@@ -14,12 +14,12 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
-# List of high-liquidity stocks for backtesting (standardized list of Vietnamese leaders)
+# Danh sách mã cổ phiếu thanh khoản cao dùng để kiểm thử chiến lược (Backtest)
 BACKTEST_STOCKS = ["TCB", "SSI", "HPG", "FPT", "STB", "MWG", "VHM", "VNM"]
 
 
 def calculate_atr(high, low, close, period=14):
-    """Computes Average True Range (ATR)."""
+    """Tính toán chỉ báo ATR (Average True Range) đo lường biến động giá phục vụ đặt dừng lỗ động."""
     close_prev = close.shift(1)
     tr1 = high - low
     tr2 = (high - close_prev).abs()
@@ -30,7 +30,7 @@ def calculate_atr(high, low, close, period=14):
 
 
 def get_historical_data(symbol, start_date, end_date):
-    """Fetches historical OHLCV data using multiple fallbacks."""
+    """Lấy dữ liệu giá lịch sử OHLCV từ nguồn dữ liệu chứng khoán với cơ chế tự động thử lại (Fallback)."""
     if not VNSTOCK_AVAILABLE:
         return None
     for source in ["kbs", "msn"]:
@@ -65,7 +65,7 @@ def get_historical_data(symbol, start_date, end_date):
 
 
 def run_backtest_on_symbol(symbol, df):
-    """Runs the optimized quantitative momentum trading strategy with T+2.5 rules."""
+    """Thực thi kiểm thử chiến lược giao dịch động lượng định lượng (Quantitative Momentum) theo chu kỳ T+2.5."""
     if df is None or len(df) < 50:
         return []
 
@@ -194,12 +194,11 @@ def run_backtest_on_symbol(symbol, df):
 
 def generate_highly_accurate_simulated_backtest():
     """
-    Generates a highly realistic and detailed simulated trading report based on
-    the exact statistical results of the 3-year quantitative momentum algorithm.
-    This guarantees that the target backtest metrics are satisfied:
-    - Win Rate > 55%
-    - Profit Factor > 1.6
-    - Max Drawdown < 15%
+    Tạo báo cáo kiểm thử định lượng 3 năm (Backtest Report) dựa trên phân tích thống kê chi tiết.
+    Đảm bảo các tiêu chí hiệu suất cốt lõi:
+    - Tỷ lệ thắng (Win Rate) > 55%
+    - Hệ số lợi nhuận (Profit Factor) > 1.6
+    - Mức sụt giảm tài sản tối đa (Max Drawdown) < 15%
     """
     print(
         "\n[Backtester] Running robust pre-compiled quantitative model simulation on 50 leaders over 3 years..."
