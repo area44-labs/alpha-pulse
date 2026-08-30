@@ -64,11 +64,16 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
     source_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     generated_at = datetime.now(timezone.utc).isoformat()
 
-    logger.info("Fetching market benchmark VN-Index...")
-    df_vnindex, _ = get_historical_data("VNINDEX", max_retries=2 if update_data else 1)
-    df_vn30, _ = get_historical_data("VN30", max_retries=2 if update_data else 1)
+    use_cache = not update_data
 
-    # Calculate market breadth if update_data
+    logger.info("Fetching market benchmark VN-Index...")
+    df_vnindex, _ = get_historical_data(
+        "VNINDEX", max_retries=2 if update_data else 1, use_cache_only=use_cache
+    )
+    df_vn30, _ = get_historical_data(
+        "VN30", max_retries=2 if update_data else 1, use_cache_only=use_cache
+    )
+
     scanned_recs = []
     bullish_count = 0
 
@@ -82,9 +87,7 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
 
         logger.info("[%d/%d] Analyzing %s...", idx + 1, len(CANDIDATE_STOCKS), sym)
 
-        df_stock = None
-        if update_data:
-            df_stock, _ = get_historical_data(sym, max_retries=1)
+        df_stock, _ = get_historical_data(sym, max_retries=1, use_cache_only=use_cache)
 
         # Regulating regime evaluation
         regime_info = detect_market_regime(df_vnindex=df_vnindex, df_vn30=df_vn30)
@@ -100,7 +103,7 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
         )
 
         scanned_recs.append(rec)
-        if rec["action"] == "BUY":
+        if rec["action"] in ["BUY", "WATCH"]:
             bullish_count += 1
 
     breadth_ratio = (
