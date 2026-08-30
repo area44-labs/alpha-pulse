@@ -1039,7 +1039,11 @@ def main():
 
                 # Cải tiến: Bộ lọc Trạng thái Thị trường Thích ứng (Market Regime Adaptive Filter)
                 # Khi thị trường ở xu hướng giảm (DOWNTREND) hoặc Rủi ro CAO (HIGH), siết chặt điều kiện MUA (score >= 75)
-                min_buy_score = 75 if market_risk_level == "HIGH" or vnindex_status == "DOWNTREND" else 65
+                min_buy_score = (
+                    75
+                    if market_risk_level == "HIGH" or vnindex_status == "DOWNTREND"
+                    else 65
+                )
 
                 is_buy = close > ma20 and score >= min_buy_score
                 is_sell = (
