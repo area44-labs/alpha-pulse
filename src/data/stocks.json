@@ -70,25 +70,6 @@
       }
     },
     {
-      "symbol": "PLX",
-      "companyName": "Tập đoàn Xăng dầu Việt Nam",
-      "sector": "Năng lượng",
-      "type": "BUY",
-      "currentPrice": 36.25,
-      "targetBuyPrice": "36.2 - 37.0",
-      "targetSellPrice": 38.8,
-      "stopLossPrice": 33.7,
-      "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 36,250đ vượt đường trung bình động MA20 (32,366đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 2.4x so với trung bình 20 phiên, dòng tiền mua chủ động. Động lượng đa khung: Chỉ báo RSI (65.3) và MACD (0.388) duy trì xu hướng đồng thuận trên khung ngày và tuần. RSI khung ngày đạt 65.3 điểm, MACD Histogram (0.388) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.0",
-      "divergenceByTf": {
-        "H": "NONE",
-        "D": "NONE",
-        "W": "NONE",
-        "T": "NONE"
-      }
-    },
-    {
       "symbol": "SSB",
       "companyName": "Ngân hàng TMCP Đông Nam Á",
       "sector": "Ngân hàng",
@@ -184,6 +165,25 @@
       }
     },
     {
+      "symbol": "VCI",
+      "companyName": "CTCP Chứng khoán Vietcap",
+      "sector": "Chứng khoán",
+      "type": "BUY",
+      "currentPrice": 22.85,
+      "targetBuyPrice": "22.9 - 23.3",
+      "targetSellPrice": 24.45,
+      "stopLossPrice": 22.05,
+      "riskLevel": "HIGH",
+      "rationale": "Giá đóng cửa 22,850đ vượt đường trung bình động MA20 (21,855đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.2x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 59.5 điểm, MACD Histogram (0.216) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "riskRewardRatio": "1:1.4",
+      "divergenceByTf": {
+        "H": "NONE",
+        "D": "NONE",
+        "W": "BULLISH",
+        "T": "NONE"
+      }
+    },
+    {
       "symbol": "DIG",
       "companyName": "Tổng CTCP Đầu tư Phát triển Xây dựng",
       "sector": "Bất động sản",
@@ -249,7 +249,7 @@
       "targetBuyPrice": "Không khuyến nghị",
       "targetSellPrice": 68.5,
       "stopLossPrice": 64.0,
-      "riskLevel": "HIGH",
+      "riskLevel": "MEDIUM",
       "rationale": "Giá đóng cửa 64,000đ gãy đường xu hướng ngắn hạn MA20 (65,295đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. Cảnh báo kỹ thuật: Đã xuất hiện RSI/MACD phân kỳ âm khung giờ (1H), RSI/MACD phân kỳ âm khung ngày (1D), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 37.6 điểm, MACD Histogram (-0.400) thể hiện áp lực điều chỉnh. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
       "riskRewardRatio": "1:1.0",
       "divergenceByTf": {

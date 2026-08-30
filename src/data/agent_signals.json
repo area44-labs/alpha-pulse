@@ -56,30 +56,6 @@
       "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 21,450đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
     },
     {
-      "ticker": "PLX",
-      "exchange": "HOSE",
-      "action": "BUY",
-      "confidence_score": 100,
-      "grade": "Grade A",
-      "price_data": {
-        "buy_zone": {
-          "min": 36250,
-          "max": 37000
-        },
-        "stop_loss": 33700,
-        "target_1": 38800,
-        "target_2": 38800,
-        "risk_reward_ratio": "1:1.0"
-      },
-      "technical_rationale": [
-        "Giá đóng cửa 36,250đ vượt đường trung bình động MA20 (32,366đ), củng cố xu hướng tăng.",
-        "Thanh khoản bùng nổ đạt 2.4x so với trung bình 20 phiên, dòng tiền mua chủ động.",
-        "Động lượng đa khung: Chỉ báo RSI (65.3) và MACD (0.388) duy trì xu hướng đồng thuận trên khung ngày và tuần.",
-        "RSI khung ngày đạt 65.3 điểm, MACD Histogram (0.388) hỗ trợ đà bứt phá."
-      ],
-      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 37,000đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
-    },
-    {
       "ticker": "SSB",
       "exchange": "HOSE",
       "action": "BUY",
@@ -198,6 +174,30 @@
         "RSI khung ngày đạt 56.2 điểm, MACD Histogram (0.096) hỗ trợ đà bứt phá."
       ],
       "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 12,450đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
+    },
+    {
+      "ticker": "VCI",
+      "exchange": "HOSE",
+      "action": "BUY",
+      "confidence_score": 100,
+      "grade": "Grade A",
+      "price_data": {
+        "buy_zone": {
+          "min": 22850,
+          "max": 23300
+        },
+        "stop_loss": 22050,
+        "target_1": 24450,
+        "target_2": 24450,
+        "risk_reward_ratio": "1:1.4"
+      },
+      "technical_rationale": [
+        "Giá đóng cửa 22,850đ vượt đường trung bình động MA20 (21,855đ), củng cố xu hướng tăng.",
+        "Thanh khoản bùng nổ đạt 1.2x so với trung bình 20 phiên, dòng tiền mua chủ động.",
+        "Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh.",
+        "RSI khung ngày đạt 59.5 điểm, MACD Histogram (0.216) hỗ trợ đà bứt phá."
+      ],
+      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 23,300đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
     },
     {
       "ticker": "DIG",
