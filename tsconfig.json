@@ -27,5 +27,5 @@
     /* Type Declarations */
     "types": ["node", "react", "react-dom", "vite/client"]
   },
-  "include": ["src"]
+  "include": ["src", "src/routeTree.gen.ts"]
 }
