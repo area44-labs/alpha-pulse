@@ -117,7 +117,9 @@ def detect_divergence(df: pd.DataFrame, lookback: int = 40) -> dict:
     }
 
 
-def calculate_multi_timeframe_features(df_daily: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+def calculate_multi_timeframe_features(
+    df_daily: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict]:
     """Perform multi-timeframe feature analysis across 1H, 1D, 1W, and 1M."""
     df_d = calculate_single_tf_indicators(df_daily)
     div_d = detect_divergence(df_d)
@@ -137,12 +139,28 @@ def calculate_multi_timeframe_features(df_daily: pd.DataFrame) -> tuple[pd.DataF
     else:
         df_weekly = (
             df_resample.resample("W")
-            .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+            .agg(
+                {
+                    "open": "first",
+                    "high": "max",
+                    "low": "min",
+                    "close": "last",
+                    "volume": "sum",
+                }
+            )
             .dropna()
         )
         df_monthly = (
             df_resample.resample("ME")
-            .agg({"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"})
+            .agg(
+                {
+                    "open": "first",
+                    "high": "max",
+                    "low": "min",
+                    "close": "last",
+                    "volume": "sum",
+                }
+            )
             .dropna()
         )
 
@@ -190,22 +208,30 @@ def calculate_multi_timeframe_features(df_daily: pd.DataFrame) -> tuple[pd.DataF
     tf_summary = {
         "1h": {
             "rsi": round(float(df_d["rsi"].iloc[-1]), 1) if not df_d.empty else 50.0,
-            "macd_hist": round(float(df_d["hist"].iloc[-1]), 3) if not df_d.empty else 0.0,
+            "macd_hist": round(float(df_d["hist"].iloc[-1]), 3)
+            if not df_d.empty
+            else 0.0,
             "divergence": div_1h,
         },
         "1d": {
             "rsi": round(float(df_d["rsi"].iloc[-1]), 1) if not df_d.empty else 50.0,
-            "macd_hist": round(float(df_d["hist"].iloc[-1]), 3) if not df_d.empty else 0.0,
+            "macd_hist": round(float(df_d["hist"].iloc[-1]), 3)
+            if not df_d.empty
+            else 0.0,
             "divergence": div_d,
         },
         "1w": {
             "rsi": round(float(df_w["rsi"].iloc[-1]), 1) if not df_w.empty else 50.0,
-            "macd_hist": round(float(df_w["hist"].iloc[-1]), 3) if not df_w.empty else 0.0,
+            "macd_hist": round(float(df_w["hist"].iloc[-1]), 3)
+            if not df_w.empty
+            else 0.0,
             "divergence": div_w,
         },
         "1m": {
             "rsi": round(float(df_m["rsi"].iloc[-1]), 1) if not df_m.empty else 50.0,
-            "macd_hist": round(float(df_m["hist"].iloc[-1]), 3) if not df_m.empty else 0.0,
+            "macd_hist": round(float(df_m["hist"].iloc[-1]), 3)
+            if not df_m.empty
+            else 0.0,
             "divergence": div_m,
         },
     }

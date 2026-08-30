@@ -30,7 +30,9 @@ from scripts.lib.recommendation import generate_recommendation
 from scripts.lib.regime import detect_market_regime
 from scripts.lib.vietnam_market import CANDIDATE_STOCKS, get_historical_data
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 SCHEMA_PATH = os.path.join(ROOT_DIR, "schemas", "recommendations.schema.json")
@@ -101,7 +103,9 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
         if rec["action"] == "BUY":
             bullish_count += 1
 
-    breadth_ratio = round(bullish_count / len(scanned_recs), 2) if scanned_recs else 0.50
+    breadth_ratio = (
+        round(bullish_count / len(scanned_recs), 2) if scanned_recs else 0.50
+    )
     market_regime = detect_market_regime(
         df_vnindex=df_vnindex, df_vn30=df_vn30, breadth_ratio=breadth_ratio
     )
@@ -170,7 +174,11 @@ def update_history_index(source_date: str):
 
 def main():
     parser = argparse.ArgumentParser(description="Alpha Pulse Report Generator v2")
-    parser.add_argument("--update", action="store_true", help="Run data fetch pipeline before report generation")
+    parser.add_argument(
+        "--update",
+        action="store_true",
+        help="Run data fetch pipeline before report generation",
+    )
     args = parser.parse_args()
 
     logger.info("Starting Alpha Pulse Report Generator v2 (update=%s)...", args.update)
@@ -179,7 +187,9 @@ def main():
 
     # Validate against Schema
     schema = load_schema()
-    logger.info("Validating recommendations payload against JSON Schema Draft 2020-12...")
+    logger.info(
+        "Validating recommendations payload against JSON Schema Draft 2020-12..."
+    )
     jsonschema.validate(instance=recs_data, schema=schema)
     logger.info("JSON Schema validation passed successfully!")
 
@@ -193,7 +203,9 @@ def main():
 
     logger.info("Report generation complete!")
     logger.info("Outputs written to generated/ and public/generated/:")
-    logger.info("  - recommendations.json (%d items)", len(recs_data["recommendations"]))
+    logger.info(
+        "  - recommendations.json (%d items)", len(recs_data["recommendations"])
+    )
     logger.info("  - market.json (Regime: %s)", recs_data["market"]["regime"])
     logger.info("  - history/%s.json", source_date)
     logger.info("  - history/index.json")

@@ -9,6 +9,7 @@ Average Holding Period, Total Trades, and 5D/10D/20D post-BUY signal returns.
 import logging
 import os
 import sys
+
 import numpy as np
 import pandas as pd
 
@@ -20,7 +21,9 @@ from scripts.lib.recommendation import generate_recommendation
 from scripts.lib.regime import detect_market_regime
 from scripts.lib.vietnam_market import CANDIDATE_STOCKS, get_historical_data
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 
@@ -33,7 +36,9 @@ def run_backtest(initial_capital: float = 100_000_000.0) -> dict:
 
     # Generate synthetic/historical series if offline or live data limited
     if df_vn is None or df_vn.empty or len(df_vn) < 100:
-        logger.info("Generating realistic historical OHLCV series for backtest evaluation...")
+        logger.info(
+            "Generating realistic historical OHLCV series for backtest evaluation..."
+        )
         np.random.seed(42)
         n_days = 252
         dates = pd.date_range("2025-01-01", periods=n_days, freq="B")
@@ -54,8 +59,15 @@ def run_backtest(initial_capital: float = 100_000_000.0) -> dict:
     train_end = int(total_len * 0.60)
     val_end = int(total_len * 0.80)
 
-    logger.info("Dataset length: %d sessions | Train: 0-%d | Val: %d-%d | Test: %d-%d",
-                total_len, train_end, train_end, val_end, val_end, total_len)
+    logger.info(
+        "Dataset length: %d sessions | Train: 0-%d | Val: %d-%d | Test: %d-%d",
+        total_len,
+        train_end,
+        train_end,
+        val_end,
+        val_end,
+        total_len,
+    )
 
     # Simulated trades log
     trades = []
@@ -107,7 +119,9 @@ def run_backtest(initial_capital: float = 100_000_000.0) -> dict:
 
                 # Future path for performance evaluation
                 np.random.seed((hash(sym) + sym_idx * 100) % 10000)
-                full_drift = np.sin(np.linspace(0, 10, total_len)) * 5.0 + (sym_idx % 3) * 2.0
+                full_drift = (
+                    np.sin(np.linspace(0, 10, total_len)) * 5.0 + (sym_idx % 3) * 2.0
+                )
                 full_noise = np.cumsum(np.random.normal(0.1, 0.4, total_len))
                 full_close = 20.0 + full_drift + full_noise
                 full_close = np.clip(full_close, 10.0, 150.0)
@@ -151,14 +165,34 @@ def run_backtest(initial_capital: float = 100_000_000.0) -> dict:
         max_dd = abs(min(returns_list)) * 100.0 if returns_list else 0.0
 
         std_ret = np.std(returns_list) if len(returns_list) > 1 else 0.01
-        sharpe = (np.mean(returns_list) / std_ret) * np.sqrt(252 / 5) if std_ret > 0 else 1.0
+        sharpe = (
+            (np.mean(returns_list) / std_ret) * np.sqrt(252 / 5) if std_ret > 0 else 1.0
+        )
 
-        downside_std = np.std([r for r in returns_list if r < 0]) if losing_trades else 0.01
-        sortino = (np.mean(returns_list) / downside_std) * np.sqrt(252 / 5) if downside_std > 0 else 1.5
+        downside_std = (
+            np.std([r for r in returns_list if r < 0]) if losing_trades else 0.01
+        )
+        sortino = (
+            (np.mean(returns_list) / downside_std) * np.sqrt(252 / 5)
+            if downside_std > 0
+            else 1.5
+        )
 
-        avg_ret_5d = np.mean(buy_signal_returns["5d"]) * 100.0 if buy_signal_returns["5d"] else 0.0
-        avg_ret_10d = np.mean(buy_signal_returns["10d"]) * 100.0 if buy_signal_returns["10d"] else 0.0
-        avg_ret_20d = np.mean(buy_signal_returns["20d"]) * 100.0 if buy_signal_returns["20d"] else 0.0
+        avg_ret_5d = (
+            np.mean(buy_signal_returns["5d"]) * 100.0
+            if buy_signal_returns["5d"]
+            else 0.0
+        )
+        avg_ret_10d = (
+            np.mean(buy_signal_returns["10d"]) * 100.0
+            if buy_signal_returns["10d"]
+            else 0.0
+        )
+        avg_ret_20d = (
+            np.mean(buy_signal_returns["20d"]) * 100.0
+            if buy_signal_returns["20d"]
+            else 0.0
+        )
     else:
         win_rate, profit_factor, avg_holding_period = 0.0, 0.0, 0.0
         cagr, max_dd, sharpe, sortino = 0.0, 0.0, 0.0, 0.0
@@ -194,12 +228,20 @@ def main():
     print(f"Max Drawdown:            {report['max_drawdown_percent']}%")
     print(f"Sharpe Ratio:            {report['sharpe_ratio']}")
     print(f"Sortino Ratio:           {report['sortino_ratio']}")
-    print(f"Avg Holding Period:      {report['avg_holding_period_days']} sessions (T+2.5 min)")
+    print(
+        f"Avg Holding Period:      {report['avg_holding_period_days']} sessions (T+2.5 min)"
+    )
     print(f"Total Trades:            {report['total_trades']}")
     print("\n[ĐÁNH GIÁ TÍN HIỆU MUA (BUY SIGNAL RETURNS)]:")
-    print(f"  -> Lợi nhuận trung bình sau 5D:  {report['buy_signal_returns']['avg_return_5d_percent']}%")
-    print(f"  -> Lợi nhuận trung bình sau 10D: {report['buy_signal_returns']['avg_return_10d_percent']}%")
-    print(f"  -> Lợi nhuận trung bình sau 20D: {report['buy_signal_returns']['avg_return_20d_percent']}%")
+    print(
+        f"  -> Lợi nhuận trung bình sau 5D:  {report['buy_signal_returns']['avg_return_5d_percent']}%"
+    )
+    print(
+        f"  -> Lợi nhuận trung bình sau 10D: {report['buy_signal_returns']['avg_return_10d_percent']}%"
+    )
+    print(
+        f"  -> Lợi nhuận trung bình sau 20D: {report['buy_signal_returns']['avg_return_20d_percent']}%"
+    )
     print("=====================================================================\n")
 
 

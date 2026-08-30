@@ -6,15 +6,16 @@ Evaluating VNINDEX, VN30, breadth, volatility, volume, and momentum.
 """
 
 import logging
+
 import pandas as pd
 
 logger = logging.getLogger(__name__)
 
 
 def detect_market_regime(
-    df_vnindex: pd.DataFrame = None,
-    df_vn30: pd.DataFrame = None,
-    breadth_ratio: float = None,
+    df_vnindex: pd.DataFrame | None = None,
+    df_vn30: pd.DataFrame | None = None,
+    breadth_ratio: float | None = None,
 ) -> dict:
     """Evaluate multi-factor Vietnam market regime.
 
@@ -43,17 +44,25 @@ def detect_market_regime(
     ma20_vn = float(close_vn.tail(20).mean())
     ma50_vn = float(close_vn.tail(50).mean()) if len(close_vn) >= 50 else ma20_vn
 
-    ret_20d = float((latest_vn - close_vn.iloc[-20]) / close_vn.iloc[-20] * 100) if len(close_vn) >= 20 else 0.0
+    ret_20d = (
+        float((latest_vn - close_vn.iloc[-20]) / close_vn.iloc[-20] * 100)
+        if len(close_vn) >= 20
+        else 0.0
+    )
 
     vol_col = "volume" if "volume" in df_vnindex.columns else None
     if vol_col and len(df_vnindex) >= 20 and df_vnindex[vol_col].tail(20).mean() > 0:
-        vol_ratio = float(df_vnindex[vol_col].iloc[-1] / df_vnindex[vol_col].tail(20).mean())
+        vol_ratio = float(
+            df_vnindex[vol_col].iloc[-1] / df_vnindex[vol_col].tail(20).mean()
+        )
     else:
         vol_ratio = 1.0
 
     # Volatility 20d std of daily return
     returns_20d = close_vn.pct_change().tail(20)
-    vn_volatility = float(returns_20d.std() * (252**0.5)) if len(returns_20d) >= 5 else 0.15
+    vn_volatility = (
+        float(returns_20d.std() * (252**0.5)) if len(returns_20d) >= 5 else 0.15
+    )
 
     # VN30 metrics
     vn30_change_pct = None
@@ -121,8 +130,12 @@ def detect_market_regime(
         "metrics": {
             "vnindex_value": round(latest_vn, 2),
             "vnindex_change_pct": round(vn_change_pct, 2),
-            "vn30_change_pct": round(vn30_change_pct, 2) if vn30_change_pct is not None else None,
-            "market_breadth_ratio": round(breadth_ratio, 2) if breadth_ratio is not None else None,
+            "vn30_change_pct": (
+                round(vn30_change_pct, 2) if vn30_change_pct is not None else None
+            ),
+            "market_breadth_ratio": (
+                round(breadth_ratio, 2) if breadth_ratio is not None else None
+            ),
             "volatility": round(vn_volatility, 4),
             "volume_20d_ratio": round(vol_ratio, 2),
         },

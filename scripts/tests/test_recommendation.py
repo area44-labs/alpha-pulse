@@ -1,8 +1,10 @@
 """Unit tests for Recommendation Engine in scripts/lib/recommendation.py."""
 
 import unittest
+
 import numpy as np
 import pandas as pd
+
 from scripts.lib.recommendation import generate_recommendation
 
 
