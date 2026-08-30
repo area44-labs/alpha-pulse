@@ -17,6 +17,9 @@ def parse_wait_seconds(err_str):
     match_sec = re.search(r"wait\s+(\d+)\s+sec", err_str, re.IGNORECASE)
     if match_sec:
         return int(match_sec.group(1)) + 2
+    match_sec2 = re.search(r"(\d+)\s+second", err_str, re.IGNORECASE)
+    if match_sec2:
+        return int(match_sec2.group(1)) + 2
     return 15
 
 
@@ -1257,8 +1260,8 @@ def main():
                     }
                 )
 
-        # Fast execution delay (~0.1s)
-        time.sleep(0.1)
+        # Pacing execution delay (~1.0s) to comply with API rate limits (Guest tier: 20 req/min)
+        time.sleep(1.0)
 
     # Step 2.5: Chuẩn hóa điểm rủi ro Z-Score toàn vũ trụ cổ phiếu (Universe Risk Normalization)
     scanned_results = normalize_universe_risk(
