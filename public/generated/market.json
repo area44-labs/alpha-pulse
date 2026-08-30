@@ -1,25 +1,25 @@
 {
   "source_date": "2026-08-30",
-  "generated_at": "2026-08-30T18:30:46.925043+00:00",
+  "generated_at": "2026-08-30T18:52:41.384842+00:00",
   "market": {
-    "regime": "BULL",
-    "regime_score": 73.0,
+    "regime": "STRONG_BULL",
+    "regime_score": 95.0,
     "confidence": 0.85,
     "metrics": {
-      "vnindex_value": 1832.12,
-      "vnindex_change_pct": 0.03,
-      "vn30_change_pct": 0.19,
-      "market_breadth_ratio": 0.0,
-      "volatility": 0.1583,
-      "volume_20d_ratio": 1.03
+      "vnindex_value": 1165.78,
+      "vnindex_change_pct": -0.97,
+      "vn30_change_pct": -0.84,
+      "market_breadth_ratio": 0.55,
+      "volatility": 0.2521,
+      "volume_20d_ratio": 1.71
     }
   },
   "summary": {
     "total_scanned": 42,
-    "buy_count": 0,
-    "watch_count": 0,
-    "hold_count": 0,
-    "sell_count": 0,
-    "avoid_count": 42
+    "buy_count": 2,
+    "watch_count": 21,
+    "hold_count": 10,
+    "sell_count": 9,
+    "avoid_count": 0
   }
 }
