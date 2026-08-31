@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "30/08/2026",
+  "lastUpdated": "31/08/2026",
   "marketSummary": {
     "vnIndex": {
       "name": "VN-Index",
@@ -11,22 +11,22 @@
     "hoseIndex": {
       "name": "HOSE",
       "value": 1982.96,
-      "change": 3.73,
-      "changePercent": 0.19,
+      "change": 0.0,
+      "changePercent": 0.0,
       "volume": "15.200 tỷ VNĐ"
     },
     "hnxIndex": {
       "name": "HNX-Index",
       "value": 284.77,
-      "change": 2.13,
-      "changePercent": 0.75,
+      "change": 0.0,
+      "changePercent": 0.0,
       "volume": "1.800 tỷ VNĐ"
     },
     "upcomIndex": {
       "name": "Upcom-Index",
       "value": 127.5,
-      "change": 0.34,
-      "changePercent": 0.27,
+      "change": 0.0,
+      "changePercent": 0.0,
       "volume": "1.500 tỷ VNĐ"
     }
   },
@@ -77,9 +77,9 @@
       "currentPrice": 17.1,
       "targetBuyPrice": "17.1 - 17.4",
       "targetSellPrice": 18.3,
-      "stopLossPrice": 16.4,
+      "stopLossPrice": 16.25,
       "riskLevel": "LOW",
-      "rationale": "Giá đóng cửa 17,100đ vượt đường trung bình động MA20 (15,455đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 2.1x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 81.4 điểm, MACD Histogram (0.177) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "rationale": "Giá đóng cửa 17,100đ vượt đường trung bình động MA20 (15,532đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 2.0x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 80.4 điểm, MACD Histogram (0.215) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.4",
       "divergenceByTf": {
         "H": "NONE",
