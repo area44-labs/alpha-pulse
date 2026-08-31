@@ -37,6 +37,7 @@ class TestRecommendationEngine(unittest.TestCase):
 
         self.assertIn(rec_buy["action"], ["BUY", "WATCH", "HOLD", "SELL", "AVOID"])
         self.assertEqual(rec_buy["symbol"], "FPT")
+        self.assertIsInstance(rec_buy["trade_plan"]["risk_reward"], (int, float))
 
     def test_avoid_action_in_panic(self):
         n = 30

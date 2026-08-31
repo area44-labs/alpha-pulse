@@ -5,7 +5,7 @@ Implements Vietnam-specific T+2.5 settlement horizon risk calculations:
 - T+2.5 Expected Shortfall (ES 95%)
 - 60-day Annualized Volatility
 - Max Drawdown
-- Liquidity Score
+- Liquidity Score (0-100 Universe Percentile Rank)
 Returns null values if data is insufficient.
 """
 
@@ -20,7 +20,7 @@ def calculate_t25_risk_metrics(
 ) -> dict:
     """Calculate T+2.5 risk metrics for a given stock.
 
-    Returns dict with keys: var_t25, es_t25, volatility_60d, max_drawdown, liquidity_score.
+    Returns dict with keys: var_t25, es_t25, volatility_60d, max_drawdown, liquidity_score, avg_value_20d.
     If data < 20 sessions, returns nulls.
     """
     default_nulls = {
@@ -29,6 +29,7 @@ def calculate_t25_risk_metrics(
         "volatility_60d": None,
         "max_drawdown": None,
         "liquidity_score": None,
+        "avg_value_20d": None,
     }
 
     if df is None or df.empty or len(df) < 20:
@@ -69,19 +70,13 @@ def calculate_t25_risk_metrics(
     dd = (df_calc[price_col] - cummax) / cummax
     max_dd = float(dd.min()) if not dd.empty else None
 
-    # Liquidity Score (0.0 to 100.0 based on 20-session average trading value)
+    # Average 20d trading value in billion VND
     if "volume" in df_calc.columns:
         df_calc["trading_value"] = df_calc[price_col] * df_calc["volume"]
-        avg_val_20d = float(df_calc["trading_value"].tail(20).mean())
-        if avg_val_20d > 0:
-            val_in_billion = (
-                avg_val_20d / 1e9 if avg_val_20d > 1e6 else avg_val_20d * 1000 / 1e9
-            )
-            liquidity_score = float(min(100.0, round(val_in_billion * 10.0, 1)))
-        else:
-            liquidity_score = 0.0
+        avg_val = float(df_calc["trading_value"].tail(20).mean())
+        avg_val_20d_bn = avg_val / 1e9 if avg_val > 1e6 else avg_val * 1000 / 1e9
     else:
-        liquidity_score = None
+        avg_val_20d_bn = None
 
     return {
         "var_t25": round(var_95_t25, 4) if var_95_t25 is not None else None,
@@ -90,5 +85,36 @@ def calculate_t25_risk_metrics(
         if volatility_60d is not None
         else None,
         "max_drawdown": round(max_dd, 4) if max_dd is not None else None,
-        "liquidity_score": liquidity_score,
+        "liquidity_score": None,  # Computed via universe percentile
+        "avg_value_20d": round(avg_val_20d_bn, 2)
+        if avg_val_20d_bn is not None
+        else None,
     }
+
+
+def normalize_universe_liquidity_scores(
+    scanned_recommendations: list[dict],
+) -> list[dict]:
+    """Compute 0-100 percentile rank for liquidity_score across all stocks in universe at same point in time."""
+    values = []
+    for r in scanned_recommendations:
+        val = r.get("risk_metrics", {}).get("avg_value_20d")
+        if val is not None:
+            values.append(val)
+
+    if not values:
+        return scanned_recommendations
+
+    s_values = pd.Series(values)
+    # Compute percentile rank (0 to 100)
+    ranks = (s_values.rank(pct=True) * 100.0).round(1)
+
+    idx_map = 0
+    for r in scanned_recommendations:
+        if r.get("risk_metrics", {}).get("avg_value_20d") is not None:
+            r["risk_metrics"]["liquidity_score"] = float(ranks.iloc[idx_map])
+            idx_map += 1
+        else:
+            r["risk_metrics"]["liquidity_score"] = None
+
+    return scanned_recommendations

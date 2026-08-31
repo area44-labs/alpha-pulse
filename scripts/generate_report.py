@@ -28,7 +28,8 @@ if ROOT_DIR not in sys.path:
 
 from scripts.lib.recommendation import generate_recommendation
 from scripts.lib.regime import detect_market_regime
-from scripts.lib.vietnam_market import CANDIDATE_STOCKS, get_historical_data
+from scripts.lib.risk import normalize_universe_liquidity_scores
+from scripts.lib.vietnam_market import UniverseProvider, get_historical_data
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
@@ -38,7 +39,6 @@ logger = logging.getLogger(__name__)
 SCHEMA_PATH = os.path.join(ROOT_DIR, "schemas", "recommendations.schema.json")
 GENERATED_DIR = os.path.join(ROOT_DIR, "generated")
 PUBLIC_GENERATED_DIR = os.path.join(ROOT_DIR, "public", "generated")
-STOCKS_JSON_PATH = os.path.join(ROOT_DIR, "src", "data", "stocks.json")
 
 
 def save_json_files(relative_path: str, data: dict):
@@ -60,37 +60,66 @@ def load_schema():
 
 
 def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
-    """Execute market data pipeline and construct recommendations, market info, and history."""
+    """Execute market data pipeline following strict dependency order:
+
+    1. Fetch VN-Index benchmark & stock universe EOD history
+    2. Calculate Market Breadth across universe
+    3. Calculate Final Market Regime
+    4. Generate Stock Recommendations using the Final Market Regime
+    5. Compute Universe Percentile Liquidity Scores
+    """
     source_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     generated_at = datetime.now(timezone.utc).isoformat()
-
     use_cache = not update_data
 
-    logger.info("Fetching market benchmark VN-Index...")
-    df_vnindex, _ = get_historical_data(
+    provider = UniverseProvider()
+    candidate_stocks = provider.candidates
+    universe_info = provider.get_info()
+
+    logger.info("Step 1: Fetching VN-Index benchmark & stock universe EOD history...")
+    df_vnindex, _vn_source, _vn_warns = get_historical_data(
         "VNINDEX", max_retries=2 if update_data else 1, use_cache_only=use_cache
     )
-    df_vn30, _ = get_historical_data(
+    df_vn30, _, _ = get_historical_data(
         "VN30", max_retries=2 if update_data else 1, use_cache_only=use_cache
     )
 
-    scanned_recs = []
+    stock_data_map = {}
     bullish_count = 0
 
-    logger.info("Scanning %d Vietnam candidate symbols...", len(CANDIDATE_STOCKS))
+    for idx, item in enumerate(candidate_stocks):
+        sym = item["symbol"]
+        df_stock, tag, warns = get_historical_data(
+            sym, max_retries=1, use_cache_only=use_cache
+        )
+        stock_data_map[sym] = (df_stock, tag, warns)
 
-    for idx, item in enumerate(CANDIDATE_STOCKS):
+        # Pre-breadth check: price above MA20
+        if not df_stock.empty and len(df_stock) >= 20:
+            c = df_stock["close"].iloc[-1]
+            ma20 = df_stock["close"].tail(20).mean()
+            if c > ma20:
+                bullish_count += 1
+
+    logger.info("Step 2: Calculating Market Breadth...")
+    breadth_ratio = (
+        round(bullish_count / len(candidate_stocks), 2) if candidate_stocks else 0.50
+    )
+
+    logger.info("Step 3: Calculating Final Market Regime...")
+    final_market_regime = detect_market_regime(
+        df_vnindex=df_vnindex, df_vn30=df_vn30, breadth_ratio=breadth_ratio
+    )
+
+    logger.info("Step 4: Generating Stock Recommendations using Final Market Regime...")
+    scanned_recs = []
+    for item in candidate_stocks:
         sym = item["symbol"]
         comp = item["companyName"]
         sec = item["sector"]
         ex = item.get("exchange", "HOSE")
 
-        logger.info("[%d/%d] Analyzing %s...", idx + 1, len(CANDIDATE_STOCKS), sym)
-
-        df_stock, _ = get_historical_data(sym, max_retries=1, use_cache_only=use_cache)
-
-        # Regulating regime evaluation
-        regime_info = detect_market_regime(df_vnindex=df_vnindex, df_vn30=df_vn30)
+        df_stock, _, _ = stock_data_map[sym]
 
         rec = generate_recommendation(
             symbol=sym,
@@ -98,20 +127,13 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
             sector=sec,
             exchange=ex,
             df_stock=df_stock,
-            market_regime_info=regime_info,
+            market_regime_info=final_market_regime,
             df_vnindex=df_vnindex,
         )
-
         scanned_recs.append(rec)
-        if rec["action"] in ["BUY", "WATCH"]:
-            bullish_count += 1
 
-    breadth_ratio = (
-        round(bullish_count / len(scanned_recs), 2) if scanned_recs else 0.50
-    )
-    market_regime = detect_market_regime(
-        df_vnindex=df_vnindex, df_vn30=df_vn30, breadth_ratio=breadth_ratio
-    )
+    logger.info("Step 5: Computing Universe Percentile Liquidity Scores...")
+    scanned_recs = normalize_universe_liquidity_scores(scanned_recs)
 
     buy_cnt = sum(1 for r in scanned_recs if r["action"] == "BUY")
     watch_cnt = sum(1 for r in scanned_recs if r["action"] == "WATCH")
@@ -132,7 +154,8 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
         "schema_version": "2.0",
         "generated_at": generated_at,
         "source_date": source_date,
-        "market": market_regime,
+        "universe_info": universe_info,
+        "market": final_market_regime,
         "summary": summary,
         "recommendations": scanned_recs,
     }
@@ -140,7 +163,8 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
     market_payload = {
         "source_date": source_date,
         "generated_at": generated_at,
-        "market": market_regime,
+        "universe_info": universe_info,
+        "market": final_market_regime,
         "summary": summary,
     }
 

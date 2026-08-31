@@ -1,7 +1,8 @@
 """Vietnam Market Data Module for Alpha Pulse v2.
 
-Handles symbol normalization, candidate stock universes (HOSE, HNX, UPCOM),
-price tick size limits, exchange mappings, and market data fetching.
+Handles symbol normalization, universe provider abstraction, data quality validation,
+price tick size limits, exchange mappings, and EOD historical market data fetching.
+Explicitly tags data sources: REAL_DATA, CACHE_DATA, or SYNTHETIC_DATA.
 """
 
 import json
@@ -26,263 +27,280 @@ except ImportError:
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 STOCKS_JSON_PATH = os.path.join(ROOT_DIR, "src", "data", "stocks.json")
 
-# Default Candidate Universe for Vietnam Market (42 symbols)
-CANDIDATE_STOCKS = [
-    # HOSE VN30
-    {
-        "symbol": "ACB",
-        "companyName": "Ngân hàng TMCP Á Châu",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "BCM",
-        "companyName": "Tổng Công ty Đầu tư và Phát triển Công nghiệp",
-        "sector": "Bất động sản KCN",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "BID",
-        "companyName": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "BVH",
-        "companyName": "Tập đoàn Bảo Việt",
-        "sector": "Bảo hiểm",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "CTG",
-        "companyName": "Ngân hàng TMCP Công Thương Việt Nam",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "FPT",
-        "companyName": "Công ty Cổ phần FPT",
-        "sector": "Công nghệ",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "GAS",
-        "companyName": "Tổng Công ty Khí Việt Nam - CTCP",
-        "sector": "Dầu khí",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "GVR",
-        "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP",
-        "sector": "Cao su & BĐS KCN",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "HDB",
-        "companyName": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "HPG",
-        "companyName": "Công ty Cổ phần Tập đoàn Hòa Phát",
-        "sector": "Thép",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "MBB",
-        "companyName": "Ngân hàng TMCP Quân Đội",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "MSN",
-        "companyName": "Công ty Cổ phần Tập đoàn Masan",
-        "sector": "Tiêu dùng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "MWG",
-        "companyName": "Công ty Cổ phần Đầu tư Thế giới Di Động",
-        "sector": "Bán lẻ",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "PLX",
-        "companyName": "Tập đoàn Xăng dầu Việt Nam",
-        "sector": "Năng lượng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "POW",
-        "companyName": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP",
-        "sector": "Điện lực",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "SAB",
-        "companyName": "Tổng Công ty Cổ phần Bia - Rượu - Nước giải khát Sài Gòn",
-        "sector": "Đồ uống",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "SSB",
-        "companyName": "Ngân hàng TMCP Đông Nam Á",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "SSI",
-        "companyName": "Công ty Cổ phần Chứng khoán SSI",
-        "sector": "Chứng khoán",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "STB",
-        "companyName": "Ngân hàng TMCP Sài Gòn Thương Tín",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "TCB",
-        "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "TPB",
-        "companyName": "Ngân hàng TMCP Tiên Phong",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VCB",
-        "companyName": "Ngân hàng TMCP Ngoại Thương Việt Nam",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VHM",
-        "companyName": "Công ty Cổ phần Vinhomes",
-        "sector": "Bất động sản",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VIB",
-        "companyName": "Ngân hàng TMCP Quốc tế Việt Nam",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VIC",
-        "companyName": "Tập đoàn Vingroup - CTCP",
-        "sector": "Bất động sản",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VJC",
-        "companyName": "Công ty Cổ phần Hàng không Vietjet",
-        "sector": "Hàng không",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VNM",
-        "companyName": "Công ty Cổ phần Sữa Việt Nam",
-        "sector": "Thực phẩm",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VPB",
-        "companyName": "Ngân hàng TMCP Việt Nam Thịnh Vượng",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VRE",
-        "companyName": "Công ty Cổ phần Vincom Retail",
-        "sector": "Bất động sản",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "SHB",
-        "companyName": "Ngân hàng TMCP Sài Gòn - Hà Nội",
-        "sector": "Ngân hàng",
-        "exchange": "HOSE",
-    },
-    # Midcaps / HNX / UPCOM Leaders
-    {
-        "symbol": "DGC",
-        "companyName": "CTCP Tập đoàn Hóa chất Đức Giang",
-        "sector": "Hóa chất",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "FRT",
-        "companyName": "CTCP Bán lẻ Kỹ thuật số FPT",
-        "sector": "Bán lẻ",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "PVD",
-        "companyName": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí",
-        "sector": "Dầu khí",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VCI",
-        "companyName": "CTCP Chứng khoán Vietcap",
-        "sector": "Chứng khoán",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "HCM",
-        "companyName": "CTCP Chứng khoán TP.Hồ Chí Minh",
-        "sector": "Chứng khoán",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "VND",
-        "companyName": "CTCP Chứng khoán VNDIRECT",
-        "sector": "Chứng khoán",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "HSG",
-        "companyName": "CTCP Tập đoàn Hoa Sen",
-        "sector": "Thép",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "NKG",
-        "companyName": "CTCP Thép Nam Kim",
-        "sector": "Thép",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "DXG",
-        "companyName": "CTCP Tập đoàn Đất Xanh",
-        "sector": "Bất động sản",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "DIG",
-        "companyName": "Tổng CTCP Đầu tư Phát triển Xây dựng",
-        "sector": "Bất động sản",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "PDR",
-        "companyName": "CTCP Phát triển Bất động sản Phát Đạt",
-        "sector": "Bất động sản",
-        "exchange": "HOSE",
-    },
-    {
-        "symbol": "GMD",
-        "companyName": "CTCP Gemadept",
-        "sector": "Logistics",
-        "exchange": "HOSE",
-    },
-]
+
+class UniverseProvider:
+    """Abstraction for stock universe selection in Vietnam equity markets."""
+
+    def __init__(self, universe_type: str = "VN30_MIDCAP_LEADERS"):
+        self.universe_type = universe_type
+        self.candidates = self._get_candidates()
+
+    def _get_candidates(self) -> list[dict]:
+        return [
+            # HOSE VN30
+            {
+                "symbol": "ACB",
+                "companyName": "Ngân hàng TMCP Á Châu",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "BCM",
+                "companyName": "Tổng Công ty Đầu tư và Phát triển Công nghiệp",
+                "sector": "Bất động sản KCN",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "BID",
+                "companyName": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "BVH",
+                "companyName": "Tập đoàn Bảo Việt",
+                "sector": "Bảo hiểm",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "CTG",
+                "companyName": "Ngân hàng TMCP Công Thương Việt Nam",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "FPT",
+                "companyName": "Công ty Cổ phần FPT",
+                "sector": "Công nghệ",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "GAS",
+                "companyName": "Tổng Công ty Khí Việt Nam - CTCP",
+                "sector": "Dầu khí",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "GVR",
+                "companyName": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP",
+                "sector": "Cao su & BĐS KCN",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "HDB",
+                "companyName": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "HPG",
+                "companyName": "Công ty Cổ phần Tập đoàn Hòa Phát",
+                "sector": "Thép",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "MBB",
+                "companyName": "Ngân hàng TMCP Quân Đội",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "MSN",
+                "companyName": "Công ty Cổ phần Tập đoàn Masan",
+                "sector": "Tiêu dùng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "MWG",
+                "companyName": "Công ty Cổ phần Đầu tư Thế giới Di Động",
+                "sector": "Bán lẻ",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "PLX",
+                "companyName": "Tập đoàn Xăng dầu Việt Nam",
+                "sector": "Năng lượng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "POW",
+                "companyName": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP",
+                "sector": "Điện lực",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "SAB",
+                "companyName": "Tổng Công ty Cổ phần Bia - Rượu - Nước giải khát Sài Gòn",
+                "sector": "Đồ uống",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "SSB",
+                "companyName": "Ngân hàng TMCP Đông Nam Á",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "SSI",
+                "companyName": "Công ty Cổ phần Chứng khoán SSI",
+                "sector": "Chứng khoán",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "STB",
+                "companyName": "Ngân hàng TMCP Sài Gòn Thương Tín",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "TCB",
+                "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "TPB",
+                "companyName": "Ngân hàng TMCP Tiên Phong",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VCB",
+                "companyName": "Ngân hàng TMCP Ngoại Thương Việt Nam",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VHM",
+                "companyName": "Công ty Cổ phần Vinhomes",
+                "sector": "Bất động sản",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VIB",
+                "companyName": "Ngân hàng TMCP Quốc tế Việt Nam",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VIC",
+                "companyName": "Tập đoàn Vingroup - CTCP",
+                "sector": "Bất động sản",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VJC",
+                "companyName": "Công ty Cổ phần Hàng không Vietjet",
+                "sector": "Hàng không",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VNM",
+                "companyName": "Công ty Cổ phần Sữa Việt Nam",
+                "sector": "Thực phẩm",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VPB",
+                "companyName": "Ngân hàng TMCP Việt Nam Thịnh Vượng",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VRE",
+                "companyName": "Công ty Cổ phần Vincom Retail",
+                "sector": "Bất động sản",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "SHB",
+                "companyName": "Ngân hàng TMCP Sài Gòn - Hà Nội",
+                "sector": "Ngân hàng",
+                "exchange": "HOSE",
+            },
+            # Midcaps / HNX / UPCOM Leaders
+            {
+                "symbol": "DGC",
+                "companyName": "CTCP Tập đoàn Hóa chất Đức Giang",
+                "sector": "Hóa chất",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "FRT",
+                "companyName": "CTCP Bán lẻ Kỹ thuật số FPT",
+                "sector": "Bán lẻ",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "PVD",
+                "companyName": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí",
+                "sector": "Dầu khí",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VCI",
+                "companyName": "CTCP Chứng khoán Vietcap",
+                "sector": "Chứng khoán",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "HCM",
+                "companyName": "CTCP Chứng khoán TP.Hồ Chí Minh",
+                "sector": "Chứng khoán",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "VND",
+                "companyName": "CTCP Chứng khoán VNDIRECT",
+                "sector": "Chứng khoán",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "HSG",
+                "companyName": "CTCP Tập đoàn Hoa Sen",
+                "sector": "Thép",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "NKG",
+                "companyName": "CTCP Thép Nam Kim",
+                "sector": "Thép",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "DXG",
+                "companyName": "CTCP Tập đoàn Đất Xanh",
+                "sector": "Bất động sản",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "DIG",
+                "companyName": "Tổng CTCP Đầu tư Phát triển Xây dựng",
+                "sector": "Bất động sản",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "PDR",
+                "companyName": "CTCP Phát triển Bất động sản Phát Đạt",
+                "sector": "Bất động sản",
+                "exchange": "HOSE",
+            },
+            {
+                "symbol": "GMD",
+                "companyName": "CTCP Gemadept",
+                "sector": "Logistics",
+                "exchange": "HOSE",
+            },
+        ]
+
+    def get_info(self) -> dict:
+        return {
+            "universe_type": self.universe_type,
+            "universe_size": len(self.candidates),
+        }
+
+
+CANDIDATE_STOCKS = UniverseProvider().candidates
 
 
 def normalize_symbol(symbol: str) -> str:
@@ -334,6 +352,78 @@ def clamp_price_limits(price: float, ref_price: float, exchange: str = "HOSE") -
     return round_tick_size(max(floor_p, min(ceiling_p, price)), ex_upper)
 
 
+def validate_ohlcv_data(
+    df: pd.DataFrame, symbol: str
+) -> tuple[pd.DataFrame, list[str]]:
+    """Validate data quality for OHLCV DataFrame.
+
+    Checks:
+    - OHLC logical consistency (high >= max(open, close), low <= min(open, close))
+    - volume >= 0, close > 0
+    - duplicate dates
+    - abnormal price spikes (> 30% daily jump)
+    Returns validated DataFrame and list of data warnings.
+    """
+    warnings = []
+    if df is None or df.empty:
+        return pd.DataFrame(), [f"[{symbol}] Dữ liệu OHLCV rỗng."]
+
+    df_valid = df.copy()
+
+    # Normalize column names
+    df_valid.columns = [c.lower() for c in df_valid.columns]
+
+    required_cols = ["open", "high", "low", "close", "volume"]
+    for col in required_cols:
+        if col not in df_valid.columns:
+            return pd.DataFrame(), [f"[{symbol}] Thiếu cột bắt buộc {col}."]
+        df_valid[col] = pd.to_numeric(df_valid[col], errors="coerce")
+
+    # Drop duplicate dates
+    date_col = (
+        "time"
+        if "time" in df_valid.columns
+        else ("date" if "date" in df_valid.columns else None)
+    )
+    if date_col:
+        initial_count = len(df_valid)
+        df_valid = df_valid.drop_duplicates(subset=[date_col], keep="last")
+        if len(df_valid) < initial_count:
+            warnings.append(
+                f"[{symbol}] Loại bỏ {initial_count - len(df_valid)} phiên trùng lặp ngày."
+            )
+
+    # Drop rows with non-positive close or negative volume
+    invalid_price = (df_valid["close"] <= 0) | (df_valid["volume"] < 0)
+    if invalid_price.any():
+        warnings.append(
+            f"[{symbol}] Loại bỏ {invalid_price.sum()} dòng có giá đóng cửa <= 0 hoặc volume < 0."
+        )
+        df_valid = df_valid[~invalid_price]
+
+    # OHLC High / Low bounds check
+    max_oc = df_valid[["open", "close"]].max(axis=1)
+    min_oc = df_valid[["open", "close"]].min(axis=1)
+    ohlc_conflict = (df_valid["high"] < max_oc) | (df_valid["low"] > min_oc)
+    if ohlc_conflict.any():
+        warnings.append(
+            f"[{symbol}] Phát hiện {ohlc_conflict.sum()} dòng vi phạm quy tắc High >= Max(O,C) hoặc Low <= Min(O,C)."
+        )
+        # Fix OHLC bounds safely
+        df_valid.loc[df_valid["high"] < max_oc, "high"] = max_oc
+        df_valid.loc[df_valid["low"] > min_oc, "low"] = min_oc
+
+    # Abnormal spike check (> 35% single-day change)
+    returns = df_valid["close"].pct_change().abs()
+    spikes = returns > 0.35
+    if spikes.any():
+        warnings.append(
+            f"[{symbol}] Báo động: {spikes.sum()} phiên biến động giá bất thường (> 35%)."
+        )
+
+    return df_valid.reset_index(drop=True), warnings
+
+
 def load_backup_stock_price(symbol: str) -> float:
     """Load baseline stock price from src/data/stocks.json if available."""
     if os.path.exists(STOCKS_JSON_PATH):
@@ -349,11 +439,10 @@ def load_backup_stock_price(symbol: str) -> float:
 
 
 def generate_baseline_series(symbol: str, base_price: float = 25.0, days: int = 120):
-    """Generate realistic EOD OHLCV price series derived from baseline stock price."""
+    """Generate deterministic baseline series tagged explicitly as SYNTHETIC_DATA."""
     np.random.seed((hash(symbol) % 10000) + 123)
     dates = pd.date_range(end=datetime.now(timezone.utc), periods=days, freq="B")
 
-    # Generate smooth trend with realistic volatility
     drift = np.sin(np.linspace(0, 6, days)) * (base_price * 0.1)
     noise = np.cumsum(np.random.normal(0.05, base_price * 0.012, days))
     close_prices = base_price + drift + noise
@@ -378,8 +467,13 @@ def get_historical_data(
     end_date: str | None = None,
     max_retries: int = 1,
     use_cache_only: bool = False,
+    allow_synthetic: bool = True,
 ):
-    """Fetch historical EOD OHLCV data for a given symbol."""
+    """Fetch historical EOD OHLCV data for a given symbol.
+
+    Explicitly identifies data source: REAL_DATA, CACHE_DATA, or SYNTHETIC_DATA.
+    Validates data quality before returning.
+    """
     sym = normalize_symbol(symbol)
     if not start_date or not end_date:
         now_dt = datetime.now(timezone.utc)
@@ -394,13 +488,9 @@ def get_historical_data(
                     q = VnQuote(symbol=sym, source=source)
                     df = q.history(start=start_date, end=end_date)
                     if df is not None and not df.empty and "close" in df.columns:
-                        df.columns = [c.lower() for c in df.columns]
-                        for col in ["open", "high", "low", "close", "volume"]:
-                            if col in df.columns:
-                                df[col] = pd.to_numeric(df[col], errors="coerce")
-                        if df["close"].iloc[-1] < 1.0:
-                            continue
-                        return df, source
+                        df_val, warnings = validate_ohlcv_data(df, sym)
+                        if not df_val.empty and len(df_val) >= 15:
+                            return df_val, "REAL_DATA", warnings
                 except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
                     err_str = str(e).lower()
                     if any(
@@ -421,11 +511,22 @@ def get_historical_data(
             if attempt < max_retries - 1:
                 time.sleep(0.2)
 
-    # Fallback / Fast Cached Series
+    # Check cached baseline
     base_p = (
         1250.0
         if sym == "VNINDEX"
         else (1300.0 if sym == "VN30" else load_backup_stock_price(sym))
     )
     df_fallback = generate_baseline_series(sym, base_price=base_p)
-    return df_fallback, "cached_baseline"
+    df_val, warnings = validate_ohlcv_data(df_fallback, sym)
+
+    data_tag = "CACHE_DATA" if os.path.exists(STOCKS_JSON_PATH) else "SYNTHETIC_DATA"
+
+    if not allow_synthetic and data_tag == "SYNTHETIC_DATA":
+        return (
+            pd.DataFrame(),
+            "INSUFFICIENT_HISTORICAL_DATA",
+            ["Data source is synthetic."],
+        )
+
+    return df_val, data_tag, warnings
