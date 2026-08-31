@@ -1,7 +1,9 @@
 """Feature Engine Module for Alpha Pulse v2.
 
 Computes technical indicators, moving averages, RSI, MACD, ATR,
-relative strength vs benchmark, and multi-timeframe divergence (1H, 1D, 1W, 1M).
+relative strength vs benchmark, market structure bounds, and
+multi-timeframe divergence (1D, 1W, 1M). Explicitly sets 1H as unavailable
+when intraday data is absent.
 """
 
 import pandas as pd
@@ -120,7 +122,10 @@ def detect_divergence(df: pd.DataFrame, lookback: int = 40) -> dict:
 def calculate_multi_timeframe_features(
     df_daily: pd.DataFrame,
 ) -> tuple[pd.DataFrame, dict]:
-    """Perform multi-timeframe feature analysis across 1H, 1D, 1W, and 1M."""
+    """Perform multi-timeframe feature analysis across 1D, 1W, and 1M.
+
+    Explicitly marks 1H as unavailable when daily EOD data is supplied.
+    """
     df_d = calculate_single_tf_indicators(df_daily)
     div_d = detect_divergence(df_d)
 
@@ -170,50 +175,19 @@ def calculate_multi_timeframe_features(
     df_m = calculate_single_tf_indicators(df_monthly)
     div_m = detect_divergence(df_m, lookback=24)
 
-    # 1H Estimation from last 3 daily sessions
-    tail3 = df_d.tail(3)
-    rsi_1h_bullish, rsi_1h_bearish = False, False
-    macd_1h_bullish, macd_1h_bearish = False, False
-
-    if len(tail3) >= 3:
-        if (
-            tail3["close"].iloc[-1] <= tail3["close"].iloc[0] * 1.005
-            and tail3["rsi"].iloc[-1] > tail3["rsi"].iloc[0] + 2.0
-        ):
-            rsi_1h_bullish = True
-        elif (
-            tail3["close"].iloc[-1] >= tail3["close"].iloc[0] * 0.995
-            and tail3["rsi"].iloc[-1] < tail3["rsi"].iloc[0] - 2.0
-        ):
-            rsi_1h_bearish = True
-
-        if (
-            tail3["hist"].iloc[-1] > tail3["hist"].iloc[0] + 0.02
-            and tail3["close"].iloc[-1] <= tail3["close"].iloc[0]
-        ):
-            macd_1h_bullish = True
-        elif (
-            tail3["hist"].iloc[-1] < tail3["hist"].iloc[0] - 0.02
-            and tail3["close"].iloc[-1] >= tail3["close"].iloc[0]
-        ):
-            macd_1h_bearish = True
-
-    div_1h = {
-        "rsi_bullish": rsi_1h_bullish,
-        "rsi_bearish": rsi_1h_bearish,
-        "macd_bullish": macd_1h_bullish,
-        "macd_bearish": macd_1h_bearish,
-    }
-
     tf_summary = {
         "1h": {
-            "rsi": round(float(df_d["rsi"].iloc[-1]), 1) if not df_d.empty else 50.0,
-            "macd_hist": round(float(df_d["hist"].iloc[-1]), 3)
-            if not df_d.empty
-            else 0.0,
-            "divergence": div_1h,
+            "available": False,
+            "status": "NO_INTRADAY_DATA",
+            "divergence": {
+                "rsi_bullish": False,
+                "rsi_bearish": False,
+                "macd_bullish": False,
+                "macd_bearish": False,
+            },
         },
         "1d": {
+            "available": True,
             "rsi": round(float(df_d["rsi"].iloc[-1]), 1) if not df_d.empty else 50.0,
             "macd_hist": round(float(df_d["hist"].iloc[-1]), 3)
             if not df_d.empty
@@ -221,6 +195,7 @@ def calculate_multi_timeframe_features(
             "divergence": div_d,
         },
         "1w": {
+            "available": True,
             "rsi": round(float(df_w["rsi"].iloc[-1]), 1) if not df_w.empty else 50.0,
             "macd_hist": round(float(df_w["hist"].iloc[-1]), 3)
             if not df_w.empty
@@ -228,6 +203,7 @@ def calculate_multi_timeframe_features(
             "divergence": div_w,
         },
         "1m": {
+            "available": True,
             "rsi": round(float(df_m["rsi"].iloc[-1]), 1) if not df_m.empty else 50.0,
             "macd_hist": round(float(df_m["hist"].iloc[-1]), 3)
             if not df_m.empty

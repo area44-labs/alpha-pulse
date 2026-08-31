@@ -1,9 +1,10 @@
 """Recommendation Engine Module for Alpha Pulse v2.
 
-Generates stock recommendations based on alpha score, market regime, risk,
-liquidity, momentum, relative strength, volume, trend, and divergence.
+Generates stock recommendations based on composite technical alpha score,
+market regime, T+2.5 risk horizon, market structure entry/stop/target bounds,
+and risk-based position sizing.
 Allowed actions: BUY, WATCH, HOLD, SELL, AVOID.
-Strictly avoids fake numbers and forced quota allocations.
+Strictly avoids unverified heuristics for expected returns.
 """
 
 from scripts.lib.features import calculate_multi_timeframe_features
@@ -76,7 +77,7 @@ def generate_recommendation(
     vol_20d_avg = float(df_d["vol_ma20"].iloc[-1])
     vol_ratio = float(df_d["volume"].iloc[-1]) / vol_20d_avg if vol_20d_avg > 0 else 1.0
 
-    # Alpha Score (0 to 100)
+    # Composite Technical Alpha Score (0 to 100)
     score = 50.0
     reasons = []
     warnings = []
@@ -146,7 +147,7 @@ def generate_recommendation(
 
     # Divergence multi-timeframe check
     has_major_bearish_div = False
-    for tf_key, tf_label in [("1h", "1H"), ("1d", "1D"), ("1w", "1W"), ("1m", "1M")]:
+    for tf_key, tf_label in [("1d", "1D"), ("1w", "1W"), ("1m", "1M")]:
         div = tf_summary[tf_key]["divergence"]
         if div["rsi_bullish"] or div["macd_bullish"]:
             score += 5.0
@@ -164,16 +165,11 @@ def generate_recommendation(
 
     regime = market_regime_info.get("regime", "DEFENSIVE")
 
-    # Determine Action strictly based on quantitative criteria
+    # Action classification
     if regime == "PANIC" or score < 35.0:
         action = "AVOID" if regime == "PANIC" else "SELL"
-    elif (
-        score >= 75.0
-        and close > ma20
-        and regime in ["STRONG_BULL", "BULL"]
-        or score >= 65.0
-        and close > ma20
-        and regime == "DEFENSIVE"
+    elif (score >= 75.0 and close > ma20 and regime in ["STRONG_BULL", "BULL"]) or (
+        score >= 65.0 and close > ma20 and regime == "DEFENSIVE"
     ):
         action = "BUY"
     elif score >= 55.0:
@@ -196,7 +192,7 @@ def generate_recommendation(
     else:
         risk_level = None
 
-    # Trade Plan
+    # Market Structure Trade Plan
     lowest_5d = float(df_d["low"].tail(5).min())
     sl_raw = max(close - 1.8 * atr, lowest_5d, ma20 * 0.98, close * 0.93)
     sl = clamp_price_limits(sl_raw, close, ex)
@@ -207,10 +203,19 @@ def generate_recommendation(
     tp1 = clamp_price_limits(close + 2.0 * risk_amt, close, ex)
     tp2 = clamp_price_limits(close + 3.0 * risk_amt, close, ex)
 
-    rr_val = round((tp1 - close) / risk_amt, 2) if risk_amt > 0 else 1.0
-    risk_reward_str = f"1:{rr_val}"
+    rr_num = round((tp1 - close) / risk_amt, 2) if risk_amt > 0 else 1.0
 
-    position_pct = 20.0 if action == "BUY" else (10.0 if action == "WATCH" else 0.0)
+    # Risk-based Position Sizing
+    stop_distance_pct = (
+        abs(close - sl) / close if close > 0 and abs(close - sl) > 1e-4 else 0.05
+    )
+    portfolio_risk_budget_pct = 1.0
+    calc_position_pct = round(portfolio_risk_budget_pct / stop_distance_pct, 1)
+
+    max_position_cap = 20.0 if action == "BUY" else (10.0 if action == "WATCH" else 0.0)
+    final_position_pct = (
+        min(calc_position_pct, max_position_cap) if max_position_cap > 0 else 0.0
+    )
 
     trade_plan = {
         "current_price": round(close, 2),
@@ -219,23 +224,21 @@ def generate_recommendation(
         "stop_loss": round(sl, 2),
         "tp1": round(tp1, 2),
         "tp2": round(tp2, 2),
-        "risk_reward": risk_reward_str,
-        "position_percent": position_pct,
+        "risk_reward": rr_num,
+        "position_percent": final_position_pct,
     }
 
-    # Expected Return: set to None unless verified quantitative model outputs exist
     expected_return = {
         "expected_return_5d": None,
         "expected_return_10d": None,
         "expected_return_20d": None,
     }
 
-    # Risk adjusted alpha: return None since expected_return_10d is None
     risk_adjusted_alpha = None
 
     # Format divergence mapping
     div_mapping = {}
-    tf_k_map = [("1h", "1H"), ("1d", "1D"), ("1w", "1W"), ("1m", "1M")]
+    tf_k_map = [("1d", "1D"), ("1w", "1W"), ("1m", "1M")]
     for tf_key, tf_lbl in tf_k_map:
         d_info = tf_summary[tf_key]["divergence"]
         if d_info["rsi_bullish"] or d_info["macd_bullish"]:

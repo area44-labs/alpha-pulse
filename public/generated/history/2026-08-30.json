@@ -52,7 +52,7 @@
         "stop_loss": 29.4,
         "tp1": 31.65,
         "tp2": 31.95,
-        "risk_reward": "1:1.97",
+        "risk_reward": 1.97,
         "position_percent": 0.0
       },
       "reasons": [
@@ -101,7 +101,7 @@
         "stop_loss": 32.0,
         "tp1": 36.15,
         "tp2": 36.15,
-        "risk_reward": "1:1.32",
+        "risk_reward": 1.32,
         "position_percent": 0.0
       },
       "reasons": [
@@ -149,7 +149,7 @@
         "stop_loss": 30.3,
         "tp1": 33.25,
         "tp2": 33.45,
-        "risk_reward": "1:2.02",
+        "risk_reward": 2.02,
         "position_percent": 0.0
       },
       "reasons": [
@@ -197,7 +197,7 @@
         "stop_loss": 68.4,
         "tp1": 76.6,
         "tp2": 76.6,
-        "risk_reward": "1:1.6",
+        "risk_reward": 1.6,
         "position_percent": 10.0
       },
       "reasons": [
@@ -246,7 +246,7 @@
         "stop_loss": 42.85,
         "tp1": 48.15,
         "tp2": 48.15,
-        "risk_reward": "1:1.44",
+        "risk_reward": 1.44,
         "position_percent": 0.0
       },
       "reasons": [
@@ -296,7 +296,7 @@
         "stop_loss": 32.25,
         "tp1": 36.15,
         "tp2": 36.15,
-        "risk_reward": "1:1.52",
+        "risk_reward": 1.52,
         "position_percent": 10.0
       },
       "reasons": [
@@ -346,7 +346,7 @@
         "stop_loss": 29.45,
         "tp1": 33.3,
         "tp2": 33.3,
-        "risk_reward": "1:1.32",
+        "risk_reward": 1.32,
         "position_percent": 0.0
       },
       "reasons": [
@@ -394,7 +394,7 @@
         "stop_loss": 31.15,
         "tp1": 34.7,
         "tp2": 34.7,
-        "risk_reward": "1:1.73",
+        "risk_reward": 1.73,
         "position_percent": 10.0
       },
       "reasons": [
@@ -441,7 +441,7 @@
         "stop_loss": 31.95,
         "tp1": 34.6,
         "tp2": 34.95,
-        "risk_reward": "1:1.98",
+        "risk_reward": 1.98,
         "position_percent": 10.0
       },
       "reasons": [
@@ -491,7 +491,7 @@
         "stop_loss": 33.5,
         "tp1": 36.15,
         "tp2": 36.5,
-        "risk_reward": "1:2.0",
+        "risk_reward": 2.0,
         "position_percent": 10.0
       },
       "reasons": [
@@ -538,7 +538,7 @@
         "stop_loss": 18.7,
         "tp1": 20.15,
         "tp2": 20.35,
-        "risk_reward": "1:1.97",
+        "risk_reward": 1.97,
         "position_percent": 0.0
       },
       "reasons": [
@@ -587,7 +587,7 @@
         "stop_loss": 30.0,
         "tp1": 32.25,
         "tp2": 32.55,
-        "risk_reward": "1:1.98",
+        "risk_reward": 1.98,
         "position_percent": 0.0
       },
       "reasons": [
@@ -634,7 +634,7 @@
         "stop_loss": 29.85,
         "tp1": 33.7,
         "tp2": 33.7,
-        "risk_reward": "1:1.36",
+        "risk_reward": 1.36,
         "position_percent": 10.0
       },
       "reasons": [
@@ -683,7 +683,7 @@
         "stop_loss": 25.5,
         "tp1": 28.55,
         "tp2": 28.55,
-        "risk_reward": "1:1.6",
+        "risk_reward": 1.6,
         "position_percent": 10.0
       },
       "reasons": [
@@ -730,7 +730,7 @@
         "stop_loss": 17.55,
         "tp1": 19.6,
         "tp2": 19.6,
-        "risk_reward": "1:1.73",
+        "risk_reward": 1.73,
         "position_percent": 0.0
       },
       "reasons": [
@@ -779,7 +779,7 @@
         "stop_loss": 26.8,
         "tp1": 29.1,
         "tp2": 29.35,
-        "risk_reward": "1:2.03",
+        "risk_reward": 2.03,
         "position_percent": 0.0
       },
       "reasons": [
@@ -826,7 +826,7 @@
         "stop_loss": 19.75,
         "tp1": 21.95,
         "tp2": 21.95,
-        "risk_reward": "1:1.8",
+        "risk_reward": 1.8,
         "position_percent": 10.0
       },
       "reasons": [
@@ -873,7 +873,7 @@
         "stop_loss": 27.95,
         "tp1": 30.3,
         "tp2": 30.6,
-        "risk_reward": "1:2.0",
+        "risk_reward": 2.0,
         "position_percent": 0.0
       },
       "reasons": [
@@ -920,7 +920,7 @@
         "stop_loss": 32.7,
         "tp1": 35.9,
         "tp2": 36.15,
-        "risk_reward": "1:1.98",
+        "risk_reward": 1.98,
         "position_percent": 10.0
       },
       "reasons": [
@@ -968,7 +968,7 @@
         "stop_loss": 42.45,
         "tp1": 47.95,
         "tp2": 47.95,
-        "risk_reward": "1:1.31",
+        "risk_reward": 1.31,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1015,7 +1015,7 @@
         "stop_loss": 27.45,
         "tp1": 29.55,
         "tp2": 29.85,
-        "risk_reward": "1:1.99",
+        "risk_reward": 1.99,
         "position_percent": 0.0
       },
       "reasons": [
@@ -1064,7 +1064,7 @@
         "stop_loss": 33.45,
         "tp1": 37.15,
         "tp2": 37.15,
-        "risk_reward": "1:1.95",
+        "risk_reward": 1.95,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1112,7 +1112,7 @@
         "stop_loss": 29.4,
         "tp1": 32.0,
         "tp2": 32.3,
-        "risk_reward": "1:2.02",
+        "risk_reward": 2.02,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1162,7 +1162,7 @@
         "stop_loss": 32.35,
         "tp1": 35.9,
         "tp2": 35.9,
-        "risk_reward": "1:1.95",
+        "risk_reward": 1.95,
         "position_percent": 0.0
       },
       "reasons": [
@@ -1210,7 +1210,7 @@
         "stop_loss": 26.0,
         "tp1": 28.2,
         "tp2": 28.45,
-        "risk_reward": "1:2.0",
+        "risk_reward": 2.0,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1258,7 +1258,7 @@
         "stop_loss": 24.65,
         "tp1": 26.5,
         "tp2": 26.75,
-        "risk_reward": "1:1.99",
+        "risk_reward": 1.99,
         "position_percent": 20.0
       },
       "reasons": [
@@ -1306,7 +1306,7 @@
         "stop_loss": 22.65,
         "tp1": 24.7,
         "tp2": 24.9,
-        "risk_reward": "1:2.02",
+        "risk_reward": 2.02,
         "position_percent": 20.0
       },
       "reasons": [
@@ -1355,7 +1355,7 @@
         "stop_loss": 34.9,
         "tp1": 38.45,
         "tp2": 38.6,
-        "risk_reward": "1:2.0",
+        "risk_reward": 2.0,
         "position_percent": 0.0
       },
       "reasons": [
@@ -1402,7 +1402,7 @@
         "stop_loss": 32.2,
         "tp1": 35.8,
         "tp2": 35.8,
-        "risk_reward": "1:1.86",
+        "risk_reward": 1.86,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1452,7 +1452,7 @@
         "stop_loss": 16.85,
         "tp1": 18.15,
         "tp2": 18.3,
-        "risk_reward": "1:2.01",
+        "risk_reward": 2.01,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1501,7 +1501,7 @@
         "stop_loss": 27.85,
         "tp1": 29.75,
         "tp2": 30.05,
-        "risk_reward": "1:2.0",
+        "risk_reward": 2.0,
         "position_percent": 0.0
       },
       "reasons": [
@@ -1550,7 +1550,7 @@
         "stop_loss": 29.55,
         "tp1": 32.8,
         "tp2": 32.8,
-        "risk_reward": "1:1.96",
+        "risk_reward": 1.96,
         "position_percent": 0.0
       },
       "reasons": [
@@ -1599,7 +1599,7 @@
         "stop_loss": 31.9,
         "tp1": 34.55,
         "tp2": 34.85,
-        "risk_reward": "1:2.01",
+        "risk_reward": 2.01,
         "position_percent": 0.0
       },
       "reasons": [
@@ -1648,7 +1648,7 @@
         "stop_loss": 25.9,
         "tp1": 28.0,
         "tp2": 28.3,
-        "risk_reward": "1:1.98",
+        "risk_reward": 1.98,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1696,7 +1696,7 @@
         "stop_loss": 29.75,
         "tp1": 33.1,
         "tp2": 33.1,
-        "risk_reward": "1:1.85",
+        "risk_reward": 1.85,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1745,7 +1745,7 @@
         "stop_loss": 30.75,
         "tp1": 33.4,
         "tp2": 33.7,
-        "risk_reward": "1:2.0",
+        "risk_reward": 2.0,
         "position_percent": 0.0
       },
       "reasons": [
@@ -1794,7 +1794,7 @@
         "stop_loss": 27.85,
         "tp1": 30.35,
         "tp2": 30.65,
-        "risk_reward": "1:1.98",
+        "risk_reward": 1.98,
         "position_percent": 0.0
       },
       "reasons": [
@@ -1844,7 +1844,7 @@
         "stop_loss": 33.0,
         "tp1": 37.25,
         "tp2": 37.25,
-        "risk_reward": "1:1.33",
+        "risk_reward": 1.33,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1893,7 +1893,7 @@
         "stop_loss": 34.0,
         "tp1": 36.6,
         "tp2": 36.9,
-        "risk_reward": "1:2.02",
+        "risk_reward": 2.02,
         "position_percent": 0.0
       },
       "reasons": [
@@ -1940,7 +1940,7 @@
         "stop_loss": 17.2,
         "tp1": 19.2,
         "tp2": 19.2,
-        "risk_reward": "1:1.61",
+        "risk_reward": 1.61,
         "position_percent": 10.0
       },
       "reasons": [
@@ -1987,7 +1987,7 @@
         "stop_loss": 32.05,
         "tp1": 36.15,
         "tp2": 36.15,
-        "risk_reward": "1:1.34",
+        "risk_reward": 1.34,
         "position_percent": 10.0
       },
       "reasons": [
@@ -2036,7 +2036,7 @@
         "stop_loss": 32.05,
         "tp1": 35.6,
         "tp2": 35.6,
-        "risk_reward": "1:1.91",
+        "risk_reward": 1.91,
         "position_percent": 10.0
       },
       "reasons": [

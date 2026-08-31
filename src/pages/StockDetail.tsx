@@ -14,7 +14,6 @@ export function StockDetail({ symbol: propsSymbol, onBack }: StockDetailProps) {
   const [stock, setStock] = useState<Recommendation | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Extract symbol from props or window URL query param `?symbol=FPT`
   const activeSymbol =
     propsSymbol || new URLSearchParams(window.location.search).get("symbol") || "FPT";
 
@@ -242,7 +241,10 @@ export function StockDetail({ symbol: propsSymbol, onBack }: StockDetailProps) {
           <div className="rounded-sm border border-border bg-background p-3">
             <span className="block text-[10px] text-muted-foreground">Điểm Thanh Khoản</span>
             <span className="font-bold text-foreground">
-              {stock.risk_metrics.liquidity_score ?? "—"} <span className="text-[9px]">/ 100</span>
+              {stock.risk_metrics.liquidity_score != null
+                ? `${stock.risk_metrics.liquidity_score}`
+                : "—"}{" "}
+              <span className="text-[9px]">/ 100</span>
             </span>
           </div>
         </div>
@@ -285,8 +287,8 @@ export function StockDetail({ symbol: propsSymbol, onBack }: StockDetailProps) {
               Risk / Reward & Tỷ Trọng
             </span>
             <span className="font-bold text-foreground">
-              R:R {stock.trade_plan.risk_reward ?? "—"} ({stock.trade_plan.position_percent ?? 0}%
-              NAV)
+              R:R {stock.trade_plan.risk_reward != null ? `1:${stock.trade_plan.risk_reward}` : "—"}{" "}
+              ({stock.trade_plan.position_percent ?? 0}% NAV)
             </span>
           </div>
         </div>

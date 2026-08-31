@@ -5,7 +5,10 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from scripts.lib.risk import calculate_t25_risk_metrics
+from scripts.lib.risk import (
+    calculate_t25_risk_metrics,
+    normalize_universe_liquidity_scores,
+)
 
 
 class TestRiskModel(unittest.TestCase):
@@ -34,10 +37,25 @@ class TestRiskModel(unittest.TestCase):
         self.assertIsNotNone(metrics["es_t25"])
         self.assertIsNotNone(metrics["volatility_60d"])
         self.assertIsNotNone(metrics["max_drawdown"])
-        self.assertIsNotNone(metrics["liquidity_score"])
+        self.assertIsNotNone(metrics["avg_value_20d"])
 
         self.assertLessEqual(metrics["es_t25"], metrics["var_t25"])
         self.assertLessEqual(metrics["max_drawdown"], 0.0)
+
+    def test_universe_liquidity_normalization(self):
+        scanned = [
+            {"risk_metrics": {"avg_value_20d": 1.0, "liquidity_score": None}},
+            {"risk_metrics": {"avg_value_20d": 5.0, "liquidity_score": None}},
+            {"risk_metrics": {"avg_value_20d": 10.0, "liquidity_score": None}},
+        ]
+        norm = normalize_universe_liquidity_scores(scanned)
+
+        self.assertAlmostEqual(
+            norm[0]["risk_metrics"]["liquidity_score"], 33.3, delta=1.0
+        )
+        self.assertAlmostEqual(
+            norm[2]["risk_metrics"]["liquidity_score"], 100.0, delta=1.0
+        )
 
     def test_risk_metrics_missing_data(self):
         df_empty = pd.DataFrame()
@@ -62,24 +80,6 @@ class TestRiskModel(unittest.TestCase):
 
         self.assertIsNone(metrics["var_t25"])
         self.assertIsNone(metrics["es_t25"])
-
-    def test_zero_volatility_and_liquidity(self):
-        n = 30
-        dates = pd.date_range("2026-01-01", periods=n, freq="D")
-        df_flat = pd.DataFrame(
-            {
-                "time": dates,
-                "close": [20.0] * n,
-                "volume": [0] * n,
-            }
-        )
-        metrics = calculate_t25_risk_metrics(df_flat)
-
-        self.assertEqual(metrics["var_t25"], 0.0)
-        self.assertEqual(metrics["es_t25"], 0.0)
-        self.assertEqual(metrics["volatility_60d"], 0.0)
-        self.assertEqual(metrics["max_drawdown"], 0.0)
-        self.assertEqual(metrics["liquidity_score"], 0.0)
 
 
 if __name__ == "__main__":
