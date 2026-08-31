@@ -328,7 +328,7 @@ def round_tick_size(price: float, exchange: str = "HOSE") -> float:
     """Round price according to Vietnam exchange tick size rules."""
     if price <= 0:
         return 0.0
-    exchange_upper = exchange.upper()
+    exchange_upper = exchange.upper() if exchange else "HOSE"
     if exchange_upper == "HOSE":
         if price < 10.0:
             step = 0.01
@@ -341,36 +341,50 @@ def round_tick_size(price: float, exchange: str = "HOSE") -> float:
     return round(round(price / step) * step, 2)
 
 
-def clamp_price_limits(price: float, ref_price: float, exchange: str = "HOSE") -> float:
-    """Enforce exchange daily price floor and ceiling bounds."""
-    if ref_price <= 0:
-        return price
-    ex_upper = exchange.upper()
+def get_exchange_price_limits(
+    ref_price: float, exchange: str = "HOSE"
+) -> tuple[float, float, float]:
+    """Calculate exchange daily price reference, ceiling and floor bounds."""
+    try:
+        ref_p = float(ref_price) if ref_price is not None else 10.0
+    except (ValueError, TypeError):
+        ref_p = 10.0
+
+    if ref_p <= 0:
+        ref_p = 10.0
+
+    ex_upper = str(exchange).upper() if exchange else "HOSE"
     pct = 0.07 if ex_upper == "HOSE" else (0.10 if ex_upper == "HNX" else 0.15)
-    floor_p = round_tick_size(ref_price * (1 - pct), ex_upper)
-    ceiling_p = round_tick_size(ref_price * (1 + pct), ex_upper)
-    return round_tick_size(max(floor_p, min(ceiling_p, price)), ex_upper)
+
+    floor_p = round_tick_size(ref_p * (1.0 - pct), ex_upper)
+    ceiling_p = round_tick_size(ref_p * (1.0 + pct), ex_upper)
+
+    return ref_p, ceiling_p, floor_p
+
+
+def clamp_price_limits(
+    price: float, ref_price: float = 0.0, exchange: str = "HOSE"
+) -> float:
+    """Enforce exchange daily price floor and ceiling bounds."""
+    try:
+        p = float(price) if price is not None else 0.0
+    except (ValueError, TypeError):
+        p = 0.0
+
+    _ref_p, ceiling_p, floor_p = get_exchange_price_limits(ref_price, exchange)
+    ex_upper = str(exchange).upper() if exchange else "HOSE"
+    return round_tick_size(max(floor_p, min(ceiling_p, p)), ex_upper)
 
 
 def validate_ohlcv_data(
     df: pd.DataFrame, symbol: str
 ) -> tuple[pd.DataFrame, list[str]]:
-    """Validate data quality for OHLCV DataFrame.
-
-    Checks:
-    - OHLC logical consistency (high >= max(open, close), low <= min(open, close))
-    - volume >= 0, close > 0
-    - duplicate dates
-    - abnormal price spikes (> 30% daily jump)
-    Returns validated DataFrame and list of data warnings.
-    """
+    """Validate data quality for OHLCV DataFrame."""
     warnings = []
     if df is None or df.empty:
         return pd.DataFrame(), [f"[{symbol}] Dữ liệu OHLCV rỗng."]
 
     df_valid = df.copy()
-
-    # Normalize column names
     df_valid.columns = [c.lower() for c in df_valid.columns]
 
     required_cols = ["open", "high", "low", "close", "volume"]
@@ -379,7 +393,6 @@ def validate_ohlcv_data(
             return pd.DataFrame(), [f"[{symbol}] Thiếu cột bắt buộc {col}."]
         df_valid[col] = pd.to_numeric(df_valid[col], errors="coerce")
 
-    # Drop duplicate dates
     date_col = (
         "time"
         if "time" in df_valid.columns
@@ -393,7 +406,6 @@ def validate_ohlcv_data(
                 f"[{symbol}] Loại bỏ {initial_count - len(df_valid)} phiên trùng lặp ngày."
             )
 
-    # Drop rows with non-positive close or negative volume
     invalid_price = (df_valid["close"] <= 0) | (df_valid["volume"] < 0)
     if invalid_price.any():
         warnings.append(
@@ -401,7 +413,6 @@ def validate_ohlcv_data(
         )
         df_valid = df_valid[~invalid_price]
 
-    # OHLC High / Low bounds check
     max_oc = df_valid[["open", "close"]].max(axis=1)
     min_oc = df_valid[["open", "close"]].min(axis=1)
     ohlc_conflict = (df_valid["high"] < max_oc) | (df_valid["low"] > min_oc)
@@ -409,11 +420,9 @@ def validate_ohlcv_data(
         warnings.append(
             f"[{symbol}] Phát hiện {ohlc_conflict.sum()} dòng vi phạm quy tắc High >= Max(O,C) hoặc Low <= Min(O,C)."
         )
-        # Fix OHLC bounds safely
         df_valid.loc[df_valid["high"] < max_oc, "high"] = max_oc
         df_valid.loc[df_valid["low"] > min_oc, "low"] = min_oc
 
-    # Abnormal spike check (> 35% single-day change)
     returns = df_valid["close"].pct_change().abs()
     spikes = returns > 0.35
     if spikes.any():
@@ -469,11 +478,7 @@ def get_historical_data(
     use_cache_only: bool = False,
     allow_synthetic: bool = True,
 ):
-    """Fetch historical EOD OHLCV data for a given symbol.
-
-    Explicitly identifies data source: REAL_DATA, CACHE_DATA, or SYNTHETIC_DATA.
-    Validates data quality before returning.
-    """
+    """Fetch historical EOD OHLCV data for a given symbol."""
     sym = normalize_symbol(symbol)
     if not start_date or not end_date:
         now_dt = datetime.now(timezone.utc)
@@ -511,7 +516,6 @@ def get_historical_data(
             if attempt < max_retries - 1:
                 time.sleep(0.2)
 
-    # Check cached baseline
     base_p = (
         1250.0
         if sym == "VNINDEX"
