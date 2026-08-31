@@ -1268,9 +1268,7 @@
         "Chỉ báo RSI (62.7) nằm trong vùng an toàn (45 - 68).",
         "Xuất hiện tín hiệu Phân Kỳ Dương trên khung 1W."
       ],
-      "warnings": [
-        "Sức mạnh tương quan (RS) yếu hơn VN-Index (-13.8%)."
-      ],
+      "warnings": ["Sức mạnh tương quan (RS) yếu hơn VN-Index (-13.8%)."],
       "divergence": {
         "1H": "NONE",
         "1D": "NONE",
