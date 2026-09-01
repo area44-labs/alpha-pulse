@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "31/08/2026",
+  "lastUpdated": "01/09/2026",
   "marketSummary": {
     "vnIndex": {
       "name": "VN-Index",
@@ -11,8 +11,8 @@
     "hoseIndex": {
       "name": "HOSE",
       "value": 1982.96,
-      "change": 0.0,
-      "changePercent": 0.0,
+      "change": 3.73,
+      "changePercent": 0.19,
       "volume": "15.200 tỷ VNĐ"
     },
     "hnxIndex": {
@@ -31,6 +31,25 @@
     }
   },
   "recommendations": [
+    {
+      "symbol": "BID",
+      "companyName": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
+      "sector": "Ngân hàng",
+      "type": "BUY",
+      "currentPrice": 36.85,
+      "targetBuyPrice": "36.9 - 37.6",
+      "targetSellPrice": 39.45,
+      "stopLossPrice": 35.5,
+      "riskLevel": "LOW",
+      "rationale": "Giá đóng cửa 36,850đ vượt đường trung bình động MA20 (35,759đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.6x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI/MACD phân kỳ dương khung ngày (1D), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 68.1 điểm, MACD Histogram (0.126) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "riskRewardRatio": "1:1.4",
+      "divergenceByTf": {
+        "H": "NONE",
+        "D": "BULLISH",
+        "W": "NONE",
+        "T": "NONE"
+      }
+    },
     {
       "symbol": "CTG",
       "companyName": "Ngân hàng TMCP Công Thương Việt Nam",
@@ -58,9 +77,9 @@
       "currentPrice": 21.05,
       "targetBuyPrice": "21.1 - 21.4",
       "targetSellPrice": 22.5,
-      "stopLossPrice": 20.45,
+      "stopLossPrice": 20.7,
       "riskLevel": "MEDIUM",
-      "rationale": "Giá đóng cửa 21,050đ vượt đường trung bình động MA20 (20,862đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Động lượng đa khung: Chỉ báo RSI (50.0) và MACD (0.009) duy trì xu hướng đồng thuận trên khung ngày và tuần. RSI khung ngày đạt 50.0 điểm, MACD Histogram (0.009) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "rationale": "Giá đóng cửa 21,050đ vượt đường trung bình động MA20 (20,815đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Động lượng đa khung: Chỉ báo RSI (48.5) và MACD (0.025) duy trì xu hướng đồng thuận trên khung ngày và tuần. RSI khung ngày đạt 48.5 điểm, MACD Histogram (0.025) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.4",
       "divergenceByTf": {
         "H": "NONE",
@@ -77,9 +96,9 @@
       "currentPrice": 17.1,
       "targetBuyPrice": "17.1 - 17.4",
       "targetSellPrice": 18.3,
-      "stopLossPrice": 16.25,
+      "stopLossPrice": 16.4,
       "riskLevel": "LOW",
-      "rationale": "Giá đóng cửa 17,100đ vượt đường trung bình động MA20 (15,532đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 2.0x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 80.4 điểm, MACD Histogram (0.215) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "rationale": "Giá đóng cửa 17,100đ vượt đường trung bình động MA20 (15,455đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 2.1x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 81.4 điểm, MACD Histogram (0.177) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.4",
       "divergenceByTf": {
         "H": "NONE",
@@ -136,10 +155,10 @@
       "targetSellPrice": 27.95,
       "stopLossPrice": 25.05,
       "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 26,100đ vượt đường trung bình động MA20 (25,193đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.4x so với trung bình 20 phiên, dòng tiền mua chủ động. Động lượng đa khung: Chỉ báo RSI (56.0) và MACD (0.229) duy trì xu hướng đồng thuận trên khung ngày và tuần. RSI khung ngày đạt 56.0 điểm, MACD Histogram (0.229) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "rationale": "Giá đóng cửa 26,100đ vượt đường trung bình động MA20 (25,238đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.4x so với trung bình 20 phiên, dòng tiền mua chủ động. Cảnh báo kỹ thuật: Đã xuất hiện RSI phân kỳ âm khung giờ (1H), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 57.3 điểm, MACD Histogram (0.230) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.4",
       "divergenceByTf": {
-        "H": "NONE",
+        "H": "BEARISH",
         "D": "NONE",
         "W": "NONE",
         "T": "NONE"
@@ -155,31 +174,12 @@
       "targetSellPrice": 13.05,
       "stopLossPrice": 11.85,
       "riskLevel": "MEDIUM",
-      "rationale": "Giá đóng cửa 12,200đ vượt đường trung bình động MA20 (11,843đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.5x so với trung bình 20 phiên, dòng tiền mua chủ động. Động lượng đa khung: Chỉ báo RSI (56.2) và MACD (0.096) duy trì xu hướng đồng thuận trên khung ngày và tuần. RSI khung ngày đạt 56.2 điểm, MACD Histogram (0.096) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
+      "rationale": "Giá đóng cửa 12,200đ vượt đường trung bình động MA20 (11,858đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.5x so với trung bình 20 phiên, dòng tiền mua chủ động. Động lượng đa khung: Chỉ báo RSI (60.0) và MACD (0.099) duy trì xu hướng đồng thuận trên khung ngày và tuần. RSI khung ngày đạt 60.0 điểm, MACD Histogram (0.099) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
       "riskRewardRatio": "1:1.4",
       "divergenceByTf": {
         "H": "NONE",
         "D": "NONE",
         "W": "NONE",
-        "T": "NONE"
-      }
-    },
-    {
-      "symbol": "VCI",
-      "companyName": "CTCP Chứng khoán Vietcap",
-      "sector": "Chứng khoán",
-      "type": "BUY",
-      "currentPrice": 22.85,
-      "targetBuyPrice": "22.9 - 23.3",
-      "targetSellPrice": 24.45,
-      "stopLossPrice": 22.05,
-      "riskLevel": "HIGH",
-      "rationale": "Giá đóng cửa 22,850đ vượt đường trung bình động MA20 (21,855đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.2x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 59.5 điểm, MACD Histogram (0.216) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng.",
-      "riskRewardRatio": "1:1.4",
-      "divergenceByTf": {
-        "H": "NONE",
-        "D": "NONE",
-        "W": "BULLISH",
         "T": "NONE"
       }
     },
@@ -191,31 +191,12 @@
       "currentPrice": 11.4,
       "targetBuyPrice": "Không khuyến nghị",
       "targetSellPrice": 12.2,
-      "stopLossPrice": 11.55,
+      "stopLossPrice": 11.6,
       "riskLevel": "LOW",
-      "rationale": "Giá đóng cửa 11,400đ gãy đường xu hướng ngắn hạn MA20 (11,764đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. Cảnh báo kỹ thuật: Đã xuất hiện MACD phân kỳ âm khung tuần (1W), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 36.7 điểm, MACD Histogram (-0.081) thể hiện áp lực điều chỉnh. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
+      "rationale": "Giá đóng cửa 11,400đ gãy đường xu hướng ngắn hạn MA20 (11,840đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. Cảnh báo kỹ thuật: Đã xuất hiện MACD phân kỳ âm khung tuần (1W), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 30.9 điểm, MACD Histogram (-0.083) thể hiện áp lực điều chỉnh. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
       "riskRewardRatio": "1:1.0",
       "divergenceByTf": {
         "H": "NONE",
-        "D": "NONE",
-        "W": "BEARISH",
-        "T": "NONE"
-      }
-    },
-    {
-      "symbol": "POW",
-      "companyName": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP",
-      "sector": "Điện lực",
-      "type": "SELL",
-      "currentPrice": 13.1,
-      "targetBuyPrice": "Không khuyến nghị",
-      "targetSellPrice": 14.0,
-      "stopLossPrice": 13.0,
-      "riskLevel": "LOW",
-      "rationale": "Giá đóng cửa 13,100đ gãy đường xu hướng ngắn hạn MA20 (13,273đ), suy yếu xu hướng. Thanh khoản duy trì ở mức bình ổn. Cảnh báo kỹ thuật: Đã xuất hiện RSI phân kỳ âm khung giờ (1H), RSI/MACD phân kỳ âm khung tuần (1W), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 33.8 điểm, MACD Histogram (-0.054) thể hiện áp lực điều chỉnh. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
-      "riskRewardRatio": "1:1.0",
-      "divergenceByTf": {
-        "H": "BEARISH",
         "D": "NONE",
         "W": "BEARISH",
         "T": "NONE"
@@ -237,6 +218,25 @@
         "H": "NONE",
         "D": "NONE",
         "W": "NONE",
+        "T": "NONE"
+      }
+    },
+    {
+      "symbol": "POW",
+      "companyName": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP",
+      "sector": "Điện lực",
+      "type": "SELL",
+      "currentPrice": 13.1,
+      "targetBuyPrice": "Không khuyến nghị",
+      "targetSellPrice": 14.0,
+      "stopLossPrice": 13.05,
+      "riskLevel": "LOW",
+      "rationale": "Giá đóng cửa 13,100đ gãy đường xu hướng ngắn hạn MA20 (13,307đ), suy yếu xu hướng. Thanh khoản bùng nổ đạt 1.7x so với trung bình 20 phiên, dòng tiền mua chủ động. Cảnh báo kỹ thuật: Đã xuất hiện RSI/MACD phân kỳ âm khung tuần (1W), áp lực chốt lời/suy yếu gia tăng. RSI khung ngày đạt 42.0 điểm, MACD Histogram (-0.050) thể hiện áp lực điều chỉnh. Khuyến nghị Bán/Hạ tỷ trọng để quản trị rủi ro danh mục.",
+      "riskRewardRatio": "1:1.0",
+      "divergenceByTf": {
+        "H": "NONE",
+        "D": "NONE",
+        "W": "BEARISH",
         "T": "NONE"
       }
     },
