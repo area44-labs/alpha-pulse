@@ -65,7 +65,9 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (28.020 VNĐ).",
         "Khối lượng bùng nổ 1.5x so với bình quân 20 phiên."
       ],
-      "warnings": ["RSI (81.1) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (81.1) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -110,7 +112,9 @@
         "MACD Histogram dương và đang tăng trưởng, củng cố đà tăng.",
         "Xuất hiện tín hiệu Phân Kỳ Dương trên khung 1D."
       ],
-      "warnings": ["RSI (72.9) thuộc vùng quá mua (> 70)."],
+      "warnings": [
+        "RSI (72.9) thuộc vùng quá mua (> 70)."
+      ],
       "divergence": {
         "1D": "BULLISH",
         "1W": "NONE",
@@ -246,7 +250,9 @@
         "Giá đóng cửa (42.846 VNĐ) nằm trên đường xu hướng MA20 (40.751 VNĐ).",
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (38.982 VNĐ)."
       ],
-      "warnings": ["RSI (81.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (81.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -290,7 +296,10 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (32.323 VNĐ).",
         "MACD Histogram dương và đang tăng trưởng, củng cố đà tăng."
       ],
-      "warnings": ["RSI (75.2) thuộc vùng quá mua (> 70).", "Cảnh báo Phân Kỳ Âm trên khung 1W."],
+      "warnings": [
+        "RSI (75.2) thuộc vùng quá mua (> 70).",
+        "Cảnh báo Phân Kỳ Âm trên khung 1W."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "BEARISH",
@@ -336,7 +345,9 @@
         "Khối lượng bùng nổ 1.5x so với bình quân 20 phiên.",
         "Sức mạnh tương quan (RS) vượt trội so với VN-Index (+9.2%)."
       ],
-      "warnings": ["RSI (97.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (97.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -524,7 +535,9 @@
         "MACD Histogram dương và đang tăng trưởng, củng cố đà tăng.",
         "Sức mạnh tương quan (RS) vượt trội so với VN-Index (+5.9%)."
       ],
-      "warnings": ["RSI (95.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (95.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -616,7 +629,9 @@
         "MACD Histogram dương và đang tăng trưởng, củng cố đà tăng.",
         "Sức mạnh tương quan (RS) vượt trội so với VN-Index (+7.0%)."
       ],
-      "warnings": ["RSI (93.6) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (93.6) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -659,7 +674,9 @@
         "Giá đóng cửa (32.376 VNĐ) nằm trên đường xu hướng MA20 (29.893 VNĐ).",
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (28.614 VNĐ)."
       ],
-      "warnings": ["RSI (90.4) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (90.4) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -750,7 +767,9 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (31.273 VNĐ).",
         "MACD Histogram dương và đang tăng trưởng, củng cố đà tăng."
       ],
-      "warnings": ["RSI (89.4) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (89.4) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -887,7 +906,10 @@
         "Giá đóng cửa (33.657 VNĐ) nằm trên đường xu hướng MA20 (32.727 VNĐ).",
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (31.019 VNĐ)."
       ],
-      "warnings": ["RSI (71.8) thuộc vùng quá mua (> 70).", "Cảnh báo Phân Kỳ Âm trên khung 1W."],
+      "warnings": [
+        "RSI (71.8) thuộc vùng quá mua (> 70).",
+        "Cảnh báo Phân Kỳ Âm trên khung 1W."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "BEARISH",
@@ -931,7 +953,9 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (34.445 VNĐ).",
         "Sức mạnh tương quan (RS) vượt trội so với VN-Index (+6.6%)."
       ],
-      "warnings": ["RSI (96.9) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (96.9) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -1218,7 +1242,9 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (28.358 VNĐ).",
         "MACD Histogram dương và đang tăng trưởng, củng cố đà tăng."
       ],
-      "warnings": ["RSI (90.6) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (90.6) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -1357,7 +1383,9 @@
         "Khối lượng bùng nổ 1.2x so với bình quân 20 phiên.",
         "Sức mạnh tương quan (RS) vượt trội so với VN-Index (+6.1%)."
       ],
-      "warnings": ["RSI (92.1) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (92.1) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -1401,7 +1429,9 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (13.393 VNĐ).",
         "Sức mạnh tương quan (RS) vượt trội so với VN-Index (+6.2%)."
       ],
-      "warnings": ["RSI (94.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (94.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -1445,7 +1475,10 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (30.843 VNĐ).",
         "MACD Histogram dương và đang tăng trưởng, củng cố đà tăng."
       ],
-      "warnings": ["RSI (73.4) thuộc vùng quá mua (> 70).", "Cảnh báo Phân Kỳ Âm trên khung 1W."],
+      "warnings": [
+        "RSI (73.4) thuộc vùng quá mua (> 70).",
+        "Cảnh báo Phân Kỳ Âm trên khung 1W."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "BEARISH",
@@ -1675,7 +1708,9 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (25.427 VNĐ).",
         "MACD Histogram dương và đang tăng trưởng, củng cố đà tăng."
       ],
-      "warnings": ["RSI (88.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."],
+      "warnings": [
+        "RSI (88.5) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -1719,7 +1754,9 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (27.818 VNĐ).",
         "MACD Histogram dương và đang tăng trưởng, củng cố đà tăng."
       ],
-      "warnings": ["RSI (75.2) thuộc vùng quá mua (> 70)."],
+      "warnings": [
+        "RSI (75.2) thuộc vùng quá mua (> 70)."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -1811,7 +1848,9 @@
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (26.474 VNĐ).",
         "Chỉ báo RSI (58.4) nằm trong vùng an toàn (45 - 68)."
       ],
-      "warnings": ["Sức mạnh tương quan (RS) yếu hơn VN-Index (-7.5%)."],
+      "warnings": [
+        "Sức mạnh tương quan (RS) yếu hơn VN-Index (-7.5%)."
+      ],
       "divergence": {
         "1D": "NONE",
         "1W": "NONE",
@@ -1901,7 +1940,10 @@
         "Giá đóng cửa (29.855 VNĐ) nằm trên đường xu hướng MA20 (28.856 VNĐ).",
         "Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 (27.299 VNĐ)."
       ],
-      "warnings": ["RSI (76.0) thuộc vùng quá mua (> 70).", "Cảnh báo Phân Kỳ Âm trên khung 1D."],
+      "warnings": [
+        "RSI (76.0) thuộc vùng quá mua (> 70).",
+        "Cảnh báo Phân Kỳ Âm trên khung 1D."
+      ],
       "divergence": {
         "1D": "BEARISH",
         "1W": "NONE",

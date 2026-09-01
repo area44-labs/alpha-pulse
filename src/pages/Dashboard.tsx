@@ -144,6 +144,11 @@ export function Dashboard({ onSelectStock }: DashboardProps) {
 
   const activeList = activeTab === "BUY" ? buyList : activeTab === "WATCH" ? watchList : sellList;
 
+  const formatVnd = (val: number | null | undefined) => {
+    if (val == null) return "—";
+    return `${val.toLocaleString("vi-VN")} VNĐ`;
+  };
+
   const getRegimeBadge = (regime: string) => {
     switch (regime) {
       case "STRONG_BULL":
@@ -260,7 +265,7 @@ export function Dashboard({ onSelectStock }: DashboardProps) {
                   </div>
                   <div className="text-right">
                     <span className="font-mono text-xs font-bold text-foreground">
-                      {r.trade_plan.current_price != null ? `${r.trade_plan.current_price}k` : "—"}
+                      {formatVnd(r.trade_plan.current_price)}
                     </span>
                     <span className="ml-2 font-mono text-[10px] font-bold text-trend-up-text">
                       Score {r.alpha_score ?? "—"}
@@ -298,7 +303,7 @@ export function Dashboard({ onSelectStock }: DashboardProps) {
                   </div>
                   <div className="text-right">
                     <span className="font-mono text-xs font-bold text-foreground">
-                      {r.trade_plan.current_price != null ? `${r.trade_plan.current_price}k` : "—"}
+                      {formatVnd(r.trade_plan.current_price)}
                     </span>
                     <span className="ml-2 font-mono text-[10px] font-bold text-warning-text">
                       Score {r.alpha_score ?? "—"}
@@ -337,7 +342,7 @@ export function Dashboard({ onSelectStock }: DashboardProps) {
                   </div>
                   <div className="text-right">
                     <span className="font-mono text-xs font-bold text-foreground">
-                      {r.trade_plan.current_price != null ? `${r.trade_plan.current_price}k` : "—"}
+                      {formatVnd(r.trade_plan.current_price)}
                     </span>
                     <span className="ml-2 font-mono text-[10px] font-bold text-trend-down-text">
                       {r.action}
@@ -437,9 +442,7 @@ export function Dashboard({ onSelectStock }: DashboardProps) {
                       {rec.alpha_score ?? "—"}
                     </td>
                     <td className="p-3 text-right font-bold tabular-nums">
-                      {rec.trade_plan.current_price != null
-                        ? `${rec.trade_plan.current_price}k`
-                        : "—"}
+                      {formatVnd(rec.trade_plan.current_price)}
                     </td>
                     <td className="p-3 text-center font-mono text-[11px]">
                       <div>
@@ -459,15 +462,12 @@ export function Dashboard({ onSelectStock }: DashboardProps) {
                       <div>
                         Mua:{" "}
                         {rec.trade_plan.entry_low != null
-                          ? `${rec.trade_plan.entry_low} - ${rec.trade_plan.entry_high}k`
+                          ? `${rec.trade_plan.entry_low.toLocaleString("vi-VN")} - ${rec.trade_plan.entry_high?.toLocaleString("vi-VN")}`
                           : "—"}
                       </div>
-                      <div className="text-trend-up-text">
-                        TP1: {rec.trade_plan.tp1 != null ? `${rec.trade_plan.tp1}k` : "—"}
-                      </div>
+                      <div className="text-trend-up-text">TP1: {formatVnd(rec.trade_plan.tp1)}</div>
                       <div className="text-trend-down-text">
-                        SL:{" "}
-                        {rec.trade_plan.stop_loss != null ? `${rec.trade_plan.stop_loss}k` : "—"}
+                        SL: {formatVnd(rec.trade_plan.stop_loss)}
                       </div>
                     </td>
                     <td className="max-w-xs space-y-1 p-3 text-xs">

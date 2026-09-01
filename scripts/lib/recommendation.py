@@ -5,11 +5,18 @@ market regime, T+2.5 risk horizon, market structure entry/stop/target bounds,
 and risk-based position sizing.
 Allowed actions: BUY, WATCH, HOLD, SELL, AVOID.
 Strictly avoids unverified heuristics for expected returns.
+All stock price values are converted and displayed in full VND units (e.g. 33,630 VND).
 """
 
 from scripts.lib.features import calculate_multi_timeframe_features
 from scripts.lib.risk import calculate_t25_risk_metrics
 from scripts.lib.vietnam_market import clamp_price_limits, round_tick_size
+
+
+def format_vnd(price: float) -> str:
+    """Format numeric price into full VND string (e.g. 33.63 -> '33,630')."""
+    vnd_val = price * 1000.0 if price < 1000.0 else price
+    return f"{vnd_val:,.0f}".replace(",", ".")
 
 
 def generate_recommendation(
@@ -66,36 +73,40 @@ def generate_recommendation(
     df_d, tf_summary = calculate_multi_timeframe_features(df_stock)
     risk_metrics = calculate_t25_risk_metrics(df_d, exchange=ex)
 
-    close = float(df_d["close"].iloc[-1])
-    ma20 = float(df_d["ma20"].iloc[-1])
-    ma50 = float(df_d["ma50"].iloc[-1])
+    raw_close = float(df_d["close"].iloc[-1])
+    raw_ma20 = float(df_d["ma20"].iloc[-1])
+    raw_ma50 = float(df_d["ma50"].iloc[-1])
     rsi = float(df_d["rsi"].iloc[-1])
     macd_hist = float(df_d["hist"].iloc[-1])
     prev_macd_hist = float(df_d["hist"].iloc[-2]) if len(df_d) >= 2 else 0.0
     atr = float(df_d["atr"].iloc[-1])
 
+    # Convert to full VND units
+    close_vnd = raw_close * 1000.0 if raw_close < 1000.0 else raw_close
+
     vol_20d_avg = float(df_d["vol_ma20"].iloc[-1])
     vol_ratio = float(df_d["volume"].iloc[-1]) / vol_20d_avg if vol_20d_avg > 0 else 1.0
 
-    # Composite Technical Alpha Score (0 to 100)
     score = 50.0
     reasons = []
     warnings = []
 
-    if close > ma20:
+    if raw_close > raw_ma20:
         score += 10.0
         reasons.append(
-            f"Giá đóng cửa ({close:.2f}) nằm trên đường xu hướng MA20 ({ma20:.2f})."
+            f"Giá đóng cửa ({format_vnd(raw_close)} VNĐ) nằm trên đường xu hướng MA20 ({format_vnd(raw_ma20)} VNĐ)."
         )
     else:
         score -= 10.0
         warnings.append(
-            f"Giá đóng cửa ({close:.2f}) nằm dưới đường xu hướng MA20 ({ma20:.2f})."
+            f"Giá đóng cửa ({format_vnd(raw_close)} VNĐ) nằm dưới đường xu hướng MA20 ({format_vnd(raw_ma20)} VNĐ)."
         )
 
-    if close > ma50:
+    if raw_close > raw_ma50:
         score += 10.0
-        reasons.append(f"Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 ({ma50:.2f}).")
+        reasons.append(
+            f"Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 ({format_vnd(raw_ma50)} VNĐ)."
+        )
 
     if macd_hist > 0 and macd_hist > prev_macd_hist:
         score += 10.0
@@ -145,7 +156,6 @@ def generate_recommendation(
                 f"Sức mạnh tương quan (RS) yếu hơn VN-Index ({rs_diff * 100:.1f}%)."
             )
 
-    # Divergence multi-timeframe check
     has_major_bearish_div = False
     for tf_key, tf_label in [("1d", "1D"), ("1w", "1W"), ("1m", "1M")]:
         div = tf_summary[tf_key]["divergence"]
@@ -165,12 +175,11 @@ def generate_recommendation(
 
     regime = market_regime_info.get("regime", "DEFENSIVE")
 
-    # Action classification
     if regime == "PANIC" or score < 35.0:
         action = "AVOID" if regime == "PANIC" else "SELL"
-    elif (score >= 75.0 and close > ma20 and regime in ["STRONG_BULL", "BULL"]) or (
-        score >= 65.0 and close > ma20 and regime == "DEFENSIVE"
-    ):
+    elif (
+        score >= 75.0 and raw_close > raw_ma20 and regime in ["STRONG_BULL", "BULL"]
+    ) or (score >= 65.0 and raw_close > raw_ma20 and regime == "DEFENSIVE"):
         action = "BUY"
     elif score >= 55.0:
         action = "WATCH"
@@ -179,7 +188,6 @@ def generate_recommendation(
     else:
         action = "SELL"
 
-    # Risk level classification
     vol60 = risk_metrics.get("volatility_60d")
     mdd = risk_metrics.get("max_drawdown")
     if vol60 is not None and mdd is not None:
@@ -192,22 +200,23 @@ def generate_recommendation(
     else:
         risk_level = None
 
-    # Market Structure Trade Plan
+    # Trade Plan in full VND
     lowest_5d = float(df_d["low"].tail(5).min())
-    sl_raw = max(close - 1.8 * atr, lowest_5d, ma20 * 0.98, close * 0.93)
-    sl = clamp_price_limits(sl_raw, close, ex)
-    risk_amt = max(close - sl, close * 0.03)
+    sl_raw = max(raw_close - 1.8 * atr, lowest_5d, raw_ma20 * 0.98, raw_close * 0.93)
+    sl_p = clamp_price_limits(sl_raw, raw_close, ex)
+    risk_amt = max(raw_close - sl_p, raw_close * 0.03)
 
-    entry_low = round_tick_size(close, ex)
-    entry_high = clamp_price_limits(close * 1.02, close, ex)
-    tp1 = clamp_price_limits(close + 2.0 * risk_amt, close, ex)
-    tp2 = clamp_price_limits(close + 3.0 * risk_amt, close, ex)
+    entry_low_p = round_tick_size(raw_close, ex)
+    entry_high_p = clamp_price_limits(raw_close * 1.02, raw_close, ex)
+    tp1_p = clamp_price_limits(raw_close + 2.0 * risk_amt, raw_close, ex)
+    tp2_p = clamp_price_limits(raw_close + 3.0 * risk_amt, raw_close, ex)
 
-    rr_num = round((tp1 - close) / risk_amt, 2) if risk_amt > 0 else 1.0
+    rr_num = round((tp1_p - raw_close) / risk_amt, 2) if risk_amt > 0 else 1.0
 
-    # Risk-based Position Sizing
     stop_distance_pct = (
-        abs(close - sl) / close if close > 0 and abs(close - sl) > 1e-4 else 0.05
+        abs(raw_close - sl_p) / raw_close
+        if raw_close > 0 and abs(raw_close - sl_p) > 1e-4
+        else 0.05
     )
     portfolio_risk_budget_pct = 1.0
     calc_position_pct = round(portfolio_risk_budget_pct / stop_distance_pct, 1)
@@ -218,12 +227,12 @@ def generate_recommendation(
     )
 
     trade_plan = {
-        "current_price": round(close, 2),
-        "entry_low": round(entry_low, 2),
-        "entry_high": round(entry_high, 2),
-        "stop_loss": round(sl, 2),
-        "tp1": round(tp1, 2),
-        "tp2": round(tp2, 2),
+        "current_price": round(close_vnd, 0),
+        "entry_low": round(entry_low_p * 1000.0, 0),
+        "entry_high": round(entry_high_p * 1000.0, 0),
+        "stop_loss": round(sl_p * 1000.0, 0),
+        "tp1": round(tp1_p * 1000.0, 0),
+        "tp2": round(tp2_p * 1000.0, 0),
         "risk_reward": rr_num,
         "position_percent": final_position_pct,
     }
@@ -236,7 +245,6 @@ def generate_recommendation(
 
     risk_adjusted_alpha = None
 
-    # Format divergence mapping
     div_mapping = {}
     tf_k_map = [("1d", "1D"), ("1w", "1W"), ("1m", "1M")]
     for tf_key, tf_lbl in tf_k_map:
