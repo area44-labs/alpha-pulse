@@ -95,6 +95,11 @@ export function StockDetail({ symbol: propsSymbol, onBack }: StockDetailProps) {
     }
   };
 
+  const formatVnd = (val: number | null | undefined) => {
+    if (val == null) return "—";
+    return `${val.toLocaleString("vi-VN")} VNĐ`;
+  };
+
   return (
     <div className="space-y-6">
       {/* Top Header & Navigation */}
@@ -125,9 +130,7 @@ export function StockDetail({ symbol: propsSymbol, onBack }: StockDetailProps) {
         <div className="text-right font-mono">
           <span className="block text-[10px] text-muted-foreground uppercase">Giá hiện tại</span>
           <span className="text-xl font-bold text-foreground">
-            {stock.trade_plan.current_price != null
-              ? `${stock.trade_plan.current_price} nghìn VNĐ`
-              : "—"}
+            {formatVnd(stock.trade_plan.current_price)}
           </span>
         </div>
       </div>
@@ -260,7 +263,7 @@ export function StockDetail({ symbol: propsSymbol, onBack }: StockDetailProps) {
             <span className="block text-[10px] text-muted-foreground uppercase">Vùng Giá Mua</span>
             <span className="font-bold text-foreground">
               {stock.trade_plan.entry_low != null
-                ? `${stock.trade_plan.entry_low} - ${stock.trade_plan.entry_high}k`
+                ? `${stock.trade_plan.entry_low.toLocaleString("vi-VN")} - ${stock.trade_plan.entry_high?.toLocaleString("vi-VN")} VNĐ`
                 : "—"}
             </span>
           </div>
@@ -269,7 +272,7 @@ export function StockDetail({ symbol: propsSymbol, onBack }: StockDetailProps) {
               Ngưỡng Dừng Lỗ (SL)
             </span>
             <span className="font-bold text-trend-down-text">
-              {stock.trade_plan.stop_loss != null ? `${stock.trade_plan.stop_loss}k` : "—"}
+              {formatVnd(stock.trade_plan.stop_loss)}
             </span>
           </div>
           <div className="rounded-sm border border-border bg-background p-3">
@@ -278,7 +281,7 @@ export function StockDetail({ symbol: propsSymbol, onBack }: StockDetailProps) {
             </span>
             <span className="font-bold text-trend-up-text">
               {stock.trade_plan.tp1 != null
-                ? `${stock.trade_plan.tp1}k / ${stock.trade_plan.tp2}k`
+                ? `${stock.trade_plan.tp1.toLocaleString("vi-VN")} / ${stock.trade_plan.tp2?.toLocaleString("vi-VN")} VNĐ`
                 : "—"}
             </span>
           </div>

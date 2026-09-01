@@ -46,12 +46,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 29.88,
-        "entry_low": 29.9,
-        "entry_high": 30.5,
-        "stop_loss": 29.4,
-        "tp1": 31.65,
-        "tp2": 31.95,
+        "current_price": 29880.0,
+        "entry_low": 29900.0,
+        "entry_high": 30500.0,
+        "stop_loss": 29400.0,
+        "tp1": 31650.0,
+        "tp2": 31950.0,
         "risk_reward": 1.97,
         "position_percent": 0.0
       },
@@ -95,12 +95,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 33.79,
-        "entry_low": 33.8,
-        "entry_high": 34.45,
-        "stop_loss": 32.0,
-        "tp1": 36.15,
-        "tp2": 36.15,
+        "current_price": 33790.0,
+        "entry_low": 33800.0,
+        "entry_high": 34450.0,
+        "stop_loss": 32000.0,
+        "tp1": 36150.0,
+        "tp2": 36150.0,
         "risk_reward": 1.32,
         "position_percent": 0.0
       },
@@ -143,12 +143,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 31.28,
-        "entry_low": 31.3,
-        "entry_high": 31.9,
-        "stop_loss": 30.3,
-        "tp1": 33.25,
-        "tp2": 33.45,
+        "current_price": 31280.0,
+        "entry_low": 31300.0,
+        "entry_high": 31900.0,
+        "stop_loss": 30300.0,
+        "tp1": 33250.0,
+        "tp2": 33450.0,
         "risk_reward": 2.02,
         "position_percent": 0.0
       },
@@ -191,12 +191,12 @@
         "liquidity_score": 0.7
       },
       "trade_plan": {
-        "current_price": 71.56,
-        "entry_low": 71.6,
-        "entry_high": 73.0,
-        "stop_loss": 68.4,
-        "tp1": 76.6,
-        "tp2": 76.6,
+        "current_price": 71560.0,
+        "entry_low": 71600.0,
+        "entry_high": 73000.0,
+        "stop_loss": 68400.0,
+        "tp1": 76600.0,
+        "tp2": 76600.0,
         "risk_reward": 1.6,
         "position_percent": 10.0
       },
@@ -240,12 +240,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 45.02,
-        "entry_low": 45.0,
-        "entry_high": 45.9,
-        "stop_loss": 42.85,
-        "tp1": 48.15,
-        "tp2": 48.15,
+        "current_price": 45020.0,
+        "entry_low": 45000.0,
+        "entry_high": 45900.0,
+        "stop_loss": 42850.0,
+        "tp1": 48150.0,
+        "tp2": 48150.0,
         "risk_reward": 1.44,
         "position_percent": 0.0
       },
@@ -290,12 +290,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 33.8,
-        "entry_low": 33.8,
-        "entry_high": 34.45,
-        "stop_loss": 32.25,
-        "tp1": 36.15,
-        "tp2": 36.15,
+        "current_price": 33800.0,
+        "entry_low": 33800.0,
+        "entry_high": 34450.0,
+        "stop_loss": 32250.0,
+        "tp1": 36150.0,
+        "tp2": 36150.0,
         "risk_reward": 1.52,
         "position_percent": 10.0
       },
@@ -340,12 +340,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 31.11,
-        "entry_low": 31.1,
-        "entry_high": 31.75,
-        "stop_loss": 29.45,
-        "tp1": 33.3,
-        "tp2": 33.3,
+        "current_price": 31110.0,
+        "entry_low": 31100.0,
+        "entry_high": 31750.0,
+        "stop_loss": 29450.0,
+        "tp1": 33300.0,
+        "tp2": 33300.0,
         "risk_reward": 1.32,
         "position_percent": 0.0
       },
@@ -388,12 +388,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 32.45,
-        "entry_low": 32.45,
-        "entry_high": 33.1,
-        "stop_loss": 31.15,
-        "tp1": 34.7,
-        "tp2": 34.7,
+        "current_price": 32450.0,
+        "entry_low": 32450.0,
+        "entry_high": 33100.0,
+        "stop_loss": 31150.0,
+        "tp1": 34700.0,
+        "tp2": 34700.0,
         "risk_reward": 1.73,
         "position_percent": 10.0
       },
@@ -435,12 +435,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 32.66,
-        "entry_low": 32.65,
-        "entry_high": 33.3,
-        "stop_loss": 31.95,
-        "tp1": 34.6,
-        "tp2": 34.95,
+        "current_price": 32660.0,
+        "entry_low": 32650.0,
+        "entry_high": 33300.0,
+        "stop_loss": 31950.0,
+        "tp1": 34600.0,
+        "tp2": 34950.0,
         "risk_reward": 1.98,
         "position_percent": 10.0
       },
@@ -485,12 +485,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 34.1,
-        "entry_low": 34.1,
-        "entry_high": 34.8,
-        "stop_loss": 33.5,
-        "tp1": 36.15,
-        "tp2": 36.5,
+        "current_price": 34100.0,
+        "entry_low": 34100.0,
+        "entry_high": 34800.0,
+        "stop_loss": 33500.0,
+        "tp1": 36150.0,
+        "tp2": 36500.0,
         "risk_reward": 2.0,
         "position_percent": 10.0
       },
@@ -532,12 +532,12 @@
         "liquidity_score": 0.3
       },
       "trade_plan": {
-        "current_price": 19.02,
-        "entry_low": 19.0,
-        "entry_high": 19.4,
-        "stop_loss": 18.7,
-        "tp1": 20.15,
-        "tp2": 20.35,
+        "current_price": 19020.0,
+        "entry_low": 19000.0,
+        "entry_high": 19400.0,
+        "stop_loss": 18700.0,
+        "tp1": 20150.0,
+        "tp2": 20350.0,
         "risk_reward": 1.97,
         "position_percent": 0.0
       },
@@ -581,12 +581,12 @@
         "liquidity_score": 0.3
       },
       "trade_plan": {
-        "current_price": 30.44,
-        "entry_low": 30.45,
-        "entry_high": 31.05,
-        "stop_loss": 30.0,
-        "tp1": 32.25,
-        "tp2": 32.55,
+        "current_price": 30440.0,
+        "entry_low": 30450.0,
+        "entry_high": 31050.0,
+        "stop_loss": 30000.0,
+        "tp1": 32250.0,
+        "tp2": 32550.0,
         "risk_reward": 1.98,
         "position_percent": 0.0
       },
@@ -628,12 +628,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 31.48,
-        "entry_low": 31.5,
-        "entry_high": 32.1,
-        "stop_loss": 29.85,
-        "tp1": 33.7,
-        "tp2": 33.7,
+        "current_price": 31480.0,
+        "entry_low": 31500.0,
+        "entry_high": 32100.0,
+        "stop_loss": 29850.0,
+        "tp1": 33700.0,
+        "tp2": 33700.0,
         "risk_reward": 1.36,
         "position_percent": 10.0
       },
@@ -677,12 +677,12 @@
         "liquidity_score": 0.3
       },
       "trade_plan": {
-        "current_price": 26.67,
-        "entry_low": 26.65,
-        "entry_high": 27.2,
-        "stop_loss": 25.5,
-        "tp1": 28.55,
-        "tp2": 28.55,
+        "current_price": 26670.0,
+        "entry_low": 26650.0,
+        "entry_high": 27200.0,
+        "stop_loss": 25500.0,
+        "tp1": 28550.0,
+        "tp2": 28550.0,
         "risk_reward": 1.6,
         "position_percent": 10.0
       },
@@ -724,12 +724,12 @@
         "liquidity_score": 0.2
       },
       "trade_plan": {
-        "current_price": 18.3,
-        "entry_low": 18.3,
-        "entry_high": 18.65,
-        "stop_loss": 17.55,
-        "tp1": 19.6,
-        "tp2": 19.6,
+        "current_price": 18300.0,
+        "entry_low": 18300.0,
+        "entry_high": 18650.0,
+        "stop_loss": 17550.0,
+        "tp1": 19600.0,
+        "tp2": 19600.0,
         "risk_reward": 1.73,
         "position_percent": 0.0
       },
@@ -773,12 +773,12 @@
         "liquidity_score": 0.3
       },
       "trade_plan": {
-        "current_price": 27.43,
-        "entry_low": 27.45,
-        "entry_high": 28.0,
-        "stop_loss": 26.8,
-        "tp1": 29.1,
-        "tp2": 29.35,
+        "current_price": 27430.0,
+        "entry_low": 27450.0,
+        "entry_high": 28000.0,
+        "stop_loss": 26800.0,
+        "tp1": 29100.0,
+        "tp2": 29350.0,
         "risk_reward": 2.03,
         "position_percent": 0.0
       },
@@ -820,12 +820,12 @@
         "liquidity_score": 0.3
       },
       "trade_plan": {
-        "current_price": 20.54,
-        "entry_low": 20.55,
-        "entry_high": 20.95,
-        "stop_loss": 19.75,
-        "tp1": 21.95,
-        "tp2": 21.95,
+        "current_price": 20540.0,
+        "entry_low": 20550.0,
+        "entry_high": 20950.0,
+        "stop_loss": 19750.0,
+        "tp1": 21950.0,
+        "tp2": 21950.0,
         "risk_reward": 1.8,
         "position_percent": 10.0
       },
@@ -867,12 +867,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 28.59,
-        "entry_low": 28.6,
-        "entry_high": 29.15,
-        "stop_loss": 27.95,
-        "tp1": 30.3,
-        "tp2": 30.6,
+        "current_price": 28590.0,
+        "entry_low": 28600.0,
+        "entry_high": 29150.0,
+        "stop_loss": 27950.0,
+        "tp1": 30300.0,
+        "tp2": 30600.0,
         "risk_reward": 2.0,
         "position_percent": 0.0
       },
@@ -914,12 +914,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 33.77,
-        "entry_low": 33.75,
-        "entry_high": 34.45,
-        "stop_loss": 32.7,
-        "tp1": 35.9,
-        "tp2": 36.15,
+        "current_price": 33770.0,
+        "entry_low": 33750.0,
+        "entry_high": 34450.0,
+        "stop_loss": 32700.0,
+        "tp1": 35900.0,
+        "tp2": 36150.0,
         "risk_reward": 1.98,
         "position_percent": 10.0
       },
@@ -962,12 +962,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 44.84,
-        "entry_low": 44.85,
-        "entry_high": 45.75,
-        "stop_loss": 42.45,
-        "tp1": 47.95,
-        "tp2": 47.95,
+        "current_price": 44840.0,
+        "entry_low": 44850.0,
+        "entry_high": 45750.0,
+        "stop_loss": 42450.0,
+        "tp1": 47950.0,
+        "tp2": 47950.0,
         "risk_reward": 1.31,
         "position_percent": 10.0
       },
@@ -1009,12 +1009,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 27.89,
-        "entry_low": 27.9,
-        "entry_high": 28.45,
-        "stop_loss": 27.45,
-        "tp1": 29.55,
-        "tp2": 29.85,
+        "current_price": 27890.0,
+        "entry_low": 27900.0,
+        "entry_high": 28450.0,
+        "stop_loss": 27450.0,
+        "tp1": 29550.0,
+        "tp2": 29850.0,
         "risk_reward": 1.99,
         "position_percent": 0.0
       },
@@ -1058,12 +1058,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 34.71,
-        "entry_low": 34.7,
-        "entry_high": 35.4,
-        "stop_loss": 33.45,
-        "tp1": 37.15,
-        "tp2": 37.15,
+        "current_price": 34710.0,
+        "entry_low": 34700.0,
+        "entry_high": 35400.0,
+        "stop_loss": 33450.0,
+        "tp1": 37150.0,
+        "tp2": 37150.0,
         "risk_reward": 1.95,
         "position_percent": 10.0
       },
@@ -1106,12 +1106,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 30.17,
-        "entry_low": 30.15,
-        "entry_high": 30.8,
-        "stop_loss": 29.4,
-        "tp1": 32.0,
-        "tp2": 32.3,
+        "current_price": 30170.0,
+        "entry_low": 30150.0,
+        "entry_high": 30800.0,
+        "stop_loss": 29400.0,
+        "tp1": 32000.0,
+        "tp2": 32300.0,
         "risk_reward": 2.02,
         "position_percent": 10.0
       },
@@ -1156,12 +1156,12 @@
         "liquidity_score": 0.3
       },
       "trade_plan": {
-        "current_price": 33.56,
-        "entry_low": 33.55,
-        "entry_high": 34.25,
-        "stop_loss": 32.35,
-        "tp1": 35.9,
-        "tp2": 35.9,
+        "current_price": 33560.0,
+        "entry_low": 33550.0,
+        "entry_high": 34250.0,
+        "stop_loss": 32350.0,
+        "tp1": 35900.0,
+        "tp2": 35900.0,
         "risk_reward": 1.95,
         "position_percent": 0.0
       },
@@ -1204,12 +1204,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 26.6,
-        "entry_low": 26.6,
-        "entry_high": 27.15,
-        "stop_loss": 26.0,
-        "tp1": 28.2,
-        "tp2": 28.45,
+        "current_price": 26600.0,
+        "entry_low": 26600.0,
+        "entry_high": 27150.0,
+        "stop_loss": 26000.0,
+        "tp1": 28200.0,
+        "tp2": 28450.0,
         "risk_reward": 2.0,
         "position_percent": 10.0
       },
@@ -1252,12 +1252,12 @@
         "liquidity_score": 0.3
       },
       "trade_plan": {
-        "current_price": 25.01,
-        "entry_low": 25.0,
-        "entry_high": 25.5,
-        "stop_loss": 24.65,
-        "tp1": 26.5,
-        "tp2": 26.75,
+        "current_price": 25010.0,
+        "entry_low": 25000.0,
+        "entry_high": 25500.0,
+        "stop_loss": 24650.0,
+        "tp1": 26500.0,
+        "tp2": 26750.0,
         "risk_reward": 1.99,
         "position_percent": 20.0
       },
@@ -1298,12 +1298,12 @@
         "liquidity_score": 0.3
       },
       "trade_plan": {
-        "current_price": 23.29,
-        "entry_low": 23.3,
-        "entry_high": 23.75,
-        "stop_loss": 22.65,
-        "tp1": 24.7,
-        "tp2": 24.9,
+        "current_price": 23290.0,
+        "entry_low": 23300.0,
+        "entry_high": 23750.0,
+        "stop_loss": 22650.0,
+        "tp1": 24700.0,
+        "tp2": 24900.0,
         "risk_reward": 2.02,
         "position_percent": 20.0
       },
@@ -1347,12 +1347,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 36.08,
-        "entry_low": 36.1,
-        "entry_high": 36.8,
-        "stop_loss": 34.9,
-        "tp1": 38.45,
-        "tp2": 38.6,
+        "current_price": 36080.0,
+        "entry_low": 36100.0,
+        "entry_high": 36800.0,
+        "stop_loss": 34900.0,
+        "tp1": 38450.0,
+        "tp2": 38600.0,
         "risk_reward": 2.0,
         "position_percent": 0.0
       },
@@ -1394,12 +1394,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 33.46,
-        "entry_low": 33.45,
-        "entry_high": 34.15,
-        "stop_loss": 32.2,
-        "tp1": 35.8,
-        "tp2": 35.8,
+        "current_price": 33460.0,
+        "entry_low": 33450.0,
+        "entry_high": 34150.0,
+        "stop_loss": 32200.0,
+        "tp1": 35800.0,
+        "tp2": 35800.0,
         "risk_reward": 1.86,
         "position_percent": 10.0
       },
@@ -1444,12 +1444,12 @@
         "liquidity_score": 0.2
       },
       "trade_plan": {
-        "current_price": 17.12,
-        "entry_low": 17.1,
-        "entry_high": 17.45,
-        "stop_loss": 16.85,
-        "tp1": 18.15,
-        "tp2": 18.3,
+        "current_price": 17120.0,
+        "entry_low": 17100.0,
+        "entry_high": 17450.0,
+        "stop_loss": 16850.0,
+        "tp1": 18150.0,
+        "tp2": 18300.0,
         "risk_reward": 2.01,
         "position_percent": 10.0
       },
@@ -1493,12 +1493,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 28.07,
-        "entry_low": 28.05,
-        "entry_high": 28.65,
-        "stop_loss": 27.85,
-        "tp1": 29.75,
-        "tp2": 30.05,
+        "current_price": 28070.0,
+        "entry_low": 28050.0,
+        "entry_high": 28650.0,
+        "stop_loss": 27850.0,
+        "tp1": 29750.0,
+        "tp2": 30050.0,
         "risk_reward": 2.0,
         "position_percent": 0.0
       },
@@ -1542,12 +1542,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 30.65,
-        "entry_low": 30.65,
-        "entry_high": 31.25,
-        "stop_loss": 29.55,
-        "tp1": 32.8,
-        "tp2": 32.8,
+        "current_price": 30650.0,
+        "entry_low": 30650.0,
+        "entry_high": 31250.0,
+        "stop_loss": 29550.0,
+        "tp1": 32800.0,
+        "tp2": 32800.0,
         "risk_reward": 1.96,
         "position_percent": 0.0
       },
@@ -1591,12 +1591,12 @@
         "liquidity_score": 0.3
       },
       "trade_plan": {
-        "current_price": 32.59,
-        "entry_low": 32.6,
-        "entry_high": 33.25,
-        "stop_loss": 31.9,
-        "tp1": 34.55,
-        "tp2": 34.85,
+        "current_price": 32590.0,
+        "entry_low": 32600.0,
+        "entry_high": 33250.0,
+        "stop_loss": 31900.0,
+        "tp1": 34550.0,
+        "tp2": 34850.0,
         "risk_reward": 2.01,
         "position_percent": 0.0
       },
@@ -1640,12 +1640,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 26.43,
-        "entry_low": 26.45,
-        "entry_high": 26.95,
-        "stop_loss": 25.9,
-        "tp1": 28.0,
-        "tp2": 28.3,
+        "current_price": 26430.0,
+        "entry_low": 26450.0,
+        "entry_high": 26950.0,
+        "stop_loss": 25900.0,
+        "tp1": 28000.0,
+        "tp2": 28300.0,
         "risk_reward": 1.98,
         "position_percent": 10.0
       },
@@ -1688,12 +1688,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 30.92,
-        "entry_low": 30.9,
-        "entry_high": 31.55,
-        "stop_loss": 29.75,
-        "tp1": 33.1,
-        "tp2": 33.1,
+        "current_price": 30920.0,
+        "entry_low": 30900.0,
+        "entry_high": 31550.0,
+        "stop_loss": 29750.0,
+        "tp1": 33100.0,
+        "tp2": 33100.0,
         "risk_reward": 1.85,
         "position_percent": 10.0
       },
@@ -1737,12 +1737,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 31.51,
-        "entry_low": 31.5,
-        "entry_high": 32.15,
-        "stop_loss": 30.75,
-        "tp1": 33.4,
-        "tp2": 33.7,
+        "current_price": 31510.0,
+        "entry_low": 31500.0,
+        "entry_high": 32150.0,
+        "stop_loss": 30750.0,
+        "tp1": 33400.0,
+        "tp2": 33700.0,
         "risk_reward": 2.0,
         "position_percent": 0.0
       },
@@ -1786,12 +1786,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 28.65,
-        "entry_low": 28.65,
-        "entry_high": 29.2,
-        "stop_loss": 27.85,
-        "tp1": 30.35,
-        "tp2": 30.65,
+        "current_price": 28650.0,
+        "entry_low": 28650.0,
+        "entry_high": 29200.0,
+        "stop_loss": 27850.0,
+        "tp1": 30350.0,
+        "tp2": 30650.0,
         "risk_reward": 1.98,
         "position_percent": 0.0
       },
@@ -1836,12 +1836,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 34.83,
-        "entry_low": 34.85,
-        "entry_high": 35.5,
-        "stop_loss": 33.0,
-        "tp1": 37.25,
-        "tp2": 37.25,
+        "current_price": 34830.0,
+        "entry_low": 34850.0,
+        "entry_high": 35500.0,
+        "stop_loss": 33000.0,
+        "tp1": 37250.0,
+        "tp2": 37250.0,
         "risk_reward": 1.33,
         "position_percent": 10.0
       },
@@ -1885,12 +1885,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 34.51,
-        "entry_low": 34.5,
-        "entry_high": 35.2,
-        "stop_loss": 34.0,
-        "tp1": 36.6,
-        "tp2": 36.9,
+        "current_price": 34510.0,
+        "entry_low": 34500.0,
+        "entry_high": 35200.0,
+        "stop_loss": 34000.0,
+        "tp1": 36600.0,
+        "tp2": 36900.0,
         "risk_reward": 2.02,
         "position_percent": 0.0
       },
@@ -1932,12 +1932,12 @@
         "liquidity_score": 0.2
       },
       "trade_plan": {
-        "current_price": 17.97,
-        "entry_low": 17.95,
-        "entry_high": 18.35,
-        "stop_loss": 17.2,
-        "tp1": 19.2,
-        "tp2": 19.2,
+        "current_price": 17970.0,
+        "entry_low": 17950.0,
+        "entry_high": 18350.0,
+        "stop_loss": 17200.0,
+        "tp1": 19200.0,
+        "tp2": 19200.0,
         "risk_reward": 1.61,
         "position_percent": 10.0
       },
@@ -1979,12 +1979,12 @@
         "liquidity_score": 0.4
       },
       "trade_plan": {
-        "current_price": 33.81,
-        "entry_low": 33.8,
-        "entry_high": 34.5,
-        "stop_loss": 32.05,
-        "tp1": 36.15,
-        "tp2": 36.15,
+        "current_price": 33810.0,
+        "entry_low": 33800.0,
+        "entry_high": 34500.0,
+        "stop_loss": 32050.0,
+        "tp1": 36150.0,
+        "tp2": 36150.0,
         "risk_reward": 1.34,
         "position_percent": 10.0
       },
@@ -2028,12 +2028,12 @@
         "liquidity_score": 0.5
       },
       "trade_plan": {
-        "current_price": 33.27,
-        "entry_low": 33.25,
-        "entry_high": 33.95,
-        "stop_loss": 32.05,
-        "tp1": 35.6,
-        "tp2": 35.6,
+        "current_price": 33270.0,
+        "entry_low": 33250.0,
+        "entry_high": 33950.0,
+        "stop_loss": 32050.0,
+        "tp1": 35600.0,
+        "tp2": 35600.0,
         "risk_reward": 1.91,
         "position_percent": 10.0
       },

@@ -105,6 +105,11 @@ export function History({ onSelectStock }: HistoryProps) {
     );
   }
 
+  const formatVnd = (val: number | null | undefined) => {
+    if (val == null) return "—";
+    return `${val.toLocaleString("vi-VN")} VNĐ`;
+  };
+
   return (
     <div className="space-y-6">
       {/* Date Picker Header */}
@@ -203,13 +208,11 @@ export function History({ onSelectStock }: HistoryProps) {
                     </td>
                     <td className="p-3 text-right font-mono font-bold">{rec.alpha_score ?? "—"}</td>
                     <td className="p-3 text-right font-bold">
-                      {rec.trade_plan.current_price != null
-                        ? `${rec.trade_plan.current_price}k`
-                        : "—"}
+                      {formatVnd(rec.trade_plan.current_price)}
                     </td>
                     <td className="p-3 text-center font-mono text-[11px]">
                       {rec.trade_plan.entry_low != null
-                        ? `${rec.trade_plan.entry_low}k - ${rec.trade_plan.entry_high}k`
+                        ? `${rec.trade_plan.entry_low.toLocaleString("vi-VN")} - ${rec.trade_plan.entry_high?.toLocaleString("vi-VN")} VNĐ`
                         : "—"}
                     </td>
                   </tr>
