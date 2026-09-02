@@ -912,7 +912,9 @@ def main():
 
                 # Synchronize/rescale historical prices to match real-time live price board (in thousand VND)
                 if live_price > 0 and df["close"].iloc[-1] > 0:
-                    live_price_k = live_price / 1000.0 if live_price > 1000.0 else live_price
+                    live_price_k = (
+                        live_price / 1000.0 if live_price > 1000.0 else live_price
+                    )
                     scale_factor = live_price_k / df["close"].iloc[-1]
                     for col in ["open", "high", "low", "close"]:
                         df[col] = df[col] * scale_factor
