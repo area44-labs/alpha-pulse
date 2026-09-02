@@ -48,6 +48,51 @@ AGENT_SIGNALS_PATH = os.path.join(
     "agent_signals.json",
 )
 
+REALISTIC_BASELINE_PRICES = {
+    "ACB": 25.0,
+    "BCM": 70.0,
+    "BID": 50.0,
+    "BVH": 64.0,
+    "CTG": 31.95,
+    "FPT": 73.2,
+    "GAS": 75.0,
+    "GVR": 33.5,
+    "HDB": 27.0,
+    "HPG": 26.0,
+    "MBB": 24.0,
+    "MSN": 74.0,
+    "MWG": 65.0,
+    "PLX": 36.25,
+    "POW": 13.1,
+    "SAB": 56.0,
+    "SSB": 17.1,
+    "SSI": 24.0,
+    "STB": 30.0,
+    "TCB": 33.4,
+    "TPB": 18.0,
+    "VCB": 90.0,
+    "VHM": 40.0,
+    "VIB": 19.0,
+    "VIC": 42.0,
+    "VJC": 105.0,
+    "VNM": 68.0,
+    "VPB": 27.8,
+    "VRE": 26.1,
+    "SHB": 12.2,
+    "DGC": 115.0,
+    "FRT": 145.9,
+    "PVD": 27.0,
+    "VCI": 22.85,
+    "HCM": 28.0,
+    "VND": 16.65,
+    "HSG": 21.0,
+    "NKG": 10.95,
+    "DXG": 15.0,
+    "DIG": 23.0,
+    "PDR": 22.0,
+    "GMD": 80.0,
+}
+
 # Danh sách cổ phiếu chọn lọc (42 mã): Bao gồm 30 mã thuộc VN30 và 12 mã Midcap tiêu biểu
 CANDIDATE_STOCKS = [
     # --- NHÓM VN30 (30 MÃ) ---
@@ -1205,7 +1250,11 @@ def main():
             curr_p = (
                 live_price
                 if live_price > 0
-                else (old_rec["currentPrice"] if old_rec else 25.0)
+                else (
+                    old_rec["currentPrice"]
+                    if old_rec
+                    else REALISTIC_BASELINE_PRICES.get(symbol, 25.0)
+                )
             )
 
             if old_rec:

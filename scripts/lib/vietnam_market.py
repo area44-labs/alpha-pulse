@@ -433,18 +433,67 @@ def validate_ohlcv_data(
     return df_valid.reset_index(drop=True), warnings
 
 
+REALISTIC_BASELINE_PRICES = {
+    "ACB": 25.0,
+    "BCM": 70.0,
+    "BID": 50.0,
+    "BVH": 64.0,
+    "CTG": 31.95,
+    "FPT": 73.2,
+    "GAS": 75.0,
+    "GVR": 33.5,
+    "HDB": 27.0,
+    "HPG": 26.0,
+    "MBB": 24.0,
+    "MSN": 74.0,
+    "MWG": 65.0,
+    "PLX": 36.25,
+    "POW": 13.1,
+    "SAB": 56.0,
+    "SSB": 17.1,
+    "SSI": 24.0,
+    "STB": 30.0,
+    "TCB": 33.4,
+    "TPB": 18.0,
+    "VCB": 90.0,
+    "VHM": 40.0,
+    "VIB": 19.0,
+    "VIC": 42.0,
+    "VJC": 105.0,
+    "VNM": 68.0,
+    "VPB": 27.8,
+    "VRE": 26.1,
+    "SHB": 12.2,
+    "DGC": 115.0,
+    "FRT": 145.9,
+    "PVD": 27.0,
+    "VCI": 22.85,
+    "HCM": 28.0,
+    "VND": 16.65,
+    "HSG": 21.0,
+    "NKG": 10.95,
+    "DXG": 15.0,
+    "DIG": 23.0,
+    "PDR": 22.0,
+    "GMD": 80.0,
+}
+
+
 def load_backup_stock_price(symbol: str) -> float:
-    """Load baseline stock price from src/data/stocks.json if available."""
+    """Load baseline stock price from src/data/stocks.json or REALISTIC_BASELINE_PRICES."""
+    sym = normalize_symbol(symbol)
     if os.path.exists(STOCKS_JSON_PATH):
         try:
             with open(STOCKS_JSON_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 for rec in data.get("recommendations", []):
-                    if rec.get("symbol") == symbol:
-                        return float(rec.get("currentPrice", 25.0))
+                    if rec.get("symbol") == sym:
+                        val = float(rec.get("currentPrice", 0.0))
+                        if val > 0:
+                            return val
         except Exception as e:  # noqa: BLE001
             logger.debug("Failed to load baseline stock price for %s: %s", symbol, e)
-    return 25.0
+    return REALISTIC_BASELINE_PRICES.get(sym, 25.0)
 
 
 def generate_baseline_series(symbol: str, base_price: float = 25.0, days: int = 120):

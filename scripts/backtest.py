@@ -22,9 +22,9 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-from scripts.lib.recommendation import generate_recommendation
-from scripts.lib.regime import detect_market_regime
-from scripts.lib.vietnam_market import (
+from scripts.lib.recommendation import generate_recommendation  # noqa: E402
+from scripts.lib.regime import detect_market_regime  # noqa: E402
+from scripts.lib.vietnam_market import (  # noqa: E402
     CANDIDATE_STOCKS,
     get_exchange_price_limits,
     get_historical_data,
