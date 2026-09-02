@@ -24,7 +24,7 @@ def parse_wait_seconds(err_str):
 
 
 try:
-    from vnstock import Company, Listing, Trading
+    from vnstock import Listing, Trading
     from vnstock.api.quote import Quote as VnQuote
 
     VNSTOCK_AVAILABLE = True
@@ -705,37 +705,6 @@ def fetch_batch_smart_money(symbols):
 
 def check_corporate_events(symbol):
     """Kiểm tra lịch sự kiện doanh nghiệp (giao dịch không hưởng quyền) để cảnh báo hoặc tạm dừng khuyến nghị."""
-    if not VNSTOCK_AVAILABLE:
-        return False, "Bình thường"
-    try:
-        company = Company(symbol=symbol, source="VCI")
-        df_events = company.events()
-        if df_events is not None and not df_events.empty:
-            df_events["event_date"] = pd.to_datetime(
-                df_events["public_date"], errors="coerce"
-            )
-            now = pd.Timestamp.now()
-            recent_events = df_events[
-                (df_events["event_date"] >= now - pd.Timedelta(days=2))
-                & (df_events["event_date"] <= now + pd.Timedelta(days=3))
-            ]
-            if not recent_events.empty:
-                event_name = recent_events.iloc[0].get("event_name", "Sự kiện quyền")
-                return True, f"Cảnh báo: [{event_name}] gần ngày GDKHQ"
-    except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
-        err_str = str(e).lower()
-        if (
-            "rate limit" in err_str
-            or "giới hạn api" in err_str
-            or "wait" in err_str
-            or "systemexit" in err_str
-            or "quota" in err_str
-            or "429" in err_str
-            or "yêu cầu api" in err_str
-        ):
-            wait_sec = parse_wait_seconds(str(e))
-            time.sleep(wait_sec)
-        logger.debug("Error checking corporate events for %s: %s", symbol, e)
     return False, "Bình thường"
 
 
@@ -778,7 +747,7 @@ def get_exchange_mapping():
 def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
     if not VNSTOCK_AVAILABLE:
         return None, None
-    sources = ["msn", "kbs"]
+    sources = ["kbs", "msn"]
     for attempt in range(max_retries):
         for source in sources:
             try:
@@ -918,12 +887,6 @@ def main():
                 for col in ["open", "high", "low", "close"]:
                     if df[col].iloc[-1] > 1000:
                         df[col] = df[col] / 1000.0
-
-                # Synchronize/rescale historical prices to match real-time live price board
-                if live_price > 0 and df["close"].iloc[-1] > 0:
-                    scale_factor = live_price / df["close"].iloc[-1]
-                    for col in ["open", "high", "low", "close"]:
-                        df[col] = df[col] * scale_factor
 
                 df, tf_summary = calculate_multi_timeframe_analysis(df)
                 close = float(df["close"].iloc[-1])
