@@ -8,7 +8,7 @@ ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-from scripts.backtest import VietnamPortfolioBacktester, run_backtest  # noqa: E402
+from scripts.backtest import VietnamPortfolioBacktester, run_backtest
 
 
 class TestBacktestEngine(unittest.TestCase):
