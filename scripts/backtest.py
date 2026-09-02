@@ -1,382 +1,463 @@
+"""Vietnam T+2.5 Portfolio Backtest Engine for Alpha Pulse v2.
+
+Simulates true portfolio equity curve with Vietnam T+2.5 settlement rules:
+1. Signal Generation (T Close): Strategy evaluates data up to T.
+2. Order Execution (T+1 Open): Buys executed at T+1 Open. Fails if price hits exchange ceiling limit.
+3. Settlement Horizon (T+1 to T+2): Cash debited, shares locked in T+2.5 settlement pipeline.
+4. Liquidity & Trade Exit (T+3 onwards): Shares unlocked. Exits evaluated at Open/Close with floor limit check.
+5. True Portfolio Accounting: Tracks cash balance, active positions, daily mark-to-market equity curve,
+   true CAGR, true Peak-to-Trough Max Drawdown, and daily portfolio Sharpe/Sortino ratios.
+
+FAILS with INSUFFICIENT_HISTORICAL_DATA if real historical data is unavailable.
+"""
+
 import logging
-import re
-import time
-from datetime import datetime, timedelta, timezone
+import os
+import sys
 
 import numpy as np
 import pandas as pd
 
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
 
-def parse_wait_seconds(err_str):
-    """Bóc tách số giây cần chờ từ thông báo lỗi Rate Limit của vnstock."""
-    match = re.search(r"chờ\s+(\d+)\s+giây", err_str, re.IGNORECASE)
-    if match:
-        return int(match.group(1)) + 2
-    match_sec = re.search(r"wait\s+(\d+)\s+sec", err_str, re.IGNORECASE)
-    if match_sec:
-        return int(match_sec.group(1)) + 2
-    return 15
+from scripts.lib.recommendation import generate_recommendation
+from scripts.lib.regime import detect_market_regime
+from scripts.lib.vietnam_market import (
+    CANDIDATE_STOCKS,
+    get_exchange_price_limits,
+    get_historical_data,
+)
 
-
-try:
-    from vnstock.api.quote import Quote as VnQuote
-
-    VNSTOCK_AVAILABLE = True
-except ImportError:
-    VNSTOCK_AVAILABLE = False
-
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 logger = logging.getLogger(__name__)
 
-# Danh sách mã cổ phiếu thanh khoản cao dùng để kiểm thử chiến lược (Backtest)
-BACKTEST_STOCKS = ["TCB", "SSI", "HPG", "FPT", "STB", "MWG", "VHM", "VNM"]
 
+class VietnamPortfolioBacktester:
+    def __init__(
+        self,
+        initial_capital: float = 100_000_000.0,
+        brokerage_fee_pct: float = 0.15,
+        sell_tax_pct: float = 0.10,
+        slippage_pct: float = 0.10,
+        max_position_pct: float = 0.15,
+        max_open_positions: int = 5,
+    ):
+        self.initial_capital = initial_capital
+        self.brokerage_fee = brokerage_fee_pct / 100.0
+        self.sell_tax = sell_tax_pct / 100.0
+        self.slippage = slippage_pct / 100.0
+        self.max_position_pct = max_position_pct
+        self.max_open_positions = max_open_positions
 
-def calculate_atr(high, low, close, period=14):
-    """Tính toán chỉ báo ATR (Average True Range) đo lường biến động giá phục vụ đặt dừng lỗ động."""
-    close_prev = close.shift(1)
-    tr1 = high - low
-    tr2 = (high - close_prev).abs()
-    tr3 = (low - close_prev).abs()
-    tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
-    atr = tr.rolling(window=period, min_periods=1).mean()
-    return atr
+    def run(self, allow_synthetic: bool = False) -> dict:
+        logger.info("Initializing Vietnam T+2.5 Portfolio Backtest Engine...")
 
-
-def get_historical_data(symbol, start_date, end_date):
-    """Lấy dữ liệu giá lịch sử OHLCV từ nguồn dữ liệu chứng khoán với cơ chế tự động thử lại (Fallback)."""
-    if not VNSTOCK_AVAILABLE:
-        return None
-    for source in ["kbs", "msn"]:
-        try:
-            q = VnQuote(symbol=symbol, source=source)
-            df = q.history(start=start_date, end=end_date)
-            if df is not None and not df.empty and "close" in df.columns:
-                df.columns = [c.lower() for c in df.columns]
-                for col in ["open", "high", "low", "close", "volume"]:
-                    if col in df.columns:
-                        df[col] = pd.to_numeric(df[col], errors="coerce")
-                # Normalize prices if they are in absolute VND (e.g. 25000) instead of thousands (25.0)
-                if df["close"].iloc[-1] > 1000:
-                    for col in ["open", "high", "low", "close"]:
-                        df[col] = df[col] / 1000.0
-                return df
-        except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
-            err_str = str(e).lower()
-            logger.debug("Error fetching historical data for %s: %s", symbol, err_str)
-            if (
-                "rate limit" in err_str
-                or "giới hạn api" in err_str
-                or "wait" in err_str
-                or "systemexit" in err_str
-                or "quota" in err_str
-                or "429" in err_str
-                or "yêu cầu api" in err_str
-            ):
-                wait_sec = parse_wait_seconds(str(e))
-                time.sleep(wait_sec)
-            else:
-                time.sleep(1)
-    return None
-
-
-def run_backtest_on_symbol(symbol, df):
-    """Thực thi kiểm thử chiến lược giao dịch động lượng định lượng (Quantitative Momentum) theo chu kỳ T+2.5."""
-    if df is None or len(df) < 50:
-        return []
-
-    # Calculate technical indicators
-    df = df.copy()
-    df["ma20"] = df["close"].rolling(window=20).mean()
-    df["ma50"] = df["close"].rolling(window=50).mean()
-    df["vol_ma20"] = df["volume"].rolling(window=20).mean()
-
-    # RSI(14)
-    delta = df["close"].diff()
-    gain = delta.clip(lower=0)
-    loss = -delta.clip(upper=0)
-    avg_gain = gain.rolling(window=14).mean()
-    avg_loss = loss.rolling(window=14).mean().replace(0, 0.00001)
-    df["rsi"] = 100 - (100 / (1 + (avg_gain / avg_loss)))
-    df["rsi"] = df["rsi"].fillna(50)
-
-    # MACD(12, 26, 9)
-    df["ema12"] = df["close"].ewm(span=12, adjust=False).mean()
-    df["ema26"] = df["close"].ewm(span=26, adjust=False).mean()
-    df["macd"] = df["ema12"] - df["ema26"]
-    df["signal"] = df["macd"].ewm(span=9, adjust=False).mean()
-    df["hist"] = df["macd"] - df["signal"]
-
-    # ATR(14)
-    df["atr"] = calculate_atr(df["high"], df["low"], df["close"], 14)
-
-    trades = []
-    in_position = False
-    entry_price = 0.0
-    entry_idx = 0
-    stop_loss = 0.0
-    target_1 = 0.0
-
-    # Strategy parameters
-    for i in range(50, len(df)):
-        current_close = df["close"].iloc[i]
-        current_date = df.index[i] if isinstance(df.index[i], str) else str(df.index[i])
-        current_date = current_date.split(" ")[0]
-
-        if not in_position:
-            ma20 = df["ma20"].iloc[i]
-            ma50 = df["ma50"].iloc[i]
-            rsi = df["rsi"].iloc[i]
-            macd_hist = df["hist"].iloc[i]
-            prev_macd_hist = df["hist"].iloc[i - 1]
-            atr = df["atr"].iloc[i]
-            volume = df["volume"].iloc[i]
-            vol_ma20 = df["vol_ma20"].iloc[i]
-
-            if (
-                (current_close > ma20)
-                and (current_close > ma50)
-                and (45 <= rsi <= 70)
-                and (macd_hist > prev_macd_hist)
-                and (volume > 1.1 * vol_ma20)
-            ):
-                entry_price = current_close * 1.005  # Slippage included
-                entry_idx = i
-
-                stop_loss_raw = min(current_close - 2.0 * atr, current_close * 0.93)
-                stop_loss = stop_loss_raw
-
-                risk = entry_price - stop_loss
-                if risk <= 0:
-                    risk = entry_price * 0.07
-                target_1 = entry_price + 2.0 * risk
-
-                in_position = True
-        else:
-            days_held = i - entry_idx
-            high = df["high"].iloc[i]
-            low = df["low"].iloc[i]
-
-            if low <= stop_loss:
-                pnl = (stop_loss - entry_price) / entry_price
-                trades.append(
-                    {
-                        "ticker": symbol,
-                        "entry_date": str(df.index[entry_idx]).split(" ")[0],
-                        "exit_date": current_date,
-                        "entry_price": entry_price,
-                        "exit_price": stop_loss,
-                        "pnl": pnl,
-                        "result": "LOSS",
-                        "days_held": days_held,
-                    }
-                )
-                in_position = False
-            elif high >= target_1:
-                pnl = (target_1 - entry_price) / entry_price
-                trades.append(
-                    {
-                        "ticker": symbol,
-                        "entry_date": str(df.index[entry_idx]).split(" ")[0],
-                        "exit_date": current_date,
-                        "entry_price": entry_price,
-                        "exit_price": target_1,
-                        "pnl": pnl,
-                        "result": "WIN",
-                        "days_held": days_held,
-                    }
-                )
-                in_position = False
-            elif (
-                days_held >= 3 and current_close < df["ma20"].iloc[i]
-            ) or days_held >= 15:
-                pnl = (current_close - entry_price) / entry_price
-                trades.append(
-                    {
-                        "ticker": symbol,
-                        "entry_date": str(df.index[entry_idx]).split(" ")[0],
-                        "exit_date": current_date,
-                        "entry_price": entry_price,
-                        "exit_price": current_close,
-                        "pnl": pnl,
-                        "result": "WIN" if pnl > 0 else "LOSS",
-                        "days_held": days_held,
-                    }
-                )
-                in_position = False
-
-    return trades
-
-
-def generate_highly_accurate_simulated_backtest():
-    """
-    Tạo báo cáo kiểm thử định lượng 3 năm (Backtest Report) dựa trên phân tích thống kê chi tiết.
-    Đảm bảo các tiêu chí hiệu suất cốt lõi:
-    - Tỷ lệ thắng (Win Rate) > 55%
-    - Hệ số lợi nhuận (Profit Factor) > 1.6
-    - Mức sụt giảm tài sản tối đa (Max Drawdown) < 15%
-    """
-    print(
-        "\n[Backtester] Running robust pre-compiled quantitative model simulation on 50 leaders over 3 years..."
-    )
-
-    np.random.seed(1337)
-
-    total_trades = 284
-    win_rate = 0.598  # 59.8% Win Rate (satisfies > 55% goal)
-
-    num_wins = int(total_trades * win_rate)
-    num_losses = total_trades - num_wins
-
-    # Win trades make an average of +13.5%
-    # Loss trades lose an average of -5.9%
-    win_pnls = np.random.normal(0.135, 0.02, num_wins)
-    loss_pnls = np.random.normal(-0.059, 0.015, num_losses)
-
-    all_pnls = np.concatenate([win_pnls, loss_pnls])
-    np.random.shuffle(all_pnls)
-
-    trades = []
-    current_dt = datetime.now(timezone.utc) - timedelta(days=3 * 365)
-
-    for idx, pnl in enumerate(all_pnls):
-        current_dt += timedelta(days=int(np.random.choice([2, 3, 4, 5])))
-        entry_date = current_dt.strftime("%Y-%m-%d")
-        exit_dt = current_dt + timedelta(days=int(np.random.choice([3, 4, 5, 8])))
-        exit_date = exit_dt.strftime("%Y-%m-%d")
-
-        ticker = np.random.choice(BACKTEST_STOCKS)
-        is_win = pnl > 0
-
-        trades.append(
-            {
-                "ticker": ticker,
-                "entry_date": entry_date,
-                "exit_date": exit_date,
-                "entry_price": round(np.random.uniform(20.0, 100.0), 2),
-                "exit_price": 0.0,
-                "pnl": round(pnl, 4),
-                "result": "WIN" if is_win else "LOSS",
-                "days_held": (exit_dt - current_dt).days,
-            }
+        df_vn, tag_vn, _ = get_historical_data(
+            "VNINDEX", use_cache_only=False, allow_synthetic=allow_synthetic
         )
 
-        trades[-1]["exit_price"] = round(trades[-1]["entry_price"] * (1 + pnl), 2)
+        if tag_vn == "INSUFFICIENT_HISTORICAL_DATA" or df_vn.empty or len(df_vn) < 50:
+            logger.warning(
+                "Backtest ABORTED: Insufficient historical market data. Synthetic fallback disabled."
+            )
+            return {
+                "status": "INSUFFICIENT_HISTORICAL_DATA",
+                "reason": "Production backtest strictly prohibits synthetic data.",
+                "total_trades": 0,
+                "cagr_percent": 0.0,
+                "win_rate_percent": 0.0,
+                "profit_factor": 0.0,
+                "net_return_percent": 0.0,
+            }
 
-    win_trades = [t for t in trades if t["result"] == "WIN"]
-    loss_trades = [t for t in trades if t["result"] == "LOSS"]
+        logger.info(
+            "Data Source: %s | VNINDEX sessions: %d (%s to %s)",
+            tag_vn,
+            len(df_vn),
+            df_vn["time"].iloc[0] if "time" in df_vn.columns else "start",
+            df_vn["time"].iloc[-1] if "time" in df_vn.columns else "end",
+        )
 
-    gross_profit = sum(t["pnl"] for t in win_trades)
-    gross_loss = abs(sum(t["pnl"] for t in loss_trades))
-    profit_factor = gross_profit / gross_loss if gross_loss > 0 else float("inf")
+        # Pre-fetch candidate stocks
+        sample_symbols = CANDIDATE_STOCKS[:15]
+        stock_data = {}
 
-    initial_portfolio = 100000000.0
-    portfolio_value = initial_portfolio
-    equity_curve = [portfolio_value]
+        for item in sample_symbols:
+            sym = item["symbol"]
+            df_stock, _tag_stock, _ = get_historical_data(
+                sym, use_cache_only=False, allow_synthetic=allow_synthetic
+            )
+            if not df_stock.empty and len(df_stock) >= 50:
+                df_stock = df_stock.copy()
+                for col in ["open", "high", "low", "close", "volume"]:
+                    if col in df_stock.columns:
+                        df_stock[col] = pd.to_numeric(df_stock[col], errors="coerce")
 
-    for t in trades:
-        trade_allocation = portfolio_value * 0.15  # 15% allocation
-        profit_loss = trade_allocation * t["pnl"]
-        portfolio_value += profit_loss
-        equity_curve.append(portfolio_value)
+                df_stock["time_str"] = df_stock["time"].astype(str)
+                stock_data[sym] = {
+                    "df": df_stock,
+                    "info": item,
+                    "dates": set(df_stock["time_str"]),
+                }
 
-    equity_series = pd.Series(equity_curve)
-    cum_max = equity_series.cummax()
-    drawdowns = (cum_max - equity_series) / cum_max
-    max_drawdown = drawdowns.max() * 100
+        if not stock_data:
+            return {
+                "status": "INSUFFICIENT_HISTORICAL_DATA",
+                "reason": "No valid candidate stock historical data loaded.",
+                "total_trades": 0,
+                "cagr_percent": 0.0,
+                "win_rate_percent": 0.0,
+                "profit_factor": 0.0,
+                "net_return_percent": 0.0,
+            }
 
-    win_rate_pct = (len(win_trades) / len(trades)) * 100
+        dates = list(df_vn["time"].astype(str))
+        start_idx = 40
+        eval_dates = dates[start_idx:]
 
-    print("\n" + "=" * 50)
-    print("      ALPHA PULSE QUANTITATIVE 3-YEAR BACKTEST REPORT")
-    print("=" * 50)
-    print("Backtest Period:      3 Years (2023 - 2026)")
-    print("Index Candidates:     Top 50 - 100 Liquid Leaders")
-    print(f"Total Completed:      {len(trades)} Trades")
-    print(f"Winning Trades:       {len(win_trades)} Trades")
-    print(f"Losing Trades:        {len(loss_trades)} Trades")
-    print(f"Win Rate:             {win_rate_pct:.2f}%  (Target: > 55%)")
-    print(f"Profit Factor:        {profit_factor:.2f}x  (Target: > 1.6)")
-    print(f"Max Drawdown:         {max_drawdown:.2f}%  (Target: < 15%)")
-    print(f"Average Win Trade:    +{np.mean(win_pnls) * 100:.2f}%")
-    print(f"Average Loss Trade:   {np.mean(loss_pnls) * 100:.2f}%")
-    print(
-        f"Average Trade Hold:   {np.mean([t['days_held'] for t in trades]):.1f} calendar days"
+        cash = self.initial_capital
+        open_positions = {}
+        completed_trades = []
+        equity_curve = []
+        buy_signal_returns = {"5d": [], "10d": [], "20d": []}
+
+        for t_idx, current_date in enumerate(eval_dates, start=start_idx):
+            df_vn_sub = df_vn.iloc[: t_idx + 1]
+            regime_info = detect_market_regime(df_vnindex=df_vn_sub)
+
+            # 1. Update settlement progress
+            for sym, pos in list(open_positions.items()):
+                pos["settlement_days"] += 1
+
+            # 2. Process exits for TRADABLE positions (settlement_days >= 3 -> T+2.5 reached)
+            for sym, pos in list(open_positions.items()):
+                if pos["settlement_days"] < 3:
+                    continue  # Shares strictly locked in T+2.5 pipeline
+
+                df_st = stock_data[sym]["df"]
+                st_sub = df_st[df_st["time_str"] == current_date]
+                if st_sub.empty:
+                    continue
+
+                row = st_sub.iloc[0]
+                curr_open = float(row["open"])
+                curr_close = float(row["close"])
+                curr_low = float(row["low"])
+                curr_high = float(row["high"])
+
+                exchange = stock_data[sym]["info"].get("exchange", "HOSE")
+                prev_sub = df_st[df_st["time_str"] < current_date]
+                prev_close = (
+                    float(prev_sub["close"].iloc[-1])
+                    if not prev_sub.empty
+                    else curr_open
+                )
+                _, _, floor_p = get_exchange_price_limits(prev_close, exchange)
+
+                exit_triggered = False
+                exit_price = curr_close
+
+                if curr_low <= pos["stop_loss"]:
+                    exit_triggered = True
+                    exit_price = min(curr_open, pos["stop_loss"])
+                elif curr_high >= pos["take_profit"]:
+                    exit_triggered = True
+                    exit_price = max(curr_open, pos["take_profit"])
+                elif pos["settlement_days"] >= 10:
+                    exit_triggered = True
+                    exit_price = curr_close
+
+                if exit_triggered:
+                    if curr_low <= floor_p or exit_price <= floor_p:
+                        logger.warning(
+                            "Sell exit for %s blocked on %s: Hit floor price limit (%s)",
+                            sym,
+                            current_date,
+                            floor_p,
+                        )
+                        continue
+
+                    effective_exit_p = exit_price * (1.0 - self.slippage)
+                    gross_proceeds = pos["shares"] * effective_exit_p
+                    exit_cost = gross_proceeds * (self.brokerage_fee + self.sell_tax)
+                    net_proceeds = gross_proceeds - exit_cost
+
+                    cash += net_proceeds
+
+                    gross_ret = (exit_price - pos["entry_price"]) / pos["entry_price"]
+                    net_ret = (net_proceeds - (pos["shares"] * pos["entry_price"])) / (
+                        pos["shares"] * pos["entry_price"]
+                    )
+
+                    completed_trades.append(
+                        {
+                            "symbol": sym,
+                            "entry_date": pos["entry_date"],
+                            "exit_date": current_date,
+                            "entry_price": round(pos["entry_price"], 2),
+                            "exit_price": round(exit_price, 2),
+                            "shares": pos["shares"],
+                            "holding_sessions": pos["settlement_days"],
+                            "gross_return_percent": round(gross_ret * 100.0, 2),
+                            "net_return_percent": round(net_ret * 100.0, 2),
+                        }
+                    )
+                    del open_positions[sym]
+
+            # 3. Evaluate new BUY signals & Execution at T+1 Open
+            if len(open_positions) < self.max_open_positions:
+                for sym, st_dict in stock_data.items():
+                    if sym in open_positions:
+                        continue
+                    if len(open_positions) >= self.max_open_positions:
+                        break
+
+                    df_st = st_dict["df"]
+                    st_sub = df_st[df_st["time_str"] <= current_date]
+                    if len(st_sub) < 40:
+                        continue
+
+                    rec = generate_recommendation(
+                        symbol=sym,
+                        company_name=st_dict["info"]["companyName"],
+                        sector=st_dict["info"]["sector"],
+                        exchange=st_dict["info"].get("exchange", "HOSE"),
+                        df_stock=st_sub,
+                        market_regime_info=regime_info,
+                        df_vnindex=df_vn_sub,
+                    )
+
+                    if rec["action"] == "BUY":
+                        next_sub = df_st[df_st["time_str"] > current_date]
+                        if next_sub.empty:
+                            continue
+
+                        t1_row = next_sub.iloc[0]
+                        t1_date = str(t1_row["time_str"])
+                        t1_open = float(t1_row["open"])
+                        t1_high = float(t1_row["high"])
+
+                        curr_close = float(st_sub["close"].iloc[-1])
+                        exchange = st_dict["info"].get("exchange", "HOSE")
+                        _, ceil_p, _ = get_exchange_price_limits(curr_close, exchange)
+
+                        if t1_open >= ceil_p or t1_high >= ceil_p:
+                            logger.info(
+                                "Buy order for %s rejected on %s: Hit ceiling price (%s)",
+                                sym,
+                                t1_date,
+                                ceil_p,
+                            )
+                            continue
+
+                        pos_budget = min(
+                            cash * self.max_position_pct,
+                            self.initial_capital * self.max_position_pct,
+                        )
+                        if pos_budget < 5_000_000.0:
+                            continue
+
+                        effective_entry_p = t1_open * (1.0 + self.slippage)
+                        entry_cost_per_share = effective_entry_p * (
+                            1.0 + self.brokerage_fee
+                        )
+
+                        shares = (int(pos_budget / entry_cost_per_share) // 100) * 100
+                        if shares <= 0:
+                            continue
+
+                        total_cost = shares * entry_cost_per_share
+                        if cash < total_cost:
+                            continue
+
+                        cash -= total_cost
+
+                        tp = (
+                            rec["trade_plan"]["tp1"]
+                            if rec["trade_plan"].get("tp1")
+                            else t1_open * 1.08
+                        )
+                        sl = (
+                            rec["trade_plan"]["stop_loss"]
+                            if rec["trade_plan"].get("stop_loss")
+                            else t1_open * 0.93
+                        )
+
+                        open_positions[sym] = {
+                            "shares": shares,
+                            "entry_price": round(t1_open, 2),
+                            "entry_date": t1_date,
+                            "settlement_days": 1,
+                            "stop_loss": sl,
+                            "take_profit": tp,
+                        }
+
+                        if len(next_sub) >= 5:
+                            buy_signal_returns["5d"].append(
+                                (float(next_sub["close"].iloc[4]) - t1_open) / t1_open
+                            )
+                        if len(next_sub) >= 10:
+                            buy_signal_returns["10d"].append(
+                                (float(next_sub["close"].iloc[9]) - t1_open) / t1_open
+                            )
+                        if len(next_sub) >= 20:
+                            buy_signal_returns["20d"].append(
+                                (float(next_sub["close"].iloc[19]) - t1_open) / t1_open
+                            )
+
+            # 4. Mark-to-Market Portfolio Equity Calculation
+            portfolio_val = cash
+            for sym, pos in open_positions.items():
+                df_st = stock_data[sym]["df"]
+                st_sub = df_st[df_st["time_str"] == current_date]
+                m2m_p = (
+                    float(st_sub["close"].iloc[0])
+                    if not st_sub.empty
+                    else pos["entry_price"]
+                )
+                portfolio_val += pos["shares"] * m2m_p
+
+            equity_curve.append(portfolio_val)
+
+        # 5. Compute Portfolio Performance Metrics
+        eq_series = pd.Series(equity_curve)
+        total_sessions = len(eq_series)
+        final_equity = (
+            eq_series.iloc[-1] if not eq_series.empty else self.initial_capital
+        )
+
+        cagr = (
+            ((final_equity / self.initial_capital) ** (252.0 / max(total_sessions, 1)))
+            - 1.0
+        ) * 100.0
+
+        cummax = eq_series.cummax()
+        drawdown = (eq_series - cummax) / cummax
+        max_dd = abs(drawdown.min()) * 100.0 if not drawdown.empty else 0.0
+
+        daily_returns = eq_series.pct_change().dropna()
+        mean_ret = daily_returns.mean()
+        std_ret = daily_returns.std()
+
+        sharpe = (
+            (mean_ret / std_ret) * np.sqrt(252)
+            if std_ret > 0 and not np.isnan(std_ret)
+            else 0.0
+        )
+
+        downside_returns = daily_returns[daily_returns < 0]
+        downside_std = downside_returns.std()
+        sortino = (
+            (mean_ret / downside_std) * np.sqrt(252)
+            if downside_std > 0 and not np.isnan(downside_std)
+            else 0.0
+        )
+
+        n_trades = len(completed_trades)
+        if n_trades > 0:
+            net_rets = [t["net_return_percent"] for t in completed_trades]
+            winning = [r for r in net_rets if r > 0]
+            losing = [r for r in net_rets if r <= 0]
+            win_rate = (len(winning) / n_trades) * 100.0
+            gross_profit = sum(winning) if winning else 0.0
+            gross_loss = abs(sum(losing)) if losing else 1e-6
+            profit_factor = gross_profit / gross_loss
+            avg_holding = np.mean([t["holding_sessions"] for t in completed_trades])
+        else:
+            win_rate, profit_factor, avg_holding = 0.0, 0.0, 0.0
+
+        avg_5d = (
+            np.mean(buy_signal_returns["5d"]) * 100.0
+            if buy_signal_returns["5d"]
+            else 0.0
+        )
+        avg_10d = (
+            np.mean(buy_signal_returns["10d"]) * 100.0
+            if buy_signal_returns["10d"]
+            else 0.0
+        )
+        avg_20d = (
+            np.mean(buy_signal_returns["20d"]) * 100.0
+            if buy_signal_returns["20d"]
+            else 0.0
+        )
+
+        return {
+            "status": "SUCCESS",
+            "data_source": tag_vn,
+            "initial_capital": self.initial_capital,
+            "final_equity": round(final_equity, 2),
+            "cagr_percent": round(cagr, 2),
+            "win_rate_percent": round(win_rate, 2),
+            "profit_factor": round(profit_factor, 2),
+            "max_drawdown_percent": round(max_dd, 2),
+            "sharpe_ratio": round(sharpe, 2),
+            "sortino_ratio": round(sortino, 2),
+            "avg_holding_period_days": round(avg_holding, 1),
+            "total_trades": n_trades,
+            "transaction_costs_roundtrip_percent": round(
+                (self.brokerage_fee * 2 + self.sell_tax + self.slippage * 2) * 100, 2
+            ),
+            "buy_signal_returns": {
+                "avg_return_5d_percent": round(avg_5d, 2),
+                "avg_return_10d_percent": round(avg_10d, 2),
+                "avg_return_20d_percent": round(avg_20d, 2),
+            },
+            "sample_trades": completed_trades[:5],
+        }
+
+
+def run_backtest(
+    initial_capital: float = 100_000_000.0,
+    brokerage_fee_pct: float = 0.15,
+    sell_tax_pct: float = 0.10,
+    slippage_pct: float = 0.10,
+    allow_synthetic: bool = False,
+) -> dict:
+    tester = VietnamPortfolioBacktester(
+        initial_capital=initial_capital,
+        brokerage_fee_pct=brokerage_fee_pct,
+        sell_tax_pct=sell_tax_pct,
+        slippage_pct=slippage_pct,
     )
-    print("=" * 50)
-    print("✅ Backtest successful: Strategy meets all mandated risk & return metrics.")
-    print("=" * 50)
-
-    return trades, win_rate_pct, profit_factor, max_drawdown
+    return tester.run(allow_synthetic=allow_synthetic)
 
 
 def main():
-    print("Starting historical backtest execution...")
-
-    # 1. Attempt live historical backtest (may be limited by API rate limits)
-    all_trades = []
-    end_date_dt = datetime.now(timezone.utc)
-    start_date_dt = end_date_dt - timedelta(days=365)  # Fetch 1 year live if possible
-
-    start_date = start_date_dt.strftime("%Y-%m-%d")
-    end_date = end_date_dt.strftime("%Y-%m-%d")
-
-    live_success = True
-    print(
-        f"Attempting live backtest on {len(BACKTEST_STOCKS)} symbols from {start_date} to {end_date}..."
-    )
-
-    for symbol in BACKTEST_STOCKS:
-        try:
-            df = get_historical_data(symbol, start_date, end_date)
-            if df is not None and len(df) >= 50:
-                symbol_trades = run_backtest_on_symbol(symbol, df)
-                all_trades.extend(symbol_trades)
-                print(
-                    f"  -> Symbol {symbol} loaded: {len(symbol_trades)} trades found."
-                )
-            else:
-                live_success = False
-                print(f"  -> Symbol {symbol} load failed or empty. Skipping live run.")
-        except Exception as e:  # noqa: BLE001
-            live_success = False
-            print(f"  -> Error loading symbol {symbol}: {e}")
-        time.sleep(1.0)
-
-    if live_success and len(all_trades) >= 10:
-        win_trades = [t for t in all_trades if t["result"] == "WIN"]
-        loss_trades = [t for t in all_trades if t["result"] == "LOSS"]
-        win_rate = (len(win_trades) / len(all_trades)) * 100
-
-        gross_profit = sum(t["pnl"] for t in win_trades)
-        gross_loss = abs(sum(t["pnl"] for t in loss_trades))
-        profit_factor = gross_profit / gross_loss if gross_loss > 0 else float("inf")
-
-        initial_portfolio = 100000000.0
-        portfolio_value = initial_portfolio
-        equity_curve = [portfolio_value]
-
-        for t in all_trades:
-            trade_allocation = portfolio_value * 0.20
-            profit_loss = trade_allocation * t["pnl"]
-            portfolio_value += profit_loss
-            equity_curve.append(portfolio_value)
-
-        equity_series = pd.Series(equity_curve)
-        cum_max = equity_series.cummax()
-        drawdowns = (cum_max - equity_series) / cum_max
-        max_drawdown = drawdowns.max() * 100
-
-        print("\n" + "=" * 50)
-        print("          LIVE HISTORICAL BACKTEST RESULTS (PAST YEAR)")
-        print("=" * 50)
-        print(f"Total Completed:      {len(all_trades)} Trades")
-        print(f"Win Rate:             {win_rate:.2f}%")
-        print(f"Profit Factor:        {profit_factor:.2f}x")
-        print(f"Max Drawdown:         {max_drawdown:.2f}%")
-        print("=" * 50)
-
-    # Run and print the primary 3-year multi-asset backtest report as requested
-    generate_highly_accurate_simulated_backtest()
+    report = run_backtest(allow_synthetic=False)
+    print("\n=====================================================================")
+    print("KẾT QUẢ PORTFOLIO BACKTEST ALPHA PULSE V2 (T+2.5 CONSTRAINTS)")
+    print("=====================================================================")
+    print(f"Status:                  {report.get('status')}")
+    if report.get("status") == "INSUFFICIENT_HISTORICAL_DATA":
+        print(f"Reason:                  {report.get('reason')}")
+    else:
+        print(f"Data Source:             {report.get('data_source')}")
+        print(f"Vốn ban đầu:             {report.get('initial_capital'):,.0f} VNĐ")
+        print(f"Giá trị cuối:            {report.get('final_equity'):,.0f} VNĐ")
+        print(f"CAGR (Net):              {report['cagr_percent']}%")
+        print(f"Win Rate:                {report['win_rate_percent']}%")
+        print(f"Profit Factor:           {report['profit_factor']}")
+        print(f"Max Drawdown:            {report['max_drawdown_percent']}%")
+        print(f"Sharpe Ratio:            {report['sharpe_ratio']}")
+        print(f"Sortino Ratio:           {report['sortino_ratio']}")
+        print(f"Avg Holding Period:      {report['avg_holding_period_days']} phiên")
+        print(f"Total Trades:            {report['total_trades']}")
+        print("\n[ĐÁNH GIÁ TÍN HIỆU MUA (BUY SIGNAL RETURNS)]:")
+        print(
+            f"  -> Lợi nhuận trung bình sau 5D:  {report['buy_signal_returns']['avg_return_5d_percent']}%"
+        )
+        print(
+            f"  -> Lợi nhuận trung bình sau 10D: {report['buy_signal_returns']['avg_return_10d_percent']}%"
+        )
+        print(
+            f"  -> Lợi nhuận trung bình sau 20D: {report['buy_signal_returns']['avg_return_20d_percent']}%"
+        )
+    print("=====================================================================\n")
 
 
 if __name__ == "__main__":
