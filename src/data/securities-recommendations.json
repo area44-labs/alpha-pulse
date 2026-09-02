@@ -8,7 +8,7 @@
     "currentPrice": 31.95,
     "targetBuyPrice": "31.9 - 32.6",
     "targetSellPrice": 34.2,
-    "updatedDate": "30/08/2026"
+    "updatedDate": "02/09/2026"
   },
   {
     "symbol": "SSB",
@@ -19,18 +19,7 @@
     "currentPrice": 17.1,
     "targetBuyPrice": "17.1 - 17.4",
     "targetSellPrice": 18.3,
-    "updatedDate": "30/08/2026"
-  },
-  {
-    "symbol": "TCB",
-    "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam",
-    "securitiesFirm": "Chứng khoán SSI",
-    "sector": "Ngân hàng",
-    "recommendation": "MUA",
-    "currentPrice": 33.4,
-    "targetBuyPrice": "33.4 - 34.0",
-    "targetSellPrice": 35.75,
-    "updatedDate": "30/08/2026"
+    "updatedDate": "02/09/2026"
   },
   {
     "symbol": "VPB",
@@ -41,7 +30,7 @@
     "currentPrice": 27.8,
     "targetBuyPrice": "27.8 - 28.4",
     "targetSellPrice": 29.75,
-    "updatedDate": "30/08/2026"
+    "updatedDate": "02/09/2026"
   },
   {
     "symbol": "VRE",
@@ -52,7 +41,7 @@
     "currentPrice": 26.1,
     "targetBuyPrice": "26.1 - 26.6",
     "targetSellPrice": 27.95,
-    "updatedDate": "30/08/2026"
+    "updatedDate": "02/09/2026"
   },
   {
     "symbol": "SHB",
@@ -63,7 +52,7 @@
     "currentPrice": 12.2,
     "targetBuyPrice": "12.2 - 12.4",
     "targetSellPrice": 13.05,
-    "updatedDate": "30/08/2026"
+    "updatedDate": "02/09/2026"
   },
   {
     "symbol": "VCI",
@@ -74,7 +63,7 @@
     "currentPrice": 22.85,
     "targetBuyPrice": "22.9 - 23.3",
     "targetSellPrice": 24.45,
-    "updatedDate": "30/08/2026"
+    "updatedDate": "02/09/2026"
   },
   {
     "symbol": "FRT",
@@ -85,18 +74,18 @@
     "currentPrice": 145.9,
     "targetBuyPrice": "145.9 - 148.8",
     "targetSellPrice": 156.1,
-    "updatedDate": "30/08/2026"
+    "updatedDate": "02/09/2026"
   },
   {
-    "symbol": "BVH",
-    "companyName": "Tập đoàn Bảo Việt",
+    "symbol": "HDB",
+    "companyName": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh",
     "securitiesFirm": "Chứng khoán SSI",
-    "sector": "Bảo hiểm",
-    "recommendation": "BÁN",
-    "currentPrice": 64.0,
-    "targetBuyPrice": "Không khuyến nghị",
-    "targetSellPrice": 68.5,
-    "updatedDate": "30/08/2026"
+    "sector": "Ngân hàng",
+    "recommendation": "MUA",
+    "currentPrice": 27.8,
+    "targetBuyPrice": "27.8 - 28.4",
+    "targetSellPrice": 29.75,
+    "updatedDate": "02/09/2026"
   },
   {
     "symbol": "POW",
@@ -107,18 +96,7 @@
     "currentPrice": 13.1,
     "targetBuyPrice": "Không khuyến nghị",
     "targetSellPrice": 14.0,
-    "updatedDate": "30/08/2026"
-  },
-  {
-    "symbol": "VND",
-    "companyName": "CTCP Chứng khoán VNDIRECT",
-    "securitiesFirm": "Chứng khoán HSC",
-    "sector": "Chứng khoán",
-    "recommendation": "BÁN",
-    "currentPrice": 16.65,
-    "targetBuyPrice": "Không khuyến nghị",
-    "targetSellPrice": 17.8,
-    "updatedDate": "30/08/2026"
+    "updatedDate": "02/09/2026"
   },
   {
     "symbol": "NKG",
@@ -129,6 +107,28 @@
     "currentPrice": 10.95,
     "targetBuyPrice": "Không khuyến nghị",
     "targetSellPrice": 11.7,
-    "updatedDate": "30/08/2026"
+    "updatedDate": "02/09/2026"
+  },
+  {
+    "symbol": "BVH",
+    "companyName": "Tập đoàn Bảo Việt",
+    "securitiesFirm": "Chứng khoán SSI",
+    "sector": "Bảo hiểm",
+    "recommendation": "BÁN",
+    "currentPrice": 64.0,
+    "targetBuyPrice": "Không khuyến nghị",
+    "targetSellPrice": 68.5,
+    "updatedDate": "02/09/2026"
+  },
+  {
+    "symbol": "PLX",
+    "companyName": "Tập đoàn Xăng dầu Việt Nam",
+    "securitiesFirm": "Chứng khoán HSC",
+    "sector": "Năng lượng",
+    "recommendation": "BÁN",
+    "currentPrice": 36.25,
+    "targetBuyPrice": "Không khuyến nghị",
+    "targetSellPrice": 38.8,
+    "updatedDate": "02/09/2026"
   }
 ]

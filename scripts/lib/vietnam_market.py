@@ -486,13 +486,18 @@ def get_historical_data(
         start_date = (now_dt - timedelta(days=365)).strftime("%Y-%m-%d")
 
     if not use_cache_only and VNSTOCK_AVAILABLE:
-        sources = ["msn", "kbs"]
+        sources = ["kbs", "msn"]
         for attempt in range(max_retries):
             for source in sources:
                 try:
                     q = VnQuote(symbol=sym, source=source)
                     df = q.history(start=start_date, end=end_date)
                     if df is not None and not df.empty and "close" in df.columns:
+                        # Normalize prices to thousand VND if values are in VND
+                        if df["close"].iloc[-1] > 1000.0:
+                            for col in ["open", "high", "low", "close"]:
+                                if col in df.columns:
+                                    df[col] = df[col] / 1000.0
                         df_val, warnings = validate_ohlcv_data(df, sym)
                         if not df_val.empty and len(df_val) >= 15:
                             return df_val, "REAL_DATA", warnings

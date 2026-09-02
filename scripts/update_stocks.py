@@ -20,7 +20,10 @@ def parse_wait_seconds(err_str):
     match_sec2 = re.search(r"(\d+)\s+second", err_str, re.IGNORECASE)
     if match_sec2:
         return int(match_sec2.group(1)) + 2
-    return 15
+    err_lower = err_str.lower()
+    if "rate limit" in err_lower or "giới hạn" in err_lower or "429" in err_lower:
+        return 15
+    return 1
 
 
 try:
@@ -723,18 +726,6 @@ def check_corporate_events(symbol):
                 event_name = recent_events.iloc[0].get("event_name", "Sự kiện quyền")
                 return True, f"Cảnh báo: [{event_name}] gần ngày GDKHQ"
     except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
-        err_str = str(e).lower()
-        if (
-            "rate limit" in err_str
-            or "giới hạn api" in err_str
-            or "wait" in err_str
-            or "systemexit" in err_str
-            or "quota" in err_str
-            or "429" in err_str
-            or "yêu cầu api" in err_str
-        ):
-            wait_sec = parse_wait_seconds(str(e))
-            time.sleep(wait_sec)
         logger.debug("Error checking corporate events for %s: %s", symbol, e)
     return False, "Bình thường"
 
@@ -778,7 +769,7 @@ def get_exchange_mapping():
 def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
     if not VNSTOCK_AVAILABLE:
         return None, None
-    sources = ["msn", "kbs"]
+    sources = ["kbs", "msn"]
     for attempt in range(max_retries):
         for source in sources:
             try:
@@ -789,6 +780,11 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
                     for col in ["open", "high", "low", "close", "volume"]:
                         if col in df.columns:
                             df[col] = pd.to_numeric(df[col], errors="coerce")
+                    # Chuẩn hóa đơn vị giá về nghìn VNĐ (ví dụ: 73200 -> 73.2)
+                    if df["close"].iloc[-1] > 1000.0:
+                        for col in ["open", "high", "low", "close"]:
+                            if col in df.columns:
+                                df[col] = df[col] / 1000.0
                     # Verify price scale
                     if df["close"].iloc[-1] < 1.0:
                         continue
@@ -801,11 +797,8 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
                 if (
                     "rate limit" in err_str
                     or "giới hạn api" in err_str
-                    or "wait" in err_str
-                    or "systemexit" in err_str
                     or "quota" in err_str
                     or "429" in err_str
-                    or "yêu cầu api" in err_str
                 ):
                     wait_sec = parse_wait_seconds(str(e))
                     logger.info(
@@ -855,11 +848,13 @@ def main():
     try:
         df_vn, _ = get_historical_data_api("VNINDEX", start_date, end_date)
         if df_vn is not None and len(df_vn) >= 20:
-            for col in ["open", "high", "low", "close"]:
-                if col in df_vn.columns and df_vn[col].iloc[-1] > 10000:
-                    df_vn[col] = df_vn[col] / 1000.0
-            df_vn = calculate_technical_indicators(df_vn)
             vnindex_val = float(df_vn["close"].iloc[-1])
+            if vnindex_val < 50.0:
+                for col in ["open", "high", "low", "close"]:
+                    if col in df_vn.columns:
+                        df_vn[col] = df_vn[col] * 1000.0
+                vnindex_val = float(df_vn["close"].iloc[-1])
+            df_vn = calculate_technical_indicators(df_vn)
             prev_vnindex = (
                 float(df_vn["close"].iloc[-2]) if len(df_vn) >= 2 else vnindex_val
             )
@@ -902,11 +897,7 @@ def main():
             f"[{idx + 1}/{len(CANDIDATE_STOCKS)}] Đang phân tích: {symbol}...", end=" "
         )
 
-        # 1. Bỏ qua nếu dính ngày GDKHQ
-        has_event, event_msg = check_corporate_events(symbol)
-        if has_event:
-            print(f"-> [LOẠI]: {event_msg}")
-            continue
+        # 1. Bỏ qua nếu dính ngày GDKHQ (Bỏ qua gọi API sự kiện từng mã để tiết kiệm API quota & thời gian)
 
         live_price = live_price_map.get(symbol, 0.0)
 
@@ -916,12 +907,13 @@ def main():
         if df is not None and len(df) >= 20:
             try:
                 for col in ["open", "high", "low", "close"]:
-                    if df[col].iloc[-1] > 1000:
+                    if df[col].iloc[-1] > 1000.0:
                         df[col] = df[col] / 1000.0
 
-                # Synchronize/rescale historical prices to match real-time live price board
+                # Synchronize/rescale historical prices to match real-time live price board (in thousand VND)
                 if live_price > 0 and df["close"].iloc[-1] > 0:
-                    scale_factor = live_price / df["close"].iloc[-1]
+                    live_price_k = live_price / 1000.0 if live_price > 1000.0 else live_price
+                    scale_factor = live_price_k / df["close"].iloc[-1]
                     for col in ["open", "high", "low", "close"]:
                         df[col] = df[col] * scale_factor
 
@@ -1424,12 +1416,15 @@ def main():
                 df_idx, _ = get_historical_data_api(ssi_symbol, start_date, end_date)
 
             if df_idx is not None and len(df_idx) >= 2:
-                for col in ["open", "high", "low", "close"]:
-                    if col in df_idx.columns and df_idx[col].iloc[-1] > 10000:
-                        df_idx[col] = df_idx[col] / 1000.0
-
                 latest_val = float(df_idx["close"].iloc[-1])
-                prev_val = float(df_idx["close"].iloc[-2])
+                # Chỉ số VN-Index/HOSE/HNX/UPCOM mang đơn vị điểm số index points (ví dụ > 1000đ).
+                # Nếu get_historical_data_api đã chia cho 1000, quy đổi lại nhân 1000 để giữ nguyên điểm số index.
+                if latest_val < 50.0 and index_key in ["vnIndex", "hoseIndex"]:
+                    latest_val *= 1000.0
+                    prev_val = float(df_idx["close"].iloc[-2]) * 1000.0
+                else:
+                    prev_val = float(df_idx["close"].iloc[-2])
+
                 change = latest_val - prev_val
                 change_percent = (change / prev_val) * 100
 
