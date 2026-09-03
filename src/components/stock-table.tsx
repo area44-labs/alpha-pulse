@@ -204,15 +204,21 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
           <TableBody className="divide-y divide-border text-xs text-foreground/85">
             {data.map((stock) => {
               const isBuy = stock.type === "BUY";
+              const currentPriceVnd =
+                stock.currentPrice < 1000 ? stock.currentPrice * 1000 : stock.currentPrice;
+              const targetSellPriceVnd =
+                stock.targetSellPrice < 1000 ? stock.targetSellPrice * 1000 : stock.targetSellPrice;
+              const stopLossPriceVnd =
+                stock.stopLossPrice < 1000 ? stock.stopLossPrice * 1000 : stock.stopLossPrice;
 
               // Tính toán phần trăm lợi nhuận kỳ vọng và rủi ro cắt lỗ
               const returnPct = isBuy
-                ? ((stock.targetSellPrice - stock.currentPrice) / stock.currentPrice) * 100
-                : ((stock.currentPrice - stock.targetSellPrice) / stock.currentPrice) * 100;
+                ? ((targetSellPriceVnd - currentPriceVnd) / currentPriceVnd) * 100
+                : ((currentPriceVnd - targetSellPriceVnd) / currentPriceVnd) * 100;
 
               const lossPct = isBuy
-                ? ((stock.stopLossPrice - stock.currentPrice) / stock.currentPrice) * 100
-                : ((stock.currentPrice - stock.stopLossPrice) / stock.currentPrice) * 100;
+                ? ((stopLossPriceVnd - currentPriceVnd) / currentPriceVnd) * 100
+                : ((currentPriceVnd - stopLossPriceVnd) / currentPriceVnd) * 100;
 
               return (
                 <TableRow
@@ -246,7 +252,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                   {/* Current Price */}
                   <TableCell className="px-4 py-3 text-right tabular-nums">
                     <span className="text-xs font-bold text-foreground">
-                      {(stock.currentPrice * 1000).toLocaleString("vi-VN")}
+                      {currentPriceVnd.toLocaleString("vi-VN")}
                     </span>
                     <span className="ml-0.5 text-[10px] text-subtle-foreground">đ</span>
                   </TableCell>
@@ -276,7 +282,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                       <div className="flex items-center text-[11px] tabular-nums">
                         <span className="w-12 font-medium text-subtle-foreground">Mục tiêu:</span>
                         <span className="mr-1 font-bold text-trend-up-text">
-                          {(stock.targetSellPrice * 1000).toLocaleString("vi-VN")}đ
+                          {targetSellPriceVnd.toLocaleString("vi-VN")}đ
                         </span>
                         <span className="inline-flex items-center text-[10px] font-bold text-trend-up-text">
                           <ArrowUpRight className="mr-0.5 h-3 w-3" />+{returnPct.toFixed(1)}%
@@ -286,7 +292,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                       <div className="flex items-center text-[11px] tabular-nums">
                         <span className="w-12 font-medium text-subtle-foreground">Cắt lỗ:</span>
                         <span className="mr-1 font-bold text-trend-down-text">
-                          {(stock.stopLossPrice * 1000).toLocaleString("vi-VN")}đ
+                          {stopLossPriceVnd.toLocaleString("vi-VN")}đ
                         </span>
                         <span className="inline-flex items-center text-[10px] font-bold text-trend-down-text">
                           <ArrowDownRight className="mr-0.5 h-3 w-3" />

@@ -427,15 +427,66 @@ def validate_ohlcv_data(df: pd.DataFrame, symbol: str) -> tuple[pd.DataFrame, li
     return df_valid.reset_index(drop=True), warnings
 
 
+REALISTIC_BASELINE_PRICES = {
+    "ACB": 24.5,
+    "BCM": 68.0,
+    "BID": 48.5,
+    "BVH": 42.0,
+    "CTG": 35.0,
+    "FPT": 132.0,
+    "GAS": 78.0,
+    "GVR": 34.0,
+    "HDB": 26.0,
+    "HPG": 28.0,
+    "MBB": 24.0,
+    "MSN": 75.0,
+    "MWG": 65.0,
+    "PLX": 38.0,
+    "POW": 11.5,
+    "SAB": 58.0,
+    "SSB": 22.0,
+    "SSI": 34.0,
+    "STB": 30.0,
+    "TCB": 23.0,
+    "TPB": 18.0,
+    "VCB": 92.0,
+    "VHM": 42.0,
+    "VIB": 21.0,
+    "VIC": 44.5,
+    "VJC": 102.0,
+    "VNM": 66.0,
+    "VPB": 19.0,
+    "VRE": 22.5,
+    "SHB": 11.5,
+    "DGC": 115.0,
+    "FRT": 175.0,
+    "PVD": 28.0,
+    "VCI": 48.0,
+    "HCM": 28.0,
+    "VND": 16.0,
+    "HSG": 20.0,
+    "NKG": 21.0,
+    "DXG": 15.0,
+    "DIG": 24.0,
+    "PDR": 22.0,
+    "GMD": 82.0,
+}
+
+
 def load_backup_stock_price(symbol: str) -> float:
-    """Load baseline stock price from src/data/stocks.json if available."""
+    """Load baseline stock price from REALISTIC_BASELINE_PRICES or src/data/stocks.json if available."""
+    sym = symbol.upper() if symbol else ""
+    if sym in REALISTIC_BASELINE_PRICES:
+        return REALISTIC_BASELINE_PRICES[sym]
+
     if os.path.exists(STOCKS_JSON_PATH):
         try:
             with open(STOCKS_JSON_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 for rec in data.get("recommendations", []):
-                    if rec.get("symbol") == symbol:
-                        return float(rec.get("currentPrice", 25.0))
+                    if rec.get("symbol") == sym:
+                        p = float(rec.get("currentPrice", 25.0))
+                        return p if p < 1000.0 else p / 1000.0
         except Exception as e:  # noqa: BLE001
             logger.debug("Failed to load baseline stock price for %s: %s", symbol, e)
     return 25.0
@@ -479,8 +530,10 @@ def get_historical_data(
         end_date = now_dt.strftime("%Y-%m-%d")
         start_date = (now_dt - timedelta(days=365)).strftime("%Y-%m-%d")
 
+    INDEX_SYMBOLS = {"VNINDEX", "VN30", "HNXINDEX", "UPCOMINDEX", "VN30INDEX"}
+
     if not use_cache_only and VNSTOCK_AVAILABLE:
-        sources = ["msn", "kbs"]
+        sources = ["kbs", "msn"]
         for attempt in range(max_retries):
             for source in sources:
                 try:
@@ -489,6 +542,10 @@ def get_historical_data(
                     if df is not None and not df.empty and "close" in df.columns:
                         df_val, warnings = validate_ohlcv_data(df, sym)
                         if not df_val.empty and len(df_val) >= 15:
+                            if sym not in INDEX_SYMBOLS and df_val["close"].iloc[-1] > 1000.0:
+                                for col in ["open", "high", "low", "close"]:
+                                    if col in df_val.columns:
+                                        df_val[col] = df_val[col] / 1000.0
                             return df_val, "REAL_DATA", warnings
                 except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
                     err_str = str(e).lower()
@@ -511,7 +568,17 @@ def get_historical_data(
                 time.sleep(0.2)
 
     base_p = (
-        1250.0 if sym == "VNINDEX" else (1300.0 if sym == "VN30" else load_backup_stock_price(sym))
+        1262.62
+        if sym == "VNINDEX"
+        else (
+            1300.0
+            if sym == "VN30"
+            else (
+                235.0
+                if sym == "HNXINDEX"
+                else (95.0 if sym == "UPCOMINDEX" else load_backup_stock_price(sym))
+            )
+        )
     )
     df_fallback = generate_baseline_series(sym, base_price=base_p)
     df_val, warnings = validate_ohlcv_data(df_fallback, sym)

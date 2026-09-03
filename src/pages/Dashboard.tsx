@@ -195,7 +195,15 @@ export function Dashboard({ onSelectStock }: DashboardProps) {
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
               VN-Index:{" "}
-              <strong className="text-foreground">{market.metrics.vnindex_value ?? "—"}</strong> (
+              <strong className="text-foreground">
+                {market.metrics.vnindex_value != null
+                  ? market.metrics.vnindex_value.toLocaleString("vi-VN", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  : "—"}
+              </strong>{" "}
+              điểm (
               {market.metrics.vnindex_change_pct != null
                 ? `${market.metrics.vnindex_change_pct >= 0 ? "+" : ""}${market.metrics.vnindex_change_pct}%`
                 : "—"}

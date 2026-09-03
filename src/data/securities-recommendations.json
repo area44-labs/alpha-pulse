@@ -1,14 +1,80 @@
 [
   {
-    "symbol": "CTG",
-    "companyName": "Ngân hàng TMCP Công Thương Việt Nam",
+    "symbol": "VRE",
+    "companyName": "Công ty Cổ phần Vincom Retail",
     "securitiesFirm": "Chứng khoán SSI",
+    "sector": "Bất động sản",
+    "recommendation": "MUA",
+    "currentPrice": 26.3,
+    "targetBuyPrice": "26.3 - 26.9",
+    "targetSellPrice": 28.15,
+    "updatedDate": "03/09/2026"
+  },
+  {
+    "symbol": "VPB",
+    "companyName": "Ngân hàng TMCP Việt Nam Thịnh Vượng",
+    "securitiesFirm": "Chứng khoán Vietcap",
     "sector": "Ngân hàng",
     "recommendation": "MUA",
-    "currentPrice": 31.95,
-    "targetBuyPrice": "31.9 - 32.6",
-    "targetSellPrice": 34.2,
-    "updatedDate": "30/08/2026"
+    "currentPrice": 26.95,
+    "targetBuyPrice": "26.9 - 27.5",
+    "targetSellPrice": 28.85,
+    "updatedDate": "03/09/2026"
+  },
+  {
+    "symbol": "PVD",
+    "companyName": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí",
+    "securitiesFirm": "Chứng khoán VNDIRECT",
+    "sector": "Dầu khí",
+    "recommendation": "MUA",
+    "currentPrice": 19.35,
+    "targetBuyPrice": "19.4 - 19.8",
+    "targetSellPrice": 20.7,
+    "updatedDate": "03/09/2026"
+  },
+  {
+    "symbol": "FRT",
+    "companyName": "CTCP Bán lẻ Kỹ thuật số FPT",
+    "securitiesFirm": "Chứng khoán MBS",
+    "sector": "Bán lẻ",
+    "recommendation": "MUA",
+    "currentPrice": 142.9,
+    "targetBuyPrice": "142.9 - 145.8",
+    "targetSellPrice": 152.9,
+    "updatedDate": "03/09/2026"
+  },
+  {
+    "symbol": "BCM",
+    "companyName": "Tổng Công ty Đầu tư và Phát triển Công nghiệp",
+    "securitiesFirm": "Chứng khoán HSC",
+    "sector": "Bất động sản KCN",
+    "recommendation": "MUA",
+    "currentPrice": 42.35,
+    "targetBuyPrice": "42.4 - 43.2",
+    "targetSellPrice": 45.3,
+    "updatedDate": "03/09/2026"
+  },
+  {
+    "symbol": "VCI",
+    "companyName": "CTCP Chứng khoán Vietcap",
+    "securitiesFirm": "Chứng khoán TCBS",
+    "sector": "Chứng khoán",
+    "recommendation": "MUA",
+    "currentPrice": 22.25,
+    "targetBuyPrice": "22.2 - 22.7",
+    "targetSellPrice": 23.8,
+    "updatedDate": "03/09/2026"
+  },
+  {
+    "symbol": "PLX",
+    "companyName": "Tập đoàn Xăng dầu Việt Nam",
+    "securitiesFirm": "Chứng khoán SSI",
+    "sector": "Năng lượng",
+    "recommendation": "MUA",
+    "currentPrice": 36.2,
+    "targetBuyPrice": "36.2 - 36.9",
+    "targetSellPrice": 39.82,
+    "updatedDate": "03/09/2026"
   },
   {
     "symbol": "SSB",
@@ -16,119 +82,53 @@
     "securitiesFirm": "Chứng khoán Vietcap",
     "sector": "Ngân hàng",
     "recommendation": "MUA",
-    "currentPrice": 17.1,
-    "targetBuyPrice": "17.1 - 17.4",
-    "targetSellPrice": 18.3,
-    "updatedDate": "30/08/2026"
+    "currentPrice": 18.25,
+    "targetBuyPrice": "18.2 - 18.6",
+    "targetSellPrice": 20.07,
+    "updatedDate": "03/09/2026"
   },
   {
-    "symbol": "TCB",
-    "companyName": "Ngân hàng TMCP Kỹ thương Việt Nam",
-    "securitiesFirm": "Chứng khoán SSI",
-    "sector": "Ngân hàng",
-    "recommendation": "MUA",
-    "currentPrice": 33.4,
-    "targetBuyPrice": "33.4 - 34.0",
-    "targetSellPrice": 35.75,
-    "updatedDate": "30/08/2026"
-  },
-  {
-    "symbol": "VPB",
-    "companyName": "Ngân hàng TMCP Việt Nam Thịnh Vượng",
+    "symbol": "ACB",
+    "companyName": "Ngân hàng TMCP Á Châu",
     "securitiesFirm": "Chứng khoán VNDIRECT",
     "sector": "Ngân hàng",
-    "recommendation": "MUA",
-    "currentPrice": 27.8,
-    "targetBuyPrice": "27.8 - 28.4",
-    "targetSellPrice": 29.75,
-    "updatedDate": "30/08/2026"
+    "recommendation": "BÁN",
+    "currentPrice": 22.2,
+    "targetBuyPrice": "Không khuyến nghị",
+    "targetSellPrice": 23.75,
+    "updatedDate": "03/09/2026"
   },
   {
-    "symbol": "VRE",
-    "companyName": "Công ty Cổ phần Vincom Retail",
+    "symbol": "CTG",
+    "companyName": "Ngân hàng TMCP Công Thương Việt Nam",
     "securitiesFirm": "Chứng khoán MBS",
-    "sector": "Bất động sản",
-    "recommendation": "MUA",
-    "currentPrice": 26.1,
-    "targetBuyPrice": "26.1 - 26.6",
-    "targetSellPrice": 27.95,
-    "updatedDate": "30/08/2026"
-  },
-  {
-    "symbol": "SHB",
-    "companyName": "Ngân hàng TMCP Sài Gòn - Hà Nội",
-    "securitiesFirm": "Chứng khoán HSC",
     "sector": "Ngân hàng",
-    "recommendation": "MUA",
-    "currentPrice": 12.2,
-    "targetBuyPrice": "12.2 - 12.4",
-    "targetSellPrice": 13.05,
-    "updatedDate": "30/08/2026"
-  },
-  {
-    "symbol": "VCI",
-    "companyName": "CTCP Chứng khoán Vietcap",
-    "securitiesFirm": "Chứng khoán Vietcap",
-    "sector": "Chứng khoán",
-    "recommendation": "MUA",
-    "currentPrice": 22.85,
-    "targetBuyPrice": "22.9 - 23.3",
-    "targetSellPrice": 24.45,
-    "updatedDate": "30/08/2026"
-  },
-  {
-    "symbol": "FRT",
-    "companyName": "CTCP Bán lẻ Kỹ thuật số FPT",
-    "securitiesFirm": "Chứng khoán VNDIRECT",
-    "sector": "Bán lẻ",
-    "recommendation": "MUA",
-    "currentPrice": 145.9,
-    "targetBuyPrice": "145.9 - 148.8",
-    "targetSellPrice": 156.1,
-    "updatedDate": "30/08/2026"
+    "recommendation": "BÁN",
+    "currentPrice": 31.5,
+    "targetBuyPrice": "Không khuyến nghị",
+    "targetSellPrice": 33.7,
+    "updatedDate": "03/09/2026"
   },
   {
     "symbol": "BVH",
     "companyName": "Tập đoàn Bảo Việt",
-    "securitiesFirm": "Chứng khoán SSI",
+    "securitiesFirm": "Chứng khoán HSC",
     "sector": "Bảo hiểm",
     "recommendation": "BÁN",
-    "currentPrice": 64.0,
+    "currentPrice": 64.1,
     "targetBuyPrice": "Không khuyến nghị",
-    "targetSellPrice": 68.5,
-    "updatedDate": "30/08/2026"
-  },
-  {
-    "symbol": "POW",
-    "companyName": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP",
-    "securitiesFirm": "Chứng khoán MBS",
-    "sector": "Điện lực",
-    "recommendation": "BÁN",
-    "currentPrice": 13.1,
-    "targetBuyPrice": "Không khuyến nghị",
-    "targetSellPrice": 14.0,
-    "updatedDate": "30/08/2026"
+    "targetSellPrice": 68.6,
+    "updatedDate": "03/09/2026"
   },
   {
     "symbol": "VND",
     "companyName": "CTCP Chứng khoán VNDIRECT",
-    "securitiesFirm": "Chứng khoán HSC",
+    "securitiesFirm": "Chứng khoán TCBS",
     "sector": "Chứng khoán",
     "recommendation": "BÁN",
-    "currentPrice": 16.65,
+    "currentPrice": 16.4,
     "targetBuyPrice": "Không khuyến nghị",
-    "targetSellPrice": 17.8,
-    "updatedDate": "30/08/2026"
-  },
-  {
-    "symbol": "NKG",
-    "companyName": "CTCP Thép Nam Kim",
-    "securitiesFirm": "Chứng khoán Vietcap",
-    "sector": "Thép",
-    "recommendation": "BÁN",
-    "currentPrice": 10.95,
-    "targetBuyPrice": "Không khuyến nghị",
-    "targetSellPrice": 11.7,
-    "updatedDate": "30/08/2026"
+    "targetSellPrice": 17.55,
+    "updatedDate": "03/09/2026"
   }
 ]

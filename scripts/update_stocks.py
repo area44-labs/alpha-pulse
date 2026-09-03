@@ -697,18 +697,6 @@ def check_corporate_events(symbol):
                 event_name = recent_events.iloc[0].get("event_name", "Sự kiện quyền")
                 return True, f"Cảnh báo: [{event_name}] gần ngày GDKHQ"
     except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
-        err_str = str(e).lower()
-        if (
-            "rate limit" in err_str
-            or "giới hạn api" in err_str
-            or "wait" in err_str
-            or "systemexit" in err_str
-            or "quota" in err_str
-            or "429" in err_str
-            or "yêu cầu api" in err_str
-        ):
-            wait_sec = parse_wait_seconds(str(e))
-            time.sleep(wait_sec)
         logger.debug("Error checking corporate events for %s: %s", symbol, e)
     return False, "Bình thường"
 
@@ -752,7 +740,7 @@ def get_exchange_mapping():
 def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
     if not VNSTOCK_AVAILABLE:
         return None, None
-    sources = ["msn", "kbs"]
+    sources = ["kbs", "msn"]
     for attempt in range(max_retries):
         for source in sources:
             try:
@@ -770,14 +758,17 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
             except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
                 err_str = str(e).lower()
                 logger.debug("Error fetching quote for %s from %s: %s", symbol, source, err_str)
-                if (
-                    "rate limit" in err_str
-                    or "giới hạn api" in err_str
-                    or "wait" in err_str
-                    or "systemexit" in err_str
-                    or "quota" in err_str
-                    or "429" in err_str
-                    or "yêu cầu api" in err_str
+                if any(
+                    x in err_str
+                    for x in [
+                        "rate limit",
+                        "giới hạn api",
+                        "wait",
+                        "systemexit",
+                        "quota",
+                        "429",
+                        "yêu cầu api",
+                    ]
                 ):
                     wait_sec = parse_wait_seconds(str(e))
                     logger.info(
@@ -788,9 +779,9 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
                     )
                     time.sleep(wait_sec)
                 else:
-                    time.sleep(0.2)
+                    time.sleep(0.1)
         if attempt < max_retries - 1:
-            time.sleep(0.5)
+            time.sleep(0.2)
     return None, None
 
 
