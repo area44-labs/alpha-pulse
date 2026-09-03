@@ -32,6 +32,30 @@
       "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 26,850đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
     },
     {
+      "ticker": "VPB",
+      "exchange": "HOSE",
+      "action": "BUY",
+      "confidence_score": 93,
+      "grade": "Grade A",
+      "price_data": {
+        "buy_zone": {
+          "min": 26950,
+          "max": 27500
+        },
+        "stop_loss": 26100,
+        "target_1": 28850,
+        "target_2": 28850,
+        "risk_reward_ratio": "1:1.4"
+      },
+      "technical_rationale": [
+        "Giá đóng cửa 26,950đ vượt đường trung bình động MA20 (25,777đ), củng cố xu hướng tăng.",
+        "Thanh khoản bùng nổ đạt 1.3x so với trung bình 20 phiên, dòng tiền mua chủ động.",
+        "Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung ngày (1D), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh.",
+        "RSI khung ngày đạt 64.1 điểm, MACD Histogram (0.280) hỗ trợ đà bứt phá."
+      ],
+      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 27,500đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
+    },
+    {
       "ticker": "PVD",
       "exchange": "HOSE",
       "action": "BUY",
@@ -104,6 +128,30 @@
       "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 43,200đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
     },
     {
+      "ticker": "VCI",
+      "exchange": "HOSE",
+      "action": "BUY",
+      "confidence_score": 75,
+      "grade": "Grade B",
+      "price_data": {
+        "buy_zone": {
+          "min": 22250,
+          "max": 22700
+        },
+        "stop_loss": 22050,
+        "target_1": 23800,
+        "target_2": 23800,
+        "risk_reward_ratio": "1:1.4"
+      },
+      "technical_rationale": [
+        "Giá đóng cửa 22,250đ vượt đường trung bình động MA20 (21,880đ), củng cố xu hướng tăng.",
+        "Thanh khoản duy trì ở mức bình ổn.",
+        "Động lượng đa khung: Chỉ báo RSI (51.6) và MACD (0.177) duy trì xu hướng đồng thuận trên khung ngày và tuần.",
+        "RSI khung ngày đạt 51.6 điểm, MACD Histogram (0.177) hỗ trợ đà bứt phá."
+      ],
+      "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 22,700đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
+    },
+    {
       "ticker": "PLX",
       "exchange": "HOSE",
       "action": "BUY",
@@ -144,72 +192,6 @@
         "Giá đóng cửa 18,250đ vượt đường trung bình động MA20 (16,494đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 2.1x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 81.4 điểm, MACD Histogram (0.189) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng."
       ],
       "execution_notes": "Retained from previous record."
-    },
-    {
-      "ticker": "VCI",
-      "exchange": "HOSE",
-      "action": "BUY",
-      "confidence_score": 65,
-      "grade": "Grade B",
-      "price_data": {
-        "buy_zone": {
-          "min": 22250,
-          "max": 22695
-        },
-        "stop_loss": 20692,
-        "target_1": 24475,
-        "target_2": 26700,
-        "risk_reward_ratio": "1:2.0"
-      },
-      "technical_rationale": [
-        "Giá đóng cửa 22,250đ vượt đường trung bình động MA20 (21,281đ), củng cố xu hướng tăng. Thanh khoản bùng nổ đạt 1.2x so với trung bình 20 phiên, dòng tiền mua chủ động. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 59.5 điểm, MACD Histogram (0.210) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng."
-      ],
-      "execution_notes": "Retained from previous record."
-    },
-    {
-      "ticker": "PDR",
-      "exchange": "HOSE",
-      "action": "BUY",
-      "confidence_score": 65,
-      "grade": "Grade B",
-      "price_data": {
-        "buy_zone": {
-          "min": 12250,
-          "max": 12495
-        },
-        "stop_loss": 11392,
-        "target_1": 13475,
-        "target_2": 14700,
-        "risk_reward_ratio": "1:2.0"
-      },
-      "technical_rationale": [
-        "Giá đóng cửa 12,250đ vượt đường trung bình động MA20 (12,013đ), củng cố xu hướng tăng. Thanh khoản duy trì ở mức bình ổn. Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung ngày (1D), RSI/MACD phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh. RSI khung ngày đạt 57.1 điểm, MACD Histogram (0.144) hỗ trợ đà bứt phá. Khuyến nghị Mua gia tăng vị thế theo xu hướng."
-      ],
-      "execution_notes": "Retained from previous record."
-    },
-    {
-      "ticker": "VNM",
-      "exchange": "HOSE",
-      "action": "SELL",
-      "confidence_score": 28,
-      "grade": "Grade C",
-      "price_data": {
-        "buy_zone": {
-          "min": 61200,
-          "max": 62400
-        },
-        "stop_loss": 61200,
-        "target_1": 65500,
-        "target_2": 65500,
-        "risk_reward_ratio": "1:1.0"
-      },
-      "technical_rationale": [
-        "Giá đóng cửa 61,200đ gãy đường xu hướng ngắn hạn MA20 (61,900đ), suy yếu xu hướng.",
-        "Thanh khoản duy trì ở mức bình ổn.",
-        "Cảnh báo kỹ thuật: Đã xuất hiện MACD phân kỳ âm khung ngày (1D), RSI phân kỳ âm khung tuần (1W), áp lực chốt lời/suy yếu gia tăng.",
-        "RSI khung ngày đạt 43.5 điểm, MACD Histogram (-0.259) thể hiện áp lực điều chỉnh."
-      ],
-      "execution_notes": "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20 hoặc xuất hiện cảnh báo phân kỳ âm."
     },
     {
       "ticker": "ACB",
@@ -280,6 +262,30 @@
         "Thanh khoản duy trì ở mức bình ổn.",
         "Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung giờ (1H), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh.",
         "RSI khung ngày đạt 42.5 điểm, MACD Histogram (-0.384) thể hiện áp lực điều chỉnh."
+      ],
+      "execution_notes": "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20 hoặc xuất hiện cảnh báo phân kỳ âm."
+    },
+    {
+      "ticker": "VND",
+      "exchange": "HOSE",
+      "action": "SELL",
+      "confidence_score": 50,
+      "grade": "Grade C",
+      "price_data": {
+        "buy_zone": {
+          "min": 16400,
+          "max": 16750
+        },
+        "stop_loss": 16350,
+        "target_1": 17550,
+        "target_2": 17550,
+        "risk_reward_ratio": "1:1.0"
+      },
+      "technical_rationale": [
+        "Giá đóng cửa 16,400đ gãy đường xu hướng ngắn hạn MA20 (16,582đ), suy yếu xu hướng.",
+        "Thanh khoản duy trì ở mức bình ổn.",
+        "Động lượng đa khung: Chỉ báo RSI (41.9) và MACD (0.055) duy trì xu hướng đồng thuận trên khung ngày và tuần.",
+        "RSI khung ngày đạt 41.9 điểm, MACD Histogram (0.055) hỗ trợ đà bứt phá."
       ],
       "execution_notes": "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20 hoặc xuất hiện cảnh báo phân kỳ âm."
     }

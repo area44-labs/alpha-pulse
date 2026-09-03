@@ -758,7 +758,28 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
             except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
                 err_str = str(e).lower()
                 logger.debug("Error fetching quote for %s from %s: %s", symbol, source, err_str)
-                time.sleep(0.1)
+                if any(
+                    x in err_str
+                    for x in [
+                        "rate limit",
+                        "giới hạn api",
+                        "wait",
+                        "systemexit",
+                        "quota",
+                        "429",
+                        "yêu cầu api",
+                    ]
+                ):
+                    wait_sec = parse_wait_seconds(str(e))
+                    logger.info(
+                        "Rate limit hit for %s (%s). Sleeping %d seconds...",
+                        symbol,
+                        source,
+                        wait_sec,
+                    )
+                    time.sleep(wait_sec)
+                else:
+                    time.sleep(0.1)
         if attempt < max_retries - 1:
             time.sleep(0.2)
     return None, None
