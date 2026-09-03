@@ -362,9 +362,7 @@ def get_exchange_price_limits(
     return ref_p, ceiling_p, floor_p
 
 
-def clamp_price_limits(
-    price: float, ref_price: float = 0.0, exchange: str = "HOSE"
-) -> float:
+def clamp_price_limits(price: float, ref_price: float = 0.0, exchange: str = "HOSE") -> float:
     """Enforce exchange daily price floor and ceiling bounds."""
     try:
         p = float(price) if price is not None else 0.0
@@ -376,9 +374,7 @@ def clamp_price_limits(
     return round_tick_size(max(floor_p, min(ceiling_p, p)), ex_upper)
 
 
-def validate_ohlcv_data(
-    df: pd.DataFrame, symbol: str
-) -> tuple[pd.DataFrame, list[str]]:
+def validate_ohlcv_data(df: pd.DataFrame, symbol: str) -> tuple[pd.DataFrame, list[str]]:
     """Validate data quality for OHLCV DataFrame."""
     warnings = []
     if df is None or df.empty:
@@ -394,9 +390,7 @@ def validate_ohlcv_data(
         df_valid[col] = pd.to_numeric(df_valid[col], errors="coerce")
 
     date_col = (
-        "time"
-        if "time" in df_valid.columns
-        else ("date" if "date" in df_valid.columns else None)
+        "time" if "time" in df_valid.columns else ("date" if "date" in df_valid.columns else None)
     )
     if date_col:
         initial_count = len(df_valid)
@@ -517,9 +511,7 @@ def get_historical_data(
                 time.sleep(0.2)
 
     base_p = (
-        1250.0
-        if sym == "VNINDEX"
-        else (1300.0 if sym == "VN30" else load_backup_stock_price(sym))
+        1250.0 if sym == "VNINDEX" else (1300.0 if sym == "VN30" else load_backup_stock_price(sym))
     )
     df_fallback = generate_baseline_series(sym, base_price=base_p)
     df_val, warnings = validate_ohlcv_data(df_fallback, sym)

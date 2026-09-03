@@ -50,12 +50,8 @@ class TestRiskModel(unittest.TestCase):
         ]
         norm = normalize_universe_liquidity_scores(scanned)
 
-        self.assertAlmostEqual(
-            norm[0]["risk_metrics"]["liquidity_score"], 33.3, delta=1.0
-        )
-        self.assertAlmostEqual(
-            norm[2]["risk_metrics"]["liquidity_score"], 100.0, delta=1.0
-        )
+        self.assertAlmostEqual(norm[0]["risk_metrics"]["liquidity_score"], 33.3, delta=1.0)
+        self.assertAlmostEqual(norm[2]["risk_metrics"]["liquidity_score"], 100.0, delta=1.0)
 
     def test_risk_metrics_missing_data(self):
         df_empty = pd.DataFrame()

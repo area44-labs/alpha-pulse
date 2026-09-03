@@ -13,9 +13,9 @@ def calculate_atr(df: pd.DataFrame, period: int = 14) -> pd.Series:
     """Calculate Average True Range (ATR)."""
     high, low, close = df["high"], df["low"], df["close"]
     close_prev = close.shift(1)
-    tr = pd.concat(
-        [high - low, (high - close_prev).abs(), (low - close_prev).abs()], axis=1
-    ).max(axis=1)
+    tr = pd.concat([high - low, (high - close_prev).abs(), (low - close_prev).abs()], axis=1).max(
+        axis=1
+    )
     return tr.rolling(window=period, min_periods=1).mean()
 
 
@@ -189,25 +189,19 @@ def calculate_multi_timeframe_features(
         "1d": {
             "available": True,
             "rsi": round(float(df_d["rsi"].iloc[-1]), 1) if not df_d.empty else 50.0,
-            "macd_hist": round(float(df_d["hist"].iloc[-1]), 3)
-            if not df_d.empty
-            else 0.0,
+            "macd_hist": round(float(df_d["hist"].iloc[-1]), 3) if not df_d.empty else 0.0,
             "divergence": div_d,
         },
         "1w": {
             "available": True,
             "rsi": round(float(df_w["rsi"].iloc[-1]), 1) if not df_w.empty else 50.0,
-            "macd_hist": round(float(df_w["hist"].iloc[-1]), 3)
-            if not df_w.empty
-            else 0.0,
+            "macd_hist": round(float(df_w["hist"].iloc[-1]), 3) if not df_w.empty else 0.0,
             "divergence": div_w,
         },
         "1m": {
             "available": True,
             "rsi": round(float(df_m["rsi"].iloc[-1]), 1) if not df_m.empty else 50.0,
-            "macd_hist": round(float(df_m["hist"].iloc[-1]), 3)
-            if not df_m.empty
-            else 0.0,
+            "macd_hist": round(float(df_m["hist"].iloc[-1]), 3) if not df_m.empty else 0.0,
             "divergence": div_m,
         },
     }
