@@ -34,15 +34,21 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
   if (!stock) return null;
 
   const isBuy = stock.type === "BUY";
+  const currentPriceVnd =
+    stock.currentPrice < 1000 ? stock.currentPrice * 1000 : stock.currentPrice;
+  const targetSellPriceVnd =
+    stock.targetSellPrice < 1000 ? stock.targetSellPrice * 1000 : stock.targetSellPrice;
+  const stopLossPriceVnd =
+    stock.stopLossPrice < 1000 ? stock.stopLossPrice * 1000 : stock.stopLossPrice;
 
   // Tính toán tỷ lệ phần trăm lợi nhuận kỳ vọng và mức sụt giảm cắt lỗ
   const targetProfitPercent = isBuy
-    ? ((stock.targetSellPrice - stock.currentPrice) / stock.currentPrice) * 100
-    : ((stock.currentPrice - stock.targetSellPrice) / stock.currentPrice) * 100;
+    ? ((targetSellPriceVnd - currentPriceVnd) / currentPriceVnd) * 100
+    : ((currentPriceVnd - targetSellPriceVnd) / currentPriceVnd) * 100;
 
   const stopLossPercent = isBuy
-    ? ((stock.stopLossPrice - stock.currentPrice) / stock.currentPrice) * 100
-    : ((stock.currentPrice - stock.stopLossPrice) / stock.currentPrice) * 100;
+    ? ((stopLossPriceVnd - currentPriceVnd) / currentPriceVnd) * 100
+    : ((currentPriceVnd - stopLossPriceVnd) / currentPriceVnd) * 100;
 
   const getRiskLevelBadge = (level: "LOW" | "MEDIUM" | "HIGH") => {
     switch (level) {
@@ -87,7 +93,7 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
                 Giá hiện tại
               </div>
               <div className="text-base font-bold text-foreground tabular-nums">
-                {(stock.currentPrice * 1000).toLocaleString("vi-VN")}đ
+                {currentPriceVnd.toLocaleString("vi-VN")}đ
               </div>
             </div>
           </div>
@@ -121,7 +127,7 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
                   Mục tiêu kỳ vọng (TP)
                 </span>
                 <span className="mt-1 block text-sm font-bold text-trend-up-text tabular-nums">
-                  {(stock.targetSellPrice * 1000).toLocaleString("vi-VN")}đ
+                  {targetSellPriceVnd.toLocaleString("vi-VN")}đ
                 </span>
                 <span className="mt-0.5 flex items-center text-[9px] font-bold text-trend-up-text tabular-nums">
                   <Percent className="mr-0.5 h-3 w-3" />
@@ -135,7 +141,7 @@ export function StockDetailModal({ stock, isOpen, onOpenChange }: StockDetailMod
                   Ngưỡng cắt lỗ (SL)
                 </span>
                 <span className="mt-1 block text-sm font-bold text-trend-down-text tabular-nums">
-                  {(stock.stopLossPrice * 1000).toLocaleString("vi-VN")}đ
+                  {stopLossPriceVnd.toLocaleString("vi-VN")}đ
                 </span>
                 <span className="mt-0.5 flex items-center text-[9px] font-bold text-trend-down-text tabular-nums">
                   <Percent className="mr-0.5 h-3 w-3" />

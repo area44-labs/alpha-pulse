@@ -479,8 +479,10 @@ def get_historical_data(
         end_date = now_dt.strftime("%Y-%m-%d")
         start_date = (now_dt - timedelta(days=365)).strftime("%Y-%m-%d")
 
+    INDEX_SYMBOLS = {"VNINDEX", "VN30", "HNXINDEX", "UPCOMINDEX", "VN30INDEX"}
+
     if not use_cache_only and VNSTOCK_AVAILABLE:
-        sources = ["msn", "kbs"]
+        sources = ["kbs", "msn"]
         for attempt in range(max_retries):
             for source in sources:
                 try:
@@ -489,6 +491,10 @@ def get_historical_data(
                     if df is not None and not df.empty and "close" in df.columns:
                         df_val, warnings = validate_ohlcv_data(df, sym)
                         if not df_val.empty and len(df_val) >= 15:
+                            if sym not in INDEX_SYMBOLS and df_val["close"].iloc[-1] > 1000.0:
+                                for col in ["open", "high", "low", "close"]:
+                                    if col in df_val.columns:
+                                        df_val[col] = df_val[col] / 1000.0
                             return df_val, "REAL_DATA", warnings
                 except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
                     err_str = str(e).lower()
@@ -511,7 +517,17 @@ def get_historical_data(
                 time.sleep(0.2)
 
     base_p = (
-        1250.0 if sym == "VNINDEX" else (1300.0 if sym == "VN30" else load_backup_stock_price(sym))
+        1828.0
+        if sym == "VNINDEX"
+        else (
+            1960.0
+            if sym == "VN30"
+            else (
+                282.0
+                if sym == "HNXINDEX"
+                else (128.0 if sym == "UPCOMINDEX" else load_backup_stock_price(sym))
+            )
+        )
     )
     df_fallback = generate_baseline_series(sym, base_price=base_p)
     df_val, warnings = validate_ohlcv_data(df_fallback, sym)
