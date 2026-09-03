@@ -81,14 +81,10 @@ def calculate_t25_risk_metrics(
     return {
         "var_t25": round(var_95_t25, 4) if var_95_t25 is not None else None,
         "es_t25": round(es_95_t25, 4) if es_95_t25 is not None else None,
-        "volatility_60d": round(volatility_60d, 4)
-        if volatility_60d is not None
-        else None,
+        "volatility_60d": round(volatility_60d, 4) if volatility_60d is not None else None,
         "max_drawdown": round(max_dd, 4) if max_dd is not None else None,
         "liquidity_score": None,  # Computed via universe percentile
-        "avg_value_20d": round(avg_val_20d_bn, 2)
-        if avg_val_20d_bn is not None
-        else None,
+        "avg_value_20d": round(avg_val_20d_bn, 2) if avg_val_20d_bn is not None else None,
     }
 
 

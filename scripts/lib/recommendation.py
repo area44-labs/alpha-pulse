@@ -104,9 +104,7 @@ def generate_recommendation(
 
     if raw_close > raw_ma50:
         score += 10.0
-        reasons.append(
-            f"Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 ({format_vnd(raw_ma50)} VNĐ)."
-        )
+        reasons.append(f"Giá đóng cửa nằm trên hỗ trợ trung hạn MA50 ({format_vnd(raw_ma50)} VNĐ).")
 
     if macd_hist > 0 and macd_hist > prev_macd_hist:
         score += 10.0
@@ -117,18 +115,14 @@ def generate_recommendation(
 
     if vol_ratio > 1.2:
         score += 10.0
-        reasons.append(
-            f"Khối lượng bùng nổ {vol_ratio:.1f}x so với bình quân 20 phiên."
-        )
+        reasons.append(f"Khối lượng bùng nổ {vol_ratio:.1f}x so với bình quân 20 phiên.")
 
     if 45.0 <= rsi <= 68.0:
         score += 10.0
         reasons.append(f"Chỉ báo RSI ({rsi:.1f}) nằm trong vùng an toàn (45 - 68).")
     elif rsi > 78.0:
         score -= 15.0
-        warnings.append(
-            f"RSI ({rsi:.1f}) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao."
-        )
+        warnings.append(f"RSI ({rsi:.1f}) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao.")
     elif rsi > 70.0:
         score -= 10.0
         warnings.append(f"RSI ({rsi:.1f}) thuộc vùng quá mua (> 70).")
@@ -138,12 +132,10 @@ def generate_recommendation(
 
     # Relative strength vs VN-Index
     if df_vnindex is not None and len(df_vnindex) >= 20 and len(df_d) >= 20:
-        stock_ret_20 = (df_d["close"].iloc[-1] - df_d["close"].iloc[-20]) / df_d[
+        stock_ret_20 = (df_d["close"].iloc[-1] - df_d["close"].iloc[-20]) / df_d["close"].iloc[-20]
+        vn_ret_20 = (df_vnindex["close"].iloc[-1] - df_vnindex["close"].iloc[-20]) / df_vnindex[
             "close"
         ].iloc[-20]
-        vn_ret_20 = (
-            df_vnindex["close"].iloc[-1] - df_vnindex["close"].iloc[-20]
-        ) / df_vnindex["close"].iloc[-20]
         rs_diff = stock_ret_20 - vn_ret_20
         if rs_diff > 0.05:
             score += 5.0
@@ -152,9 +144,7 @@ def generate_recommendation(
             )
         elif rs_diff < -0.05:
             score -= 5.0
-            warnings.append(
-                f"Sức mạnh tương quan (RS) yếu hơn VN-Index ({rs_diff * 100:.1f}%)."
-            )
+            warnings.append(f"Sức mạnh tương quan (RS) yếu hơn VN-Index ({rs_diff * 100:.1f}%).")
 
     has_major_bearish_div = False
     for tf_key, tf_label in [("1d", "1D"), ("1w", "1W"), ("1m", "1M")]:
@@ -177,9 +167,9 @@ def generate_recommendation(
 
     if regime == "PANIC" or score < 35.0:
         action = "AVOID" if regime == "PANIC" else "SELL"
-    elif (
-        score >= 75.0 and raw_close > raw_ma20 and regime in ["STRONG_BULL", "BULL"]
-    ) or (score >= 65.0 and raw_close > raw_ma20 and regime == "DEFENSIVE"):
+    elif (score >= 75.0 and raw_close > raw_ma20 and regime in ["STRONG_BULL", "BULL"]) or (
+        score >= 65.0 and raw_close > raw_ma20 and regime == "DEFENSIVE"
+    ):
         action = "BUY"
     elif score >= 55.0:
         action = "WATCH"
@@ -222,9 +212,7 @@ def generate_recommendation(
     calc_position_pct = round(portfolio_risk_budget_pct / stop_distance_pct, 1)
 
     max_position_cap = 20.0 if action == "BUY" else (10.0 if action == "WATCH" else 0.0)
-    final_position_pct = (
-        min(calc_position_pct, max_position_cap) if max_position_cap > 0 else 0.0
-    )
+    final_position_pct = min(calc_position_pct, max_position_cap) if max_position_cap > 0 else 0.0
 
     trade_plan = {
         "current_price": round(close_vnd, 0),

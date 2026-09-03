@@ -52,17 +52,13 @@ def detect_market_regime(
 
     vol_col = "volume" if "volume" in df_vnindex.columns else None
     if vol_col and len(df_vnindex) >= 20 and df_vnindex[vol_col].tail(20).mean() > 0:
-        vol_ratio = float(
-            df_vnindex[vol_col].iloc[-1] / df_vnindex[vol_col].tail(20).mean()
-        )
+        vol_ratio = float(df_vnindex[vol_col].iloc[-1] / df_vnindex[vol_col].tail(20).mean())
     else:
         vol_ratio = 1.0
 
     # Volatility 20d std of daily return
     returns_20d = close_vn.pct_change().tail(20)
-    vn_volatility = (
-        float(returns_20d.std() * (252**0.5)) if len(returns_20d) >= 5 else 0.15
-    )
+    vn_volatility = float(returns_20d.std() * (252**0.5)) if len(returns_20d) >= 5 else 0.15
 
     # VN30 metrics
     vn30_change_pct = None
@@ -130,9 +126,7 @@ def detect_market_regime(
         "metrics": {
             "vnindex_value": round(latest_vn, 2),
             "vnindex_change_pct": round(vn_change_pct, 2),
-            "vn30_change_pct": (
-                round(vn30_change_pct, 2) if vn30_change_pct is not None else None
-            ),
+            "vn30_change_pct": (round(vn30_change_pct, 2) if vn30_change_pct is not None else None),
             "market_breadth_ratio": (
                 round(breadth_ratio, 2) if breadth_ratio is not None else None
             ),

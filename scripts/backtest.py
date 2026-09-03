@@ -30,9 +30,7 @@ from scripts.lib.vietnam_market import (
     get_historical_data,
 )
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -151,11 +149,7 @@ class VietnamPortfolioBacktester:
 
                 exchange = stock_data[sym]["info"].get("exchange", "HOSE")
                 prev_sub = df_st[df_st["time_str"] < current_date]
-                prev_close = (
-                    float(prev_sub["close"].iloc[-1])
-                    if not prev_sub.empty
-                    else curr_open
-                )
+                prev_close = float(prev_sub["close"].iloc[-1]) if not prev_sub.empty else curr_open
                 _, _, floor_p = get_exchange_price_limits(prev_close, exchange)
 
                 exit_triggered = False
@@ -262,9 +256,7 @@ class VietnamPortfolioBacktester:
                             continue
 
                         effective_entry_p = t1_open * (1.0 + self.slippage)
-                        entry_cost_per_share = effective_entry_p * (
-                            1.0 + self.brokerage_fee
-                        )
+                        entry_cost_per_share = effective_entry_p * (1.0 + self.brokerage_fee)
 
                         shares = (int(pos_budget / entry_cost_per_share) // 100) * 100
                         if shares <= 0:
@@ -314,11 +306,7 @@ class VietnamPortfolioBacktester:
             for sym, pos in open_positions.items():
                 df_st = stock_data[sym]["df"]
                 st_sub = df_st[df_st["time_str"] == current_date]
-                m2m_p = (
-                    float(st_sub["close"].iloc[0])
-                    if not st_sub.empty
-                    else pos["entry_price"]
-                )
+                m2m_p = float(st_sub["close"].iloc[0]) if not st_sub.empty else pos["entry_price"]
                 portfolio_val += pos["shares"] * m2m_p
 
             equity_curve.append(portfolio_val)
@@ -326,13 +314,10 @@ class VietnamPortfolioBacktester:
         # 5. Compute Portfolio Performance Metrics
         eq_series = pd.Series(equity_curve)
         total_sessions = len(eq_series)
-        final_equity = (
-            eq_series.iloc[-1] if not eq_series.empty else self.initial_capital
-        )
+        final_equity = eq_series.iloc[-1] if not eq_series.empty else self.initial_capital
 
         cagr = (
-            ((final_equity / self.initial_capital) ** (252.0 / max(total_sessions, 1)))
-            - 1.0
+            ((final_equity / self.initial_capital) ** (252.0 / max(total_sessions, 1))) - 1.0
         ) * 100.0
 
         cummax = eq_series.cummax()
@@ -344,9 +329,7 @@ class VietnamPortfolioBacktester:
         std_ret = daily_returns.std()
 
         sharpe = (
-            (mean_ret / std_ret) * np.sqrt(252)
-            if std_ret > 0 and not np.isnan(std_ret)
-            else 0.0
+            (mean_ret / std_ret) * np.sqrt(252) if std_ret > 0 and not np.isnan(std_ret) else 0.0
         )
 
         downside_returns = daily_returns[daily_returns < 0]
@@ -370,21 +353,9 @@ class VietnamPortfolioBacktester:
         else:
             win_rate, profit_factor, avg_holding = 0.0, 0.0, 0.0
 
-        avg_5d = (
-            np.mean(buy_signal_returns["5d"]) * 100.0
-            if buy_signal_returns["5d"]
-            else 0.0
-        )
-        avg_10d = (
-            np.mean(buy_signal_returns["10d"]) * 100.0
-            if buy_signal_returns["10d"]
-            else 0.0
-        )
-        avg_20d = (
-            np.mean(buy_signal_returns["20d"]) * 100.0
-            if buy_signal_returns["20d"]
-            else 0.0
-        )
+        avg_5d = np.mean(buy_signal_returns["5d"]) * 100.0 if buy_signal_returns["5d"] else 0.0
+        avg_10d = np.mean(buy_signal_returns["10d"]) * 100.0 if buy_signal_returns["10d"] else 0.0
+        avg_20d = np.mean(buy_signal_returns["20d"]) * 100.0 if buy_signal_returns["20d"] else 0.0
 
         return {
             "status": "SUCCESS",

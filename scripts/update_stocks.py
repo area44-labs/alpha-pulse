@@ -259,9 +259,9 @@ def calculate_atr(df, period=14):
     """Tính chỉ báo ATR (Average True Range) để đo lường mức độ biến động giá."""
     high, low, close = df["high"], df["low"], df["close"]
     close_prev = close.shift(1)
-    tr = pd.concat(
-        [high - low, (high - close_prev).abs(), (low - close_prev).abs()], axis=1
-    ).max(axis=1)
+    tr = pd.concat([high - low, (high - close_prev).abs(), (low - close_prev).abs()], axis=1).max(
+        axis=1
+    )
     return tr.rolling(window=period, min_periods=1).mean()
 
 
@@ -486,16 +486,12 @@ def calculate_multi_timeframe_analysis(df_daily):
         },
         "1w": {
             "rsi": round(float(df_w["rsi"].iloc[-1]) if not df_w.empty else 50.0, 1),
-            "macd_hist": round(
-                float(df_w["hist"].iloc[-1]) if not df_w.empty else 0.0, 3
-            ),
+            "macd_hist": round(float(df_w["hist"].iloc[-1]) if not df_w.empty else 0.0, 3),
             "divergence": div_w,
         },
         "1m": {
             "rsi": round(float(df_m["rsi"].iloc[-1]) if not df_m.empty else 50.0, 1),
-            "macd_hist": round(
-                float(df_m["hist"].iloc[-1]) if not df_m.empty else 0.0, 3
-            ),
+            "macd_hist": round(float(df_m["hist"].iloc[-1]) if not df_m.empty else 0.0, 3),
             "divergence": div_m,
         },
     }
@@ -538,9 +534,7 @@ def calculate_advanced_vn_risk_metrics(
         "vwap"
         if (exchange.upper() == "UPCOM" and "vwap" in df.columns)
         else (
-            "avg_price"
-            if (exchange.upper() == "UPCOM" and "avg_price" in df.columns)
-            else "close"
+            "avg_price" if (exchange.upper() == "UPCOM" and "avg_price" in df.columns) else "close"
         )
     )
 
@@ -555,16 +549,12 @@ def calculate_advanced_vn_risk_metrics(
     # 4. Historical VaR 95% thực tế cho chu kỳ T+2.5
     returns_t25_clean = df["returns_t25"].dropna()
     var_95_t25 = (
-        float(np.percentile(returns_t25_clean, 5))
-        if len(returns_t25_clean) >= 5
-        else -0.07
+        float(np.percentile(returns_t25_clean, 5)) if len(returns_t25_clean) >= 5 else -0.07
     )
 
     # 5. Tần suất chạm sàn trong 60 phiên (Floor Hit Risk)
     floor_limit = (
-        -0.068
-        if exchange.upper() == "HOSE"
-        else (-0.098 if exchange.upper() == "HNX" else -0.148)
+        -0.068 if exchange.upper() == "HOSE" else (-0.098 if exchange.upper() == "HNX" else -0.148)
     )
     tail_returns_1d = df["returns_1d"].tail(60)
     floor_hits = int((tail_returns_1d <= floor_limit).sum())
@@ -610,9 +600,7 @@ def normalize_universe_risk(scanned_results, market_risk_level="LOW"):
 
     # Trích xuất chỉ số để tính Z-Score
     vols = np.array([r["risk_metrics"]["annual_vol"] for r in valid_items])
-    vars_t25 = np.array(
-        [abs(r["risk_metrics"]["historical_var_t25"]) for r in valid_items]
-    )
+    vars_t25 = np.array([abs(r["risk_metrics"]["historical_var_t25"]) for r in valid_items])
     mdds = np.array([abs(r["risk_metrics"]["mdd"]) for r in valid_items])
     penalties = np.array([r["risk_metrics"]["margin_penalty"] for r in valid_items])
     floor_flags = np.array(
@@ -627,9 +615,7 @@ def normalize_universe_risk(scanned_results, market_risk_level="LOW"):
     var_z = (vars_t25 - vars_t25.mean()) / var_std
     mdd_z = (mdds - mdds.mean()) / mdd_std
 
-    raw_final_scores = (
-        (vol_z * 0.4 + var_z * 0.4 + mdd_z * 0.2) * penalties * floor_flags
-    )
+    raw_final_scores = (vol_z * 0.4 + var_z * 0.4 + mdd_z * 0.2) * penalties * floor_flags
 
     if market_risk_level == "HIGH":
         raw_final_scores += 0.5
@@ -653,9 +639,7 @@ def normalize_universe_risk(scanned_results, market_risk_level="LOW"):
 
 def fetch_batch_smart_money(symbols):
     """Lấy dữ liệu giao dịch khớp lệnh, dòng tiền Khối ngoại & Tự doanh cho danh sách mã cổ phiếu."""
-    smart_money_map = {
-        sym: {"foreign_net_val": 0.0, "prop_net_val": 0.0} for sym in symbols
-    }
+    smart_money_map = {sym: {"foreign_net_val": 0.0, "prop_net_val": 0.0} for sym in symbols}
     live_price_map = {sym: 0.0 for sym in symbols}
     if not VNSTOCK_AVAILABLE:
         return smart_money_map, live_price_map
@@ -665,28 +649,20 @@ def fetch_batch_smart_money(symbols):
             if price_board is not None and not price_board.empty:
                 for _, row in price_board.iterrows():
                     sym = row.get("symbol")
-                    close = float(
-                        row.get("close_price", 0) or row.get("reference_price", 0) or 0
-                    )
+                    close = float(row.get("close_price", 0) or row.get("reference_price", 0) or 0)
                     if sym in smart_money_map:
                         f_buy = float(row.get("foreign_buy_volume", 0) or 0)
                         f_sell = float(row.get("foreign_sell_volume", 0) or 0)
-                        smart_money_map[sym]["foreign_net_val"] = (
-                            f_buy - f_sell
-                        ) * close
+                        smart_money_map[sym]["foreign_net_val"] = (f_buy - f_sell) * close
                         smart_money_map[sym]["prop_net_val"] = float(
                             row.get("prop_net_value", 0) or 0
                         )
                     if sym in live_price_map and close > 0:
-                        live_price_map[sym] = (
-                            close / 1000.0 if close > 1000.0 else close
-                        )
+                        live_price_map[sym] = close / 1000.0 if close > 1000.0 else close
                 break
         except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
             err_str = str(e).lower()
-            logger.warning(
-                "Failed to fetch batch price board (attempt %d): %s", attempt + 1, e
-            )
+            logger.warning("Failed to fetch batch price board (attempt %d): %s", attempt + 1, e)
             if (
                 "rate limit" in err_str
                 or "giới hạn api" in err_str
@@ -711,9 +687,7 @@ def check_corporate_events(symbol):
         company = Company(symbol=symbol, source="VCI")
         df_events = company.events()
         if df_events is not None and not df_events.empty:
-            df_events["event_date"] = pd.to_datetime(
-                df_events["public_date"], errors="coerce"
-            )
+            df_events["event_date"] = pd.to_datetime(df_events["public_date"], errors="coerce")
             now = pd.Timestamp.now()
             recent_events = df_events[
                 (df_events["event_date"] >= now - pd.Timedelta(days=2))
@@ -795,9 +769,7 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
                     return df, source
             except (Exception, SystemExit, BaseException) as e:  # noqa: BLE001
                 err_str = str(e).lower()
-                logger.debug(
-                    "Error fetching quote for %s from %s: %s", symbol, source, err_str
-                )
+                logger.debug("Error fetching quote for %s from %s: %s", symbol, source, err_str)
                 if (
                     "rate limit" in err_str
                     or "giới hạn api" in err_str
@@ -860,9 +832,7 @@ def main():
                     df_vn[col] = df_vn[col] / 1000.0
             df_vn = calculate_technical_indicators(df_vn)
             vnindex_val = float(df_vn["close"].iloc[-1])
-            prev_vnindex = (
-                float(df_vn["close"].iloc[-2]) if len(df_vn) >= 2 else vnindex_val
-            )
+            prev_vnindex = float(df_vn["close"].iloc[-2]) if len(df_vn) >= 2 else vnindex_val
             vnindex_change = vnindex_val - prev_vnindex
             vnindex_pct = (vnindex_change / prev_vnindex) * 100
 
@@ -873,9 +843,7 @@ def main():
                 f"  -> [VN-Index]: {vnindex_val:.2f} ({vnindex_pct:+.2f}%) | Trạng thái: {vnindex_status} | Rủi ro: {market_risk_level}"
             )
         else:
-            print(
-                "  -> WARNING: Failed to fetch VNINDEX. Falling back to backup context."
-            )
+            print("  -> WARNING: Failed to fetch VNINDEX. Falling back to backup context.")
     except Exception as e:  # noqa: BLE001
         logger.warning("Lỗi lấy dữ liệu VN-Index: %s", e)
 
@@ -892,15 +860,11 @@ def main():
 
     for idx, item in enumerate(CANDIDATE_STOCKS):
         symbol = item["symbol"]
-        meta = exchange_map.get(
-            symbol, {"exchange": "HOSE", "organ_name": item["companyName"]}
-        )
+        meta = exchange_map.get(symbol, {"exchange": "HOSE", "organ_name": item["companyName"]})
         ex = meta["exchange"]
         comp_name = item["companyName"] or meta["organ_name"]
 
-        print(
-            f"[{idx + 1}/{len(CANDIDATE_STOCKS)}] Đang phân tích: {symbol}...", end=" "
-        )
+        print(f"[{idx + 1}/{len(CANDIDATE_STOCKS)}] Đang phân tích: {symbol}...", end=" ")
 
         # 1. Bỏ qua nếu dính ngày GDKHQ
         has_event, event_msg = check_corporate_events(symbol)
@@ -982,9 +946,9 @@ def main():
                     stock_ret_20 = (df["close"].iloc[-1] - df["close"].iloc[-20]) / df[
                         "close"
                     ].iloc[-20]
-                    vn_ret_20 = (
-                        df_vn["close"].iloc[-1] - df_vn["close"].iloc[-20]
-                    ) / df_vn["close"].iloc[-20]
+                    vn_ret_20 = (df_vn["close"].iloc[-1] - df_vn["close"].iloc[-20]) / df_vn[
+                        "close"
+                    ].iloc[-20]
                     rs_diff = stock_ret_20 - vn_ret_20
                     if rs_diff > 0.05:  # Vượt trội so với thị trường > 5%
                         score += 5
@@ -1040,18 +1004,12 @@ def main():
                 # Cải tiến: Bộ lọc Trạng thái Thị trường Thích ứng (Market Regime Adaptive Filter)
                 # Khi thị trường ở xu hướng giảm (DOWNTREND) hoặc Rủi ro CAO (HIGH), siết chặt điều kiện MUA (score >= 75)
                 min_buy_score = (
-                    75
-                    if market_risk_level == "HIGH" or vnindex_status == "DOWNTREND"
-                    else 65
+                    75 if market_risk_level == "HIGH" or vnindex_status == "DOWNTREND" else 65
                 )
 
                 is_buy = close > ma20 and score >= min_buy_score
                 is_sell = (
-                    close < ma20
-                    or score <= 45
-                    or macd_hist < 0
-                    or rsi < 45
-                    or close <= stop_loss
+                    close < ma20 or score <= 45 or macd_hist < 0 or rsi < 45 or close <= stop_loss
                 )
 
                 if is_buy:
@@ -1068,9 +1026,7 @@ def main():
                 else:
                     grade = "Grade C"
 
-                rr_ratio = (
-                    f"1:{(target1 - close) / risk:.1f}" if action == "BUY" else "1:1.0"
-                )
+                rr_ratio = f"1:{(target1 - close) / risk:.1f}" if action == "BUY" else "1:1.0"
                 exec_notes = (
                     f"Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức {buy_max * 1000:,.0f}đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
                     if action == "BUY"
@@ -1096,18 +1052,14 @@ def main():
                     if d_info["macd_bullish"]:
                         sigs_bull.append("MACD")
                     if sigs_bull:
-                        div_bull_details.append(
-                            f"{'/'.join(sigs_bull)} phân kỳ dương {tf_lbl}"
-                        )
+                        div_bull_details.append(f"{'/'.join(sigs_bull)} phân kỳ dương {tf_lbl}")
 
                     if d_info["rsi_bearish"]:
                         sigs_bear.append("RSI")
                     if d_info["macd_bearish"]:
                         sigs_bear.append("MACD")
                     if sigs_bear:
-                        div_bear_details.append(
-                            f"{'/'.join(sigs_bear)} phân kỳ âm {tf_lbl}"
-                        )
+                        div_bear_details.append(f"{'/'.join(sigs_bear)} phân kỳ âm {tf_lbl}")
 
                 if div_bull_details:
                     divergence_rationale = f"Tín hiệu xác nhận: Xuất hiện {', '.join(div_bull_details)}, báo hiệu lực cầu đảo chiều tăng điểm rất mạnh."
@@ -1203,9 +1155,7 @@ def main():
                     break
 
             curr_p = (
-                live_price
-                if live_price > 0
-                else (old_rec["currentPrice"] if old_rec else 25.0)
+                live_price if live_price > 0 else (old_rec["currentPrice"] if old_rec else 25.0)
             )
 
             if old_rec:
@@ -1260,9 +1210,7 @@ def main():
                         "target_2": int(curr_p * 1.2 * 1000),
                         "risk_reward_ratio": "1:2.0",
                         "rationale": "Cổ phiếu trong danh sách theo dõi xu hướng.",
-                        "rationale_points": [
-                            "Cổ phiếu trong danh sách theo dõi xu hướng."
-                        ],
+                        "rationale_points": ["Cổ phiếu trong danh sách theo dõi xu hướng."],
                         "exec_notes": "Theo dõi sát tín hiệu dòng tiền.",
                         "riskLevel": "MEDIUM",
                     }
@@ -1272,9 +1220,7 @@ def main():
         time.sleep(1.0)
 
     # Step 2.5: Chuẩn hóa điểm rủi ro Z-Score toàn danh mục cổ phiếu (Universe Risk Normalization)
-    scanned_results = normalize_universe_risk(
-        scanned_results, market_risk_level=market_risk_level
-    )
+    scanned_results = normalize_universe_risk(scanned_results, market_risk_level=market_risk_level)
 
     # Step 3: Chọn lọc danh sách khuyến nghị & xuất file JSON
     print("\n[Step 3] Xuất dữ liệu cho AI Agent và Giao diện UI...")
@@ -1283,9 +1229,7 @@ def main():
     all_watch = [s for s in scanned_results if s["action"] == "HOLD/WATCH"]
 
     all_buys.sort(key=lambda x: x["score"], reverse=True)
-    all_sells.sort(
-        key=lambda x: x["score"]
-    )  # Lowest score / clearest sell signals first
+    all_sells.sort(key=lambda x: x["score"])  # Lowest score / clearest sell signals first
     all_watch.sort(key=lambda x: x["score"], reverse=True)
 
     # Select top recommendations (8 buys + 4 sells)

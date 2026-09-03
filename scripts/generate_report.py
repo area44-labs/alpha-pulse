@@ -31,9 +31,7 @@ from scripts.lib.regime import detect_market_regime
 from scripts.lib.risk import normalize_universe_liquidity_scores
 from scripts.lib.vietnam_market import UniverseProvider, get_historical_data
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 SCHEMA_PATH = os.path.join(ROOT_DIR, "schemas", "recommendations.schema.json")
@@ -89,9 +87,7 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
 
     for idx, item in enumerate(candidate_stocks):
         sym = item["symbol"]
-        df_stock, tag, warns = get_historical_data(
-            sym, max_retries=1, use_cache_only=use_cache
-        )
+        df_stock, tag, warns = get_historical_data(sym, max_retries=1, use_cache_only=use_cache)
         stock_data_map[sym] = (df_stock, tag, warns)
 
         # Pre-breadth check: price above MA20
@@ -102,9 +98,7 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
                 bullish_count += 1
 
     logger.info("Step 2: Calculating Market Breadth...")
-    breadth_ratio = (
-        round(bullish_count / len(candidate_stocks), 2) if candidate_stocks else 0.50
-    )
+    breadth_ratio = round(bullish_count / len(candidate_stocks), 2) if candidate_stocks else 0.50
 
     logger.info("Step 3: Calculating Final Market Regime...")
     final_market_regime = detect_market_regime(
@@ -214,9 +208,7 @@ def main():
 
     # Validate against Schema
     schema = load_schema()
-    logger.info(
-        "Validating recommendations payload against JSON Schema Draft 2020-12..."
-    )
+    logger.info("Validating recommendations payload against JSON Schema Draft 2020-12...")
     jsonschema.validate(instance=recs_data, schema=schema)
     logger.info("JSON Schema validation passed successfully!")
 
@@ -230,9 +222,7 @@ def main():
 
     logger.info("Report generation complete!")
     logger.info("Outputs written to generated/ and public/generated/:")
-    logger.info(
-        "  - recommendations.json (%d items)", len(recs_data["recommendations"])
-    )
+    logger.info("  - recommendations.json (%d items)", len(recs_data["recommendations"]))
     logger.info("  - market.json (Regime: %s)", recs_data["market"]["regime"])
     logger.info("  - history/%s.json", source_date)
     logger.info("  - history/index.json")
