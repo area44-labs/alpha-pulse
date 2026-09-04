@@ -15,6 +15,7 @@ import argparse
 import json
 import logging
 import os
+import subprocess
 import sys
 
 # Add repository root to path
@@ -47,6 +48,14 @@ def save_json(relative_path: str, data: dict):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
         f.write("\n")
+
+
+def format_generated_json():
+    """Format generated JSON files using oxfmt to comply with CI formatting standards."""
+    try:
+        subprocess.run(["npx", "oxfmt", GENERATED_DIR], capture_output=True, check=False)
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def load_market_data(
@@ -288,6 +297,8 @@ def main(args: list[str] | None = None):
     save_json("market.json", market_payload)
     save_json(os.path.join("history", f"{market_date}.json"), recs_payload)
     update_history_index(market_date)
+
+    format_generated_json()
 
     logger.info("Report generation complete!")
     logger.info("Outputs written to generated/:")
