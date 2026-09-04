@@ -40,12 +40,10 @@ alpha-pulse/
 │   │   ├── ui/                      # Base UI / shadcn headless components
 │   │   ├── header.tsx               # Thanh điều hướng chính & toggle theme
 │   │   ├── market-summary.tsx       # Bảng tổng quan chỉ số thị trường (VN-Index, VN30, HNX, UPCoM)
-│   │   ├── securities-table.tsx     # Bảng đồng thuận khuyến nghị từ các công ty chứng khoán
 │   │   ├── stock-detail-modal.tsx   # Modal xem chi tiết phân tích mã cổ phiếu
 │   │   └── stock-table.tsx          # Bảng danh sách khuyến nghị giao dịch hằng ngày
 │   ├── data/                        # Dữ liệu JSON tĩnh ban đầu
 │   │   ├── agent_signals.json       # Tín hiệu đầu ra cho AI Agents
-│   │   ├── securities-recommendations.json # Khuyến nghị từ các công ty chứng khoán
 │   │   └── stocks.json              # Dữ liệu phân tích 12 cổ phiếu tiêu biểu
 │   ├── hooks/                       # Custom React hooks
 │   ├── lib/                         # Utilities (utils.ts)
