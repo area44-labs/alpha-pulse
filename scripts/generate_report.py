@@ -54,8 +54,8 @@ def format_generated_json():
     """Format generated JSON files using oxfmt to comply with CI formatting standards."""
     try:
         subprocess.run(["npx", "oxfmt", GENERATED_DIR], capture_output=True, check=False)
-    except Exception:  # noqa: BLE001
-        pass
+    except Exception as err:  # noqa: BLE001
+        logger.debug("JSON formatting skipped: %s", err)
 
 
 def load_market_data(
