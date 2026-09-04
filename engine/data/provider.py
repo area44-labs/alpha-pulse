@@ -6,10 +6,10 @@ Provides rate-limit compliant data fetching, EOD historical prices, and data qua
 - SYNTHETIC (Deterministic baseline fallback data)
 """
 
+from datetime import date, datetime, timedelta, timezone
 import logging
 import re
 import time
-from datetime import date, datetime, timedelta, timezone
 
 import numpy as np
 import pandas as pd
@@ -144,17 +144,17 @@ def generate_baseline_series(
     np.random.seed((hash(symbol) % 10000) + 123)
     dates = pd.date_range(end=datetime.now(timezone.utc), periods=days, freq="B")
 
-    drift = np.sin(np.linspace(0, 6, days)) * (base_price * 0.1)
-    noise = np.cumsum(np.random.normal(0.05, base_price * 0.012, days))
+    drift = np.sin(np.linspace(0, 6, days)) * (base_price * 0.02)
+    noise = np.cumsum(np.random.normal(0.01, base_price * 0.005, days))
     close_prices = base_price + drift + noise
-    close_prices = np.clip(close_prices, base_price * 0.5, base_price * 2.0)
+    close_prices = np.clip(close_prices, base_price * 0.8, base_price * 1.2)
 
     df = pd.DataFrame(
         {
             "time": dates,
-            "open": close_prices * 0.995,
-            "high": close_prices * 1.015,
-            "low": close_prices * 0.985,
+            "open": close_prices * 0.998,
+            "high": close_prices * 1.005,
+            "low": close_prices * 0.995,
             "close": close_prices,
             "volume": np.random.randint(200000, 2500000, days),
         }
@@ -215,10 +215,10 @@ def get_historical_data(
                 time.sleep(0.2)
 
     base_p = (
-        1262.62
+        1247.83
         if sym == "VNINDEX"
         else (
-            1300.0
+            1285.50
             if sym == "VN30"
             else (
                 235.0

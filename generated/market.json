@@ -1,7 +1,7 @@
 {
   "market": "VN",
   "market_date": "2026-09-04",
-  "generated_at": "2026-09-04T03:31:15.277217+00:00",
+  "generated_at": "2026-09-04T07:06:27.627883+00:00",
   "data_quality": {
     "status": "SYNTHETIC",
     "source": "fallback",
@@ -14,24 +14,24 @@
     "version": 1
   },
   "market_context": {
-    "regime": "STRONG_BULL",
-    "regime_score": 100.0,
+    "regime": "BULL",
+    "regime_score": 65.0,
     "confidence": 0.85,
     "metrics": {
-      "vnindex_value": 1118.77,
-      "vnindex_change_pct": 1.46,
-      "vn30_change_pct": 0.74,
+      "vnindex_value": 1319.19,
+      "vnindex_change_pct": 0.07,
+      "vn30_change_pct": 0.61,
       "market_breadth_ratio": 0.88,
-      "volatility": 0.3428,
-      "volume_20d_ratio": 1.65
+      "volatility": 0.0712,
+      "volume_20d_ratio": 0.45
     }
   },
   "summary": {
     "total_scanned": 42,
-    "buy_count": 8,
+    "buy_count": 10,
     "watch_count": 24,
-    "hold_count": 7,
-    "sell_count": 3,
+    "hold_count": 3,
+    "sell_count": 5,
     "avoid_count": 0
   }
 }
