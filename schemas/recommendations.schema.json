@@ -1,37 +1,47 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "AlphaPulseRecommendationsSchema",
-  "description": "Schema for Alpha Pulse Vietnam Quantitative Stock Recommendations v2.0",
+  "description": "Schema for Alpha Pulse Quantitative Stock Recommendations v3.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schema_version",
-    "generated_at",
-    "source_date",
     "market",
+    "market_date",
+    "generated_at",
+    "data_quality",
+    "market_context",
     "summary",
     "recommendations"
   ],
   "properties": {
     "schema_version": {
       "type": "string",
-      "const": "2.0"
+      "const": "3.0"
+    },
+    "market": {
+      "type": "string",
+      "const": "VN"
+    },
+    "market_date": {
+      "type": "string"
     },
     "generated_at": {
       "type": "string"
     },
-    "source_date": {
-      "type": "string"
+    "data_quality": {
+      "$ref": "#/$defs/data_quality"
     },
     "universe_info": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "universe_type": { "type": "string" },
-        "universe_size": { "type": "integer" }
+        "universe_size": { "type": "integer" },
+        "version": { "type": "integer" }
       }
     },
-    "market": {
+    "market_context": {
       "type": "object",
       "additionalProperties": false,
       "required": ["regime", "confidence", "metrics"],
@@ -40,15 +50,15 @@
           "type": "string",
           "enum": ["STRONG_BULL", "BULL", "DEFENSIVE", "BEAR", "PANIC"]
         },
-        "confidence": {
-          "type": ["number", "null"],
-          "minimum": 0.0,
-          "maximum": 1.0
-        },
         "regime_score": {
           "type": ["number", "null"],
           "minimum": 0.0,
           "maximum": 100.0
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 1.0
         },
         "metrics": {
           "type": "object",
@@ -97,6 +107,20 @@
     }
   },
   "$defs": {
+    "data_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "source", "market_date", "is_stale"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["REAL", "CACHE", "SYNTHETIC"]
+        },
+        "source": { "type": "string" },
+        "market_date": { "type": "string" },
+        "is_stale": { "type": "boolean" }
+      }
+    },
     "recommendation": {
       "type": "object",
       "additionalProperties": false,
@@ -105,13 +129,13 @@
         "company_name",
         "exchange",
         "sector",
-        "action",
-        "alpha_score",
-        "risk_adjusted_alpha",
-        "risk_level",
-        "expected_return",
-        "risk_metrics",
+        "signal",
+        "score",
+        "confidence",
+        "market_regime",
+        "risk",
         "trade_plan",
+        "data_quality",
         "reasons",
         "warnings"
       ],
@@ -120,35 +144,40 @@
         "company_name": { "type": "string" },
         "exchange": { "type": "string", "enum": ["HOSE", "HNX", "UPCOM"] },
         "sector": { "type": "string" },
-        "action": {
+        "signal": {
           "type": "string",
           "enum": ["BUY", "WATCH", "HOLD", "SELL", "AVOID"]
         },
-        "alpha_score": {
+        "score": {
           "type": ["number", "null"],
           "minimum": 0.0,
           "maximum": 100.0
         },
-        "risk_adjusted_alpha": { "type": ["number", "null"] },
-        "risk_level": {
-          "type": ["string", "null"],
-          "enum": ["LOW", "MEDIUM", "HIGH", null]
+        "confidence": {
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 1.0
         },
-        "expected_return": {
+        "market_regime": {
+          "type": "string",
+          "enum": ["STRONG_BULL", "BULL", "DEFENSIVE", "BEAR", "PANIC"]
+        },
+        "risk": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["expected_return_5d", "expected_return_10d", "expected_return_20d"],
+          "required": [
+            "risk_level",
+            "var_t25",
+            "es_t25",
+            "volatility_60d",
+            "max_drawdown",
+            "liquidity_score"
+          ],
           "properties": {
-            "expected_return_5d": { "type": ["number", "null"] },
-            "expected_return_10d": { "type": ["number", "null"] },
-            "expected_return_20d": { "type": ["number", "null"] }
-          }
-        },
-        "risk_metrics": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["var_t25", "es_t25", "volatility_60d", "max_drawdown", "liquidity_score"],
-          "properties": {
+            "risk_level": {
+              "type": ["string", "null"],
+              "enum": ["LOW", "MEDIUM", "HIGH", null]
+            },
             "var_t25": { "type": ["number", "null"] },
             "es_t25": { "type": ["number", "null"] },
             "volatility_60d": { "type": ["number", "null"] },
@@ -165,6 +194,10 @@
           "type": "object",
           "additionalProperties": false,
           "required": [
+            "signal_date",
+            "execution_date",
+            "settlement_date",
+            "settlement_model",
             "current_price",
             "entry_low",
             "entry_high",
@@ -175,6 +208,10 @@
             "position_percent"
           ],
           "properties": {
+            "signal_date": { "type": "string" },
+            "execution_date": { "type": "string" },
+            "settlement_date": { "type": "string" },
+            "settlement_model": { "type": "string", "const": "T+2.5" },
             "current_price": { "type": ["number", "null"] },
             "entry_low": { "type": ["number", "null"] },
             "entry_high": { "type": ["number", "null"] },
@@ -188,6 +225,9 @@
               "maximum": 100.0
             }
           }
+        },
+        "data_quality": {
+          "$ref": "#/$defs/data_quality"
         },
         "reasons": {
           "type": "array",
