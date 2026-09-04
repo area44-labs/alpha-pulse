@@ -9,10 +9,12 @@ if ROOT_DIR not in sys.path:
 
 from scripts.generate_report import main as generate_report_main
 
+
 def main():
     # Pass --update to generate_report
     sys.argv = [sys.argv[0], "--update"]
     generate_report_main()
+
 
 if __name__ == "__main__":
     main()

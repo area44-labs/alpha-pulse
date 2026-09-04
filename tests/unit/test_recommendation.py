@@ -28,12 +28,16 @@ class TestRecommendationEngine(unittest.TestCase):
         self.regime_bull = {"regime": "BULL", "regime_score": 75.0, "confidence": 0.85}
 
     def test_missing_data_returns_avoid(self):
-        rec = generate_recommendation("FPT", "FPT Corp", "Technology", "HOSE", None, self.regime_bull)
+        rec = generate_recommendation(
+            "FPT", "FPT Corp", "Technology", "HOSE", None, self.regime_bull
+        )
         self.assertEqual(rec["action"], "AVOID")
         self.assertIsNone(rec["trade_plan"]["current_price"])
 
     def test_valid_recommendation_generation(self):
-        rec = generate_recommendation("FPT", "FPT Corp", "Technology", "HOSE", self.df_stock, self.regime_bull)
+        rec = generate_recommendation(
+            "FPT", "FPT Corp", "Technology", "HOSE", self.df_stock, self.regime_bull
+        )
         self.assertIn(rec["action"], ["BUY", "WATCH", "HOLD", "SELL", "AVOID"])
         self.assertIsNotNone(rec["trade_plan"]["current_price"])
 

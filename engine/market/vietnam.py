@@ -116,7 +116,7 @@ def calculate_settlement_schedule(signal_date_str: str) -> SettlementSchedule:
     - Settlement Date (T+2.5): Shares/cash settle in afternoon of second business day after trade.
     - Available to Sell Date (T+3): Shares available for trade starting T+3 morning session.
     """
-    sig_d = datetime.strptime(signal_date_str, "%Y-%m-%d").date()
+    sig_d = date.fromisoformat(signal_date_str)
     exec_d = add_business_days(sig_d, 1)
     settle_d = add_business_days(exec_d, 2)
     avail_d = add_business_days(exec_d, 3)

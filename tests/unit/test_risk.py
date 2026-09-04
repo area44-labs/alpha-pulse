@@ -14,7 +14,14 @@ class TestRiskModel(unittest.TestCase):
         close = 20.0 + np.cumsum(np.random.normal(0.0, 0.4, 60))
 
         self.df_stock = pd.DataFrame(
-            {"time": dates, "open": close, "high": close + 0.3, "low": close - 0.3, "close": close, "volume": 1000000}
+            {
+                "time": dates,
+                "open": close,
+                "high": close + 0.3,
+                "low": close - 0.3,
+                "close": close,
+                "volume": 1000000,
+            }
         )
 
     def test_t25_risk_metrics(self):

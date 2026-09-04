@@ -18,8 +18,8 @@ def calculate_relative_strength(
     stock_ret = (df_stock["close"].iloc[-1] - df_stock["close"].iloc[-window]) / df_stock[
         "close"
     ].iloc[-window]
-    bench_ret = (df_benchmark["close"].iloc[-1] - df_benchmark["close"].iloc[-window]) / df_benchmark[
-        "close"
-    ].iloc[-window]
+    bench_ret = (
+        df_benchmark["close"].iloc[-1] - df_benchmark["close"].iloc[-window]
+    ) / df_benchmark["close"].iloc[-window]
 
     return round(float(stock_ret - bench_ret), 4)

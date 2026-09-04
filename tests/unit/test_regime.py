@@ -14,10 +14,24 @@ class TestMarketRegime(unittest.TestCase):
         close_bear = 1300.0 - np.linspace(0, 150, 60)
 
         self.df_bull = pd.DataFrame(
-            {"time": dates, "open": close_bull, "high": close_bull + 5, "low": close_bull - 5, "close": close_bull, "volume": 1000000}
+            {
+                "time": dates,
+                "open": close_bull,
+                "high": close_bull + 5,
+                "low": close_bull - 5,
+                "close": close_bull,
+                "volume": 1000000,
+            }
         )
         self.df_bear = pd.DataFrame(
-            {"time": dates, "open": close_bear, "high": close_bear + 5, "low": close_bear - 5, "close": close_bear, "volume": 1000000}
+            {
+                "time": dates,
+                "open": close_bear,
+                "high": close_bear + 5,
+                "low": close_bear - 5,
+                "close": close_bear,
+                "volume": 1000000,
+            }
         )
 
     def test_strong_bull_regime(self):

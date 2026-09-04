@@ -49,7 +49,9 @@ def save_json(relative_path: str, data: dict):
         f.write("\n")
 
 
-def load_market_data(update_data: bool = False) -> tuple[dict, list[tuple[str, dict, str, list[str]]]]:
+def load_market_data(
+    update_data: bool = False,
+) -> tuple[dict, list[tuple[str, dict, str, list[str]]]]:
     """Load benchmark and universe stock market data."""
     use_cache = not update_data
     provider = UniverseProvider()
@@ -79,7 +81,9 @@ def load_market_data(update_data: bool = False) -> tuple[dict, list[tuple[str, d
     return market_data, stock_data
 
 
-def calculate_features(market_data: dict, stock_data: list[tuple[str, dict, str, list[str]]]) -> dict:
+def calculate_features(
+    market_data: dict, stock_data: list[tuple[str, dict, str, list[str]]]
+) -> dict:
     """Calculate market features including market breadth."""
     logger.info("Step 2: Calculating Market Features & Breadth...")
     stocks_dfs = [(s[0], s[2]) for s in stock_data]
@@ -161,9 +165,12 @@ def generate_recommendations(
         recs.append(rec_v3)
 
     logger.info("Step 5: Normalizing Liquidity Scores...")
-    liquidity_vals = [r["risk"].get("avg_value_20d") for r in recs if r["risk"].get("avg_value_20d") is not None]
+    liquidity_vals = [
+        r["risk"].get("avg_value_20d") for r in recs if r["risk"].get("avg_value_20d") is not None
+    ]
     if liquidity_vals:
         import pandas as pd
+
         s_vals = pd.Series(liquidity_vals)
         ranks = (s_vals.rank(pct=True) * 100.0).round(1)
         idx = 0

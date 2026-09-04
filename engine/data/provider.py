@@ -6,10 +6,10 @@ Provides rate-limit compliant data fetching, EOD historical prices, and data qua
 - SYNTHETIC (Deterministic baseline fallback data)
 """
 
+from datetime import date, datetime, timedelta, timezone
 import logging
 import re
 import time
-from datetime import datetime, timedelta, timezone
 
 import numpy as np
 import pandas as pd
@@ -137,7 +137,9 @@ def load_backup_stock_price(symbol: str) -> float:
     return REALISTIC_BASELINE_PRICES.get(sym, 25.0)
 
 
-def generate_baseline_series(symbol: str, base_price: float = 25.0, days: int = 120) -> pd.DataFrame:
+def generate_baseline_series(
+    symbol: str, base_price: float = 25.0, days: int = 120
+) -> pd.DataFrame:
     """Generate deterministic baseline series tagged explicitly as SYNTHETIC data."""
     np.random.seed((hash(symbol) % 10000) + 123)
     dates = pd.date_range(end=datetime.now(timezone.utc), periods=days, freq="B")
@@ -256,8 +258,8 @@ def build_data_quality_info(data_tag: str, df: pd.DataFrame | None = None) -> di
         if date_col:
             last_date = pd.to_datetime(df[date_col].iloc[-1]).strftime("%Y-%m-%d")
             # Stale if last date is more than 5 days ago
-            last_dt = datetime.strptime(last_date, "%Y-%m-%d")
-            now_dt = datetime.strptime(m_date, "%Y-%m-%d")
+            last_dt = date.fromisoformat(last_date)
+            now_dt = date.fromisoformat(m_date)
             if (now_dt - last_dt).days > 5:
                 is_stale = True
 
