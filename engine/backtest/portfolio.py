@@ -1,6 +1,7 @@
 """Vietnam T+2.5 Portfolio Backtest Engine for Alpha Pulse."""
 
 import logging
+
 import numpy as np
 import pandas as pd
 

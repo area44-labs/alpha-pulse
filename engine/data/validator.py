@@ -2,6 +2,7 @@
 
 import json
 import os
+
 import jsonschema
 
 DEFAULT_SCHEMA_PATH = os.path.join(

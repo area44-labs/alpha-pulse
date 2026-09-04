@@ -1,6 +1,7 @@
 """Unit tests for Recommendation Engine."""
 
 import unittest
+
 import numpy as np
 import pandas as pd
 

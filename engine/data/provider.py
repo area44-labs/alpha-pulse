@@ -6,10 +6,10 @@ Provides rate-limit compliant data fetching, EOD historical prices, and data qua
 - SYNTHETIC (Deterministic baseline fallback data)
 """
 
-from datetime import date, datetime, timedelta, timezone
 import logging
 import re
 import time
+from datetime import date, datetime, timedelta, timezone
 
 import numpy as np
 import pandas as pd

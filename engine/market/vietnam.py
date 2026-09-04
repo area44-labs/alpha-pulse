@@ -8,9 +8,9 @@ Covers:
 - Domain settlement rules for Vietnam T+2.5 market cycle
 """
 
+import zoneinfo
 from datetime import date, datetime, timedelta
 from typing import TypedDict
-import zoneinfo
 
 VIETNAM_TZ = zoneinfo.ZoneInfo("Asia/Ho_Chi_Minh")
 

@@ -1,15 +1,16 @@
 """Unit tests for Technical and Momentum Features."""
 
 import unittest
+
 import numpy as np
 import pandas as pd
 
+from engine.features.momentum import calculate_relative_strength
 from engine.features.technical import (
     calculate_multi_timeframe_features,
     calculate_single_tf_indicators,
     detect_divergence,
 )
-from engine.features.momentum import calculate_relative_strength
 from engine.features.volume import calculate_volume_ratio
 
 
@@ -54,7 +55,7 @@ class TestFeatures(unittest.TestCase):
         self.assertIn("macd_bearish", div)
 
     def test_multi_timeframe_features(self):
-        df_d, tf_summary = calculate_multi_timeframe_features(self.df_sample)
+        _df_d, tf_summary = calculate_multi_timeframe_features(self.df_sample)
         self.assertIn("1d", tf_summary)
         self.assertIn("1w", tf_summary)
         self.assertIn("1m", tf_summary)
