@@ -1,142 +1,209 @@
-"""Generate Report Script for Alpha Pulse v2.
+"""Generate Report Script for Alpha Pulse.
 
 Command line usage:
     python scripts/generate_report.py
     python scripts/generate_report.py --update
 
-Outputs:
+Outputs ONLY to:
     generated/recommendations.json
     generated/market.json
     generated/history/index.json
     generated/history/YYYY-MM-DD.json
-    (Synchronized under public/generated/ for static Vite frontend)
 """
 
 import argparse
 import json
 import logging
 import os
+import subprocess
 import sys
-from datetime import datetime, timezone
-
-import jsonschema
 
 # Add repository root to path
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-from scripts.lib.recommendation import generate_recommendation
-from scripts.lib.regime import detect_market_regime
-from scripts.lib.risk import normalize_universe_liquidity_scores
-from scripts.lib.vietnam_market import UniverseProvider, get_historical_data
+from engine.data.provider import build_data_quality_info, get_historical_data
+from engine.data.universe import UniverseProvider
+from engine.data.validator import validate_report
+from engine.features.breadth import calculate_market_breadth
+from engine.market.vietnam import (
+    calculate_settlement_schedule,
+    get_generated_at_utc,
+    get_market_date,
+)
+from engine.strategy.recommendation import generate_recommendation
+from engine.strategy.regime import detect_market_regime
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
-SCHEMA_PATH = os.path.join(ROOT_DIR, "schemas", "recommendations.schema.json")
 GENERATED_DIR = os.path.join(ROOT_DIR, "generated")
-PUBLIC_GENERATED_DIR = os.path.join(ROOT_DIR, "public", "generated")
 
 
-def save_json_files(relative_path: str, data: dict):
-    """Save JSON data to both generated/ and public/generated/."""
-    path1 = os.path.join(GENERATED_DIR, relative_path)
-    path2 = os.path.join(PUBLIC_GENERATED_DIR, relative_path)
-
-    for p in [path1, path2]:
-        os.makedirs(os.path.dirname(p), exist_ok=True)
-        with open(p, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-            f.write("\n")
+def save_json(relative_path: str, data: dict):
+    """Save JSON data strictly to generated/ directory."""
+    path = os.path.join(GENERATED_DIR, relative_path)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+        f.write("\n")
 
 
-def load_schema():
-    """Load JSON Schema Draft 2020-12 from schemas/recommendations.schema.json."""
-    with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+def format_generated_json():
+    """Format generated JSON files using oxfmt to comply with CI formatting standards."""
+    try:
+        subprocess.run(["npx", "oxfmt", GENERATED_DIR], capture_output=True, check=False)
+    except Exception as err:  # noqa: BLE001
+        logger.debug("JSON formatting skipped: %s", err)
 
 
-def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
-    """Execute market data pipeline following strict dependency order:
-
-    1. Fetch VN-Index benchmark & stock universe EOD history
-    2. Calculate Market Breadth across universe
-    3. Calculate Final Market Regime
-    4. Generate Stock Recommendations using the Final Market Regime
-    5. Compute Universe Percentile Liquidity Scores
-    """
-    source_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    generated_at = datetime.now(timezone.utc).isoformat()
+def load_market_data(
+    update_data: bool = False,
+) -> tuple[dict, list[tuple[str, dict, str, list[str]]]]:
+    """Load benchmark and universe stock market data."""
     use_cache = not update_data
-
     provider = UniverseProvider()
-    candidate_stocks = provider.candidates
-    universe_info = provider.get_info()
+    candidate_stocks = provider.stocks
 
-    logger.info("Step 1: Fetching VN-Index benchmark & stock universe EOD history...")
-    df_vnindex, _vn_source, _vn_warns = get_historical_data(
+    logger.info("Step 1: Fetching VN-Index & stock universe EOD market data...")
+    df_vnindex, vn_tag, _ = get_historical_data(
         "VNINDEX", max_retries=2 if update_data else 1, use_cache_only=use_cache
     )
     df_vn30, _, _ = get_historical_data(
         "VN30", max_retries=2 if update_data else 1, use_cache_only=use_cache
     )
 
-    stock_data_map = {}
-    bullish_count = 0
-
-    for idx, item in enumerate(candidate_stocks):
-        sym = item["symbol"]
-        df_stock, tag, warns = get_historical_data(sym, max_retries=1, use_cache_only=use_cache)
-        stock_data_map[sym] = (df_stock, tag, warns)
-
-        # Pre-breadth check: price above MA20
-        if not df_stock.empty and len(df_stock) >= 20:
-            c = df_stock["close"].iloc[-1]
-            ma20 = df_stock["close"].tail(20).mean()
-            if c > ma20:
-                bullish_count += 1
-
-    logger.info("Step 2: Calculating Market Breadth...")
-    breadth_ratio = round(bullish_count / len(candidate_stocks), 2) if candidate_stocks else 0.50
-
-    logger.info("Step 3: Calculating Final Market Regime...")
-    final_market_regime = detect_market_regime(
-        df_vnindex=df_vnindex, df_vn30=df_vn30, breadth_ratio=breadth_ratio
-    )
-
-    logger.info("Step 4: Generating Stock Recommendations using Final Market Regime...")
-    scanned_recs = []
+    stock_data = []
     for item in candidate_stocks:
         sym = item["symbol"]
-        comp = item["companyName"]
+        df_stock, tag, warns = get_historical_data(sym, max_retries=1, use_cache_only=use_cache)
+        stock_data.append((sym, item, df_stock, tag, warns))
+
+    market_data = {
+        "df_vnindex": df_vnindex,
+        "df_vn30": df_vn30,
+        "vn_tag": vn_tag,
+        "universe_info": provider.get_info(),
+        "candidate_stocks": candidate_stocks,
+    }
+    return market_data, stock_data
+
+
+def calculate_features(
+    market_data: dict, stock_data: list[tuple[str, dict, str, list[str]]]
+) -> dict:
+    """Calculate market features including market breadth."""
+    logger.info("Step 2: Calculating Market Features & Breadth...")
+    stocks_dfs = [(s[0], s[2]) for s in stock_data]
+    breadth_ratio = calculate_market_breadth(stocks_dfs)
+    return {
+        "breadth_ratio": breadth_ratio,
+        "stock_data": stock_data,
+    }
+
+
+def detect_regime(market_data: dict, features: dict) -> dict:
+    """Detect Market Regime."""
+    logger.info("Step 3: Detecting Market Regime...")
+    regime = detect_market_regime(
+        df_vnindex=market_data["df_vnindex"],
+        df_vn30=market_data["df_vn30"],
+        breadth_ratio=features["breadth_ratio"],
+    )
+    return regime
+
+
+def generate_recommendations(
+    market_data: dict, stock_data: list[tuple[str, dict, str, list[str]]], regime: dict
+) -> list[dict]:
+    """Generate recommendations for all candidate stocks compliant with Schema v3.0."""
+    logger.info("Step 4: Generating Stock Recommendations...")
+    m_date = get_market_date()
+    settle_sched = calculate_settlement_schedule(m_date)
+
+    recs = []
+    for sym, item, df_stock, tag, _warns in stock_data:
+        comp = item["company_name"]
         sec = item["sector"]
         ex = item.get("exchange", "HOSE")
 
-        df_stock, _, _ = stock_data_map[sym]
-
-        rec = generate_recommendation(
+        rec_raw = generate_recommendation(
             symbol=sym,
             company_name=comp,
             sector=sec,
             exchange=ex,
             df_stock=df_stock,
-            market_regime_info=final_market_regime,
-            df_vnindex=df_vnindex,
+            market_regime_info=regime,
+            df_vnindex=market_data["df_vnindex"],
         )
-        scanned_recs.append(rec)
 
-    logger.info("Step 5: Computing Universe Percentile Liquidity Scores...")
-    scanned_recs = normalize_universe_liquidity_scores(scanned_recs)
+        dq = build_data_quality_info(tag, df_stock)
 
-    buy_cnt = sum(1 for r in scanned_recs if r["action"] == "BUY")
-    watch_cnt = sum(1 for r in scanned_recs if r["action"] == "WATCH")
-    hold_cnt = sum(1 for r in scanned_recs if r["action"] == "HOLD")
-    sell_cnt = sum(1 for r in scanned_recs if r["action"] == "SELL")
-    avoid_cnt = sum(1 for r in scanned_recs if r["action"] == "AVOID")
+        # Map to Schema v3.0 contract
+        trade_plan = rec_raw["trade_plan"]
+        trade_plan["signal_date"] = settle_sched["signal_date"]
+        trade_plan["execution_date"] = settle_sched["execution_date"]
+        trade_plan["settlement_date"] = settle_sched["settlement_date"]
+        trade_plan["settlement_model"] = "T+2.5"
+
+        rec_v3 = {
+            "symbol": sym,
+            "company_name": comp,
+            "exchange": ex,
+            "sector": sec,
+            "signal": rec_raw["action"],
+            "score": rec_raw["alpha_score"],
+            "confidence": regime.get("confidence", 0.80),
+            "market_regime": regime.get("regime", "DEFENSIVE"),
+            "risk": {
+                "risk_level": rec_raw["risk_level"],
+                "var_t25": rec_raw["risk_metrics"]["var_t25"],
+                "es_t25": rec_raw["risk_metrics"]["es_t25"],
+                "volatility_60d": rec_raw["risk_metrics"]["volatility_60d"],
+                "max_drawdown": rec_raw["risk_metrics"]["max_drawdown"],
+                "liquidity_score": rec_raw["risk_metrics"]["liquidity_score"],
+                "avg_value_20d": rec_raw["risk_metrics"].get("avg_value_20d"),
+            },
+            "trade_plan": trade_plan,
+            "data_quality": dq,
+            "reasons": rec_raw["reasons"],
+            "warnings": rec_raw["warnings"],
+            "divergence": rec_raw.get("divergence"),
+        }
+        recs.append(rec_v3)
+
+    logger.info("Step 5: Normalizing Liquidity Scores...")
+    liquidity_vals = [
+        r["risk"].get("avg_value_20d") for r in recs if r["risk"].get("avg_value_20d") is not None
+    ]
+    if liquidity_vals:
+        import pandas as pd
+
+        s_vals = pd.Series(liquidity_vals)
+        ranks = (s_vals.rank(pct=True) * 100.0).round(1)
+        idx = 0
+        for r in recs:
+            if r["risk"].get("avg_value_20d") is not None:
+                r["risk"]["liquidity_score"] = float(ranks.iloc[idx])
+                idx += 1
+
+    return recs
+
+
+def build_report(market_data: dict, regime: dict, recommendations: list[dict]) -> tuple[dict, dict]:
+    """Assemble final recommendations and market summary payloads."""
+    m_date = get_market_date()
+    gen_at = get_generated_at_utc()
+
+    buy_cnt = sum(1 for r in recommendations if r["signal"] == "BUY")
+    watch_cnt = sum(1 for r in recommendations if r["signal"] == "WATCH")
+    hold_cnt = sum(1 for r in recommendations if r["signal"] == "HOLD")
+    sell_cnt = sum(1 for r in recommendations if r["signal"] == "SELL")
+    avoid_cnt = sum(1 for r in recommendations if r["signal"] == "AVOID")
 
     summary = {
-        "total_scanned": len(scanned_recs),
+        "total_scanned": len(recommendations),
         "buy_count": buy_cnt,
         "watch_count": watch_cnt,
         "hold_count": hold_cnt,
@@ -144,30 +211,34 @@ def run_pipeline(update_data: bool = False) -> tuple[dict, dict, dict]:
         "avoid_count": avoid_cnt,
     }
 
-    recommendations_payload = {
-        "schema_version": "2.0",
-        "generated_at": generated_at,
-        "source_date": source_date,
-        "universe_info": universe_info,
-        "market": final_market_regime,
+    dq_overall = build_data_quality_info(market_data["vn_tag"], market_data["df_vnindex"])
+
+    recs_payload = {
+        "schema_version": "3.0",
+        "market": "VN",
+        "market_date": m_date,
+        "generated_at": gen_at,
+        "data_quality": dq_overall,
+        "universe_info": market_data["universe_info"],
+        "market_context": regime,
         "summary": summary,
-        "recommendations": scanned_recs,
+        "recommendations": recommendations,
     }
 
     market_payload = {
-        "source_date": source_date,
-        "generated_at": generated_at,
-        "universe_info": universe_info,
-        "market": final_market_regime,
+        "market": "VN",
+        "market_date": m_date,
+        "generated_at": gen_at,
+        "data_quality": dq_overall,
+        "universe_info": market_data["universe_info"],
+        "market_context": regime,
         "summary": summary,
     }
 
-    history_payload = recommendations_payload
-
-    return recommendations_payload, market_payload, history_payload
+    return recs_payload, market_payload
 
 
-def update_history_index(source_date: str):
+def update_history_index(market_date: str):
     """Maintain history/index.json with list of available historical dates."""
     index_path = os.path.join(GENERATED_DIR, "history", "index.json")
     history_dates = []
@@ -180,52 +251,61 @@ def update_history_index(source_date: str):
         except Exception:  # noqa: BLE001
             history_dates = []
 
-    if source_date not in history_dates:
-        history_dates.append(source_date)
+    if market_date not in history_dates:
+        history_dates.append(market_date)
         history_dates.sort(reverse=True)
 
     index_payload = {
-        "last_updated": datetime.now(timezone.utc).isoformat(),
+        "last_updated": get_generated_at_utc(),
         "total_reports": len(history_dates),
         "dates": history_dates,
     }
 
-    save_json_files(os.path.join("history", "index.json"), index_payload)
+    save_json(os.path.join("history", "index.json"), index_payload)
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Alpha Pulse Report Generator v2")
+def main(args: list[str] | None = None):
+    parser = argparse.ArgumentParser(description="Alpha Pulse Report Generator v3")
     parser.add_argument(
         "--update",
         action="store_true",
-        help="Run data fetch pipeline before report generation",
+        help="Run live data fetch before report generation",
     )
-    args = parser.parse_args()
+    parsed_args = parser.parse_args(args)
 
-    logger.info("Starting Alpha Pulse Report Generator v2 (update=%s)...", args.update)
+    logger.info("Starting Alpha Pulse Report Generator v3 (update=%s)...", parsed_args.update)
 
-    recs_data, market_data, history_data = run_pipeline(update_data=args.update)
+    market_data, stock_data = load_market_data(update_data=parsed_args.update)
+    features = calculate_features(market_data, stock_data)
+    regime = detect_regime(market_data, features)
+    recommendations = generate_recommendations(market_data, stock_data, regime)
 
-    # Validate against Schema
-    schema = load_schema()
-    logger.info("Validating recommendations payload against JSON Schema Draft 2020-12...")
-    jsonschema.validate(instance=recs_data, schema=schema)
-    logger.info("JSON Schema validation passed successfully!")
+    recs_payload, market_payload = build_report(market_data, regime, recommendations)
 
-    source_date = recs_data["source_date"]
+    # Validate against Schema v3.0
+    logger.info("Validating recommendations payload against Schema v3.0 Draft 2020-12...")
+    is_valid, err_msg = validate_report(recs_payload)
+    if not is_valid:
+        logger.error("JSON Schema Validation Failed: %s", err_msg)
+        sys.exit(1)
+    logger.info("JSON Schema Validation passed successfully!")
 
-    # Save outputs
-    save_json_files("recommendations.json", recs_data)
-    save_json_files("market.json", market_data)
-    save_json_files(os.path.join("history", f"{source_date}.json"), history_data)
-    update_history_index(source_date)
+    market_date = recs_payload["market_date"]
+
+    # Save outputs exclusively under generated/
+    save_json("recommendations.json", recs_payload)
+    save_json("market.json", market_payload)
+    save_json(os.path.join("history", f"{market_date}.json"), recs_payload)
+    update_history_index(market_date)
+
+    format_generated_json()
 
     logger.info("Report generation complete!")
-    logger.info("Outputs written to generated/ and public/generated/:")
-    logger.info("  - recommendations.json (%d items)", len(recs_data["recommendations"]))
-    logger.info("  - market.json (Regime: %s)", recs_data["market"]["regime"])
-    logger.info("  - history/%s.json", source_date)
-    logger.info("  - history/index.json")
+    logger.info("Outputs written to generated/:")
+    logger.info("  - generated/recommendations.json (%d items)", len(recommendations))
+    logger.info("  - generated/market.json (Regime: %s)", regime["regime"])
+    logger.info("  - generated/history/%s.json", market_date)
+    logger.info("  - generated/history/index.json")
 
 
 if __name__ == "__main__":

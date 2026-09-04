@@ -1,0 +1,300 @@
+{
+  "market": "VN",
+  "version": 1,
+  "stocks": [
+    {
+      "symbol": "ACB",
+      "company_name": "Ngân hàng TMCP Á Châu",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "BCM",
+      "company_name": "Tổng Công ty Đầu tư và Phát triển Công nghiệp",
+      "sector": "Bất động sản KCN",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "BID",
+      "company_name": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "BVH",
+      "company_name": "Tập đoàn Bảo Việt",
+      "sector": "Bảo hiểm",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "CTG",
+      "company_name": "Ngân hàng TMCP Công Thương Việt Nam",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "FPT",
+      "company_name": "Công ty Cổ phần FPT",
+      "sector": "Công nghệ",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "GAS",
+      "company_name": "Tổng Công ty Khí Việt Nam - CTCP",
+      "sector": "Dầu khí",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "GVR",
+      "company_name": "Tập đoàn Công nghiệp Cao su Việt Nam - CTCP",
+      "sector": "Cao su & BĐS KCN",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "HDB",
+      "company_name": "Ngân hàng TMCP Phát triển TP. Hồ Chí Minh",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "HPG",
+      "company_name": "Công ty Cổ phần Tập đoàn Hòa Phát",
+      "sector": "Thép",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "MBB",
+      "company_name": "Ngân hàng TMCP Quân Đội",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "MSN",
+      "company_name": "Công ty Cổ phần Tập đoàn Masan",
+      "sector": "Tiêu dùng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "MWG",
+      "company_name": "Công ty Cổ phần Đầu tư Thế giới Di Động",
+      "sector": "Bán lẻ",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "PLX",
+      "company_name": "Tập đoàn Xăng dầu Việt Nam",
+      "sector": "Năng lượng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "POW",
+      "company_name": "Tổng Công ty Điện lực Dầu khí Việt Nam - CTCP",
+      "sector": "Điện lực",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "SAB",
+      "company_name": "Tổng Công ty Cổ phần Bia - Rượu - Nước giải khát Sài Gòn",
+      "sector": "Đồ uống",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "SSB",
+      "company_name": "Ngân hàng TMCP Đông Nam Á",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "SSI",
+      "company_name": "Công ty Cổ phần Chứng khoán SSI",
+      "sector": "Chứng khoán",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "STB",
+      "company_name": "Ngân hàng TMCP Sài Gòn Thương Tín",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "TCB",
+      "company_name": "Ngân hàng TMCP Kỹ thương Việt Nam",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "TPB",
+      "company_name": "Ngân hàng TMCP Tiên Phong",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VCB",
+      "company_name": "Ngân hàng TMCP Ngoại Thương Việt Nam",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VHM",
+      "company_name": "Công ty Cổ phần Vinhomes",
+      "sector": "Bất động sản",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VIB",
+      "company_name": "Ngân hàng TMCP Quốc tế Việt Nam",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VIC",
+      "company_name": "Tập đoàn Vingroup - CTCP",
+      "sector": "Bất động sản",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VJC",
+      "company_name": "Công ty Cổ phần Hàng không Vietjet",
+      "sector": "Hàng không",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VNM",
+      "company_name": "Công ty Cổ phần Sữa Việt Nam",
+      "sector": "Thực phẩm",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VPB",
+      "company_name": "Ngân hàng TMCP Việt Nam Thịnh Vượng",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VRE",
+      "company_name": "Công ty Cổ phần Vincom Retail",
+      "sector": "Bất động sản",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "SHB",
+      "company_name": "Ngân hàng TMCP Sài Gòn - Hà Nội",
+      "sector": "Ngân hàng",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "DGC",
+      "company_name": "CTCP Tập đoàn Hóa chất Đức Giang",
+      "sector": "Hóa chất",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "FRT",
+      "company_name": "CTCP Bán lẻ Kỹ thuật số FPT",
+      "sector": "Bán lẻ",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "PVD",
+      "company_name": "Tổng CTCP Khoan và Dịch vụ Khoan Dầu khí",
+      "sector": "Dầu khí",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VCI",
+      "company_name": "CTCP Chứng khoán Vietcap",
+      "sector": "Chứng khoán",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "HCM",
+      "company_name": "CTCP Chứng khoán TP.Hồ Chí Minh",
+      "sector": "Chứng khoán",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "VND",
+      "company_name": "CTCP Chứng khoán VNDIRECT",
+      "sector": "Chứng khoán",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "HSG",
+      "company_name": "CTCP Tập đoàn Hoa Sen",
+      "sector": "Thép",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "NKG",
+      "company_name": "CTCP Thép Nam Kim",
+      "sector": "Thép",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "DXG",
+      "company_name": "CTCP Tập đoàn Đất Xanh",
+      "sector": "Bất động sản",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "DIG",
+      "company_name": "Tổng CTCP Đầu tư Phát triển Xây dựng",
+      "sector": "Bất động sản",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "PDR",
+      "company_name": "CTCP Phát triển Bất động sản Phát Đạt",
+      "sector": "Bất động sản",
+      "exchange": "HOSE",
+      "enabled": true
+    },
+    {
+      "symbol": "GMD",
+      "company_name": "CTCP Gemadept",
+      "sector": "Logistics",
+      "exchange": "HOSE",
+      "enabled": true
+    }
+  ]
+}

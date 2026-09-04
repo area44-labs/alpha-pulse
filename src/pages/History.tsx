@@ -2,50 +2,30 @@ import { Calendar, History as HistoryIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 
 import { Badge } from "@/components/ui/badge";
-
-import type { RecommendationsPayload } from "./Dashboard";
-
-interface HistoryIndexPayload {
-  last_updated: string;
-  total_reports: number;
-  dates: string[];
-}
+import {
+  getHistoryIndex,
+  getHistoryReport,
+  type HistoryIndex,
+  type RecommendationsReport,
+} from "@/lib/data";
 
 interface HistoryProps {
   onSelectStock: (symbol: string) => void;
 }
 
 export function History({ onSelectStock }: HistoryProps) {
-  const [indexData, setIndexData] = useState<HistoryIndexPayload | null>(null);
+  const [indexData, setIndexData] = useState<HistoryIndex | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");
-  const [reportData, setReportData] = useState<RecommendationsPayload | null>(null);
+  const [reportData, setReportData] = useState<RecommendationsReport | null>(null);
   const [loadingIndex, setLoadingIndex] = useState(true);
   const [loadingReport, setLoadingReport] = useState(false);
 
   useEffect(() => {
     async function loadHistoryIndex() {
-      const baseUrl = import.meta.env.BASE_URL || "/";
-      const ts = Date.now();
-      const paths = [
-        `${baseUrl}generated/history/index.json?t=${ts}`,
-        `/generated/history/index.json?t=${ts}`,
-        `generated/history/index.json?t=${ts}`,
-      ];
-
-      for (const p of paths) {
-        try {
-          const res = await fetch(p);
-          if (res.ok) {
-            const data: HistoryIndexPayload = await res.json();
-            if (data && data.dates && data.dates.length > 0) {
-              setIndexData(data);
-              setSelectedDate(data.dates[0]);
-              break;
-            }
-          }
-        } catch {
-          // try next
-        }
+      const data = await getHistoryIndex();
+      if (data && data.dates && data.dates.length > 0) {
+        setIndexData(data);
+        setSelectedDate(data.dates[0]);
       }
       setLoadingIndex(false);
     }
@@ -58,27 +38,9 @@ export function History({ onSelectStock }: HistoryProps) {
 
     async function loadDateReport() {
       setLoadingReport(true);
-      const baseUrl = import.meta.env.BASE_URL || "/";
-      const ts = Date.now();
-      const paths = [
-        `${baseUrl}generated/history/${selectedDate}.json?t=${ts}`,
-        `/generated/history/${selectedDate}.json?t=${ts}`,
-        `generated/history/${selectedDate}.json?t=${ts}`,
-      ];
-
-      for (const p of paths) {
-        try {
-          const res = await fetch(p);
-          if (res.ok) {
-            const json: RecommendationsPayload = await res.json();
-            if (json && json.recommendations) {
-              setReportData(json);
-              break;
-            }
-          }
-        } catch {
-          // try next
-        }
+      const json = await getHistoryReport(selectedDate);
+      if (json) {
+        setReportData(json);
       }
       setLoadingReport(false);
     }
@@ -99,7 +61,7 @@ export function History({ onSelectStock }: HistoryProps) {
       <div className="flex h-64 flex-col items-center justify-center space-y-2 text-center font-mono">
         <p className="text-sm font-bold text-foreground">Không tìm thấy báo cáo lịch sử</p>
         <p className="text-xs text-muted-foreground">
-          Vui lòng tạo báo cáo đầu tiên bằng command pipeline.
+          Vui lòng tạo báo cáo bằng command generate_report.py.
         </p>
       </div>
     );
@@ -116,7 +78,7 @@ export function History({ onSelectStock }: HistoryProps) {
       <div className="flex flex-col gap-4 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="flex items-center text-xl font-bold tracking-tight text-foreground">
-            <HistoryIcon className="mr-2 h-5 w-5" /> Lịch Sử Khuyến Nghị Alpha Pulse
+            <HistoryIcon className="mr-2 h-5 w-5" /> Lịch Sử Báo Cáo Alpha Pulse
           </h1>
           <p className="text-xs text-muted-foreground">
             Chọn ngày giao dịch để xem lại dữ liệu khuyến nghị và trạng thái thị trường quá khứ.
@@ -154,11 +116,11 @@ export function History({ onSelectStock }: HistoryProps) {
           <div className="flex flex-wrap items-center justify-between gap-4 rounded-sm border border-border bg-card p-4">
             <div>
               <span className="block font-mono text-[10px] text-muted-foreground uppercase">
-                Báo cáo ngày {reportData.source_date}
+                Báo cáo ngày {reportData.market_date}
               </span>
               <span className="text-sm font-bold text-foreground">
-                Thị trường: {reportData.market.regime} (Điểm:{" "}
-                {reportData.market.regime_score ?? "—"})
+                Thị trường: {reportData.market_context.regime} (Điểm:{" "}
+                {reportData.market_context.regime_score ?? "—"})
               </span>
             </div>
             <div className="flex items-center space-x-3 font-mono text-xs">
@@ -177,7 +139,7 @@ export function History({ onSelectStock }: HistoryProps) {
                   <th className="p-3 text-center">Hành động</th>
                   <th className="p-3 text-right">Alpha Score</th>
                   <th className="p-3 text-right">Giá hiện tại</th>
-                  <th className="p-3 text-center">Vùng mua / TP / SL</th>
+                  <th className="p-3 text-center">Vùng mua / SL</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border text-xs">
@@ -196,17 +158,17 @@ export function History({ onSelectStock }: HistoryProps) {
                     <td className="p-3 text-center">
                       <Badge
                         variant={
-                          rec.action === "BUY"
+                          rec.signal === "BUY"
                             ? "success"
-                            : rec.action === "WATCH"
+                            : rec.signal === "WATCH"
                               ? "warning"
                               : "destructive"
                         }
                       >
-                        {rec.action}
+                        {rec.signal}
                       </Badge>
                     </td>
-                    <td className="p-3 text-right font-mono font-bold">{rec.alpha_score ?? "—"}</td>
+                    <td className="p-3 text-right font-mono font-bold">{rec.score ?? "—"}</td>
                     <td className="p-3 text-right font-bold">
                       {formatVnd(rec.trade_plan.current_price)}
                     </td>
