@@ -56,30 +56,6 @@
       "execution_notes": "Bỏ qua lệnh nếu mở phiên T+1 hở Gap UP vượt mức 18,650đ. Tuân thủ chu kỳ T+2.5, không fomo khi giá vượt quá Vùng mua."
     },
     {
-      "ticker": "GMD",
-      "exchange": "HOSE",
-      "action": "SELL",
-      "confidence_score": 18,
-      "grade": "Grade C",
-      "price_data": {
-        "buy_zone": {
-          "min": 74600,
-          "max": 76100
-        },
-        "stop_loss": 76100,
-        "target_1": 79800,
-        "target_2": 79800,
-        "risk_reward_ratio": "1:1.0"
-      },
-      "technical_rationale": [
-        "Giá đóng cửa 74,600đ gãy đường xu hướng ngắn hạn MA20 (77,635đ), suy yếu xu hướng.",
-        "Thanh khoản duy trì ở mức bình ổn.",
-        "Cảnh báo kỹ thuật: Đã xuất hiện RSI/MACD phân kỳ âm khung ngày (1D), RSI phân kỳ âm khung tuần (1W), áp lực chốt lời/suy yếu gia tăng.",
-        "RSI khung ngày đạt 31.5 điểm, MACD Histogram (-0.527) thể hiện áp lực điều chỉnh."
-      ],
-      "execution_notes": "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20 hoặc xuất hiện cảnh báo phân kỳ âm."
-    },
-    {
       "ticker": "SAB",
       "exchange": "HOSE",
       "action": "SELL",
@@ -148,6 +124,30 @@
         "Thanh khoản duy trì ở mức bình ổn.",
         "Động lượng đa khung: Chỉ báo RSI (39.9) và MACD (-0.230) duy trì xu hướng đồng thuận trên khung ngày và tuần.",
         "RSI khung ngày đạt 39.9 điểm, MACD Histogram (-0.230) thể hiện áp lực điều chỉnh."
+      ],
+      "execution_notes": "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20 hoặc xuất hiện cảnh báo phân kỳ âm."
+    },
+    {
+      "ticker": "CTG",
+      "exchange": "HOSE",
+      "action": "SELL",
+      "confidence_score": 50,
+      "grade": "Grade C",
+      "price_data": {
+        "buy_zone": {
+          "min": 29950,
+          "max": 30550
+        },
+        "stop_loss": 30750,
+        "target_1": 32049,
+        "target_2": 32049,
+        "risk_reward_ratio": "1:1.0"
+      },
+      "technical_rationale": [
+        "Giá đóng cửa 29,950đ gãy đường xu hướng ngắn hạn MA20 (31,402đ), suy yếu xu hướng.",
+        "Thanh khoản bùng nổ đạt 1.6x so với trung bình 20 phiên, dòng tiền mua chủ động.",
+        "Tín hiệu xác nhận: Xuất hiện RSI phân kỳ dương khung tuần (1W), báo hiệu lực cầu đảo chiều tăng điểm rất mạnh.",
+        "RSI khung ngày đạt 37.6 điểm, MACD Histogram (-0.166) thể hiện áp lực điều chỉnh."
       ],
       "execution_notes": "Khuyến nghị hạ tỷ trọng/bán chốt lời hoặc cắt lỗ quản trị rủi ro ngay khi vi phạm mốc MA20 hoặc xuất hiện cảnh báo phân kỳ âm."
     },
