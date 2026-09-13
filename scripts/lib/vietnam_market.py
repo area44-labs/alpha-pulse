@@ -25,7 +25,7 @@ except ImportError:
     VNSTOCK_AVAILABLE = False
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-STOCKS_JSON_PATH = os.path.join(ROOT_DIR, "src", "data", "stocks.json")
+RECOMMENDATIONS_JSON_PATH = os.path.join(ROOT_DIR, "generated", "recommendations.json")
 
 
 class UniverseProvider:
@@ -474,19 +474,20 @@ REALISTIC_BASELINE_PRICES = {
 
 
 def load_backup_stock_price(symbol: str) -> float:
-    """Load baseline stock price from REALISTIC_BASELINE_PRICES or src/data/stocks.json if available."""
+    """Load baseline stock price from REALISTIC_BASELINE_PRICES or generated/recommendations.json if available."""
     sym = symbol.upper() if symbol else ""
     if sym in REALISTIC_BASELINE_PRICES:
         return REALISTIC_BASELINE_PRICES[sym]
 
-    if os.path.exists(STOCKS_JSON_PATH):
+    if os.path.exists(RECOMMENDATIONS_JSON_PATH):
         try:
-            with open(STOCKS_JSON_PATH, "r", encoding="utf-8") as f:
+            with open(RECOMMENDATIONS_JSON_PATH, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 for rec in data.get("recommendations", []):
                     if rec.get("symbol") == sym:
-                        p = float(rec.get("currentPrice", 25.0))
-                        return p if p < 1000.0 else p / 1000.0
+                        tp = rec.get("trade_plan", {})
+                        cp = float(tp.get("current_price", 25.0))
+                        return cp / 1000.0 if cp > 1000.0 else cp
         except Exception as e:  # noqa: BLE001
             logger.debug("Failed to load baseline stock price for %s: %s", symbol, e)
     return 25.0
@@ -583,7 +584,7 @@ def get_historical_data(
     df_fallback = generate_baseline_series(sym, base_price=base_p)
     df_val, warnings = validate_ohlcv_data(df_fallback, sym)
 
-    data_tag = "CACHE_DATA" if os.path.exists(STOCKS_JSON_PATH) else "SYNTHETIC_DATA"
+    data_tag = "CACHE_DATA" if os.path.exists(RECOMMENDATIONS_JSON_PATH) else "SYNTHETIC_DATA"
 
     if not allow_synthetic and data_tag == "SYNTHETIC_DATA":
         return (

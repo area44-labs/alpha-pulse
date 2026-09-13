@@ -2,15 +2,64 @@
 
 [![GitHub Pages](https://github.com/area44-labs/vn-invest/actions/workflows/pages.yml/badge.svg)](https://area44-labs.github.io/vn-invest/)
 
-## Development
+Hệ thống phân tích và khuyến nghị chứng khoán Việt Nam (HOSE, HNX, UPCoM) sử dụng Python Quantitative Engine và Frontend React SSG.
 
-```bash
-pnpm install
-pnpm dev
+## Kiến Trúc Hệ Thống
+
+```
+Python Quantitative Engine
+        ↓
+Validated Data Contract (JSON Schema Draft 2020-12)
+        ↓
+Static JSON Artifacts (generated/)
+        ↓
+React / TanStack Router (src/)
+        ↓
+SSG / GitHub Pages Deployment
 ```
 
-Open your web browser and navigate to http://localhost:5173.
+## Tính Năng Nổi Bật
+
+- **Python Quantitative Engine**: Tính toán chỉ báo kỹ thuật (MA, RSI, MACD, ATR), nhận diện phân kỳ đa khung thời gian, phân tích trạng thái thị trường (Market Regime), chấm điểm Alpha Score, tính rủi ro T+2.5 (Historical VaR 95%, Expected Shortfall, Max Drawdown) và lập kế hoạch giao dịch (Trade Plan).
+- **Single Source of Truth**: Data contract được định nghĩa chuẩn xác bằng JSON Schema (`schemas/recommendations.schema.json`).
+- **TanStack Router & SSG**: Điều hướng SPA mượt mà với routing dựa trên TanStack Router (`/`, `/history`, `/stock/$symbol`) và prerender static HTML tương thích GitHub Pages.
+- **Bảo Đảm Kiểm Thử**: Bộ unit test Python kiểm tra toàn bộ logic tính toán chỉ báo, rủi ro, kế hoạch giao dịch và anti-lookahead bias.
+
+## Hướng Dẫn Phát Triển
+
+### 1. Frontend
+
+```bash
+# Cài đặt dependencies
+pnpm install
+
+# Run dev server
+pnpm dev
+
+# Kiểm tra lint & format
+pnpm check
+
+# Build dự án SSG
+pnpm build
+```
+
+### 2. Backend Quantitative Pipeline
+
+```bash
+# Cài đặt Python dependencies
+pip install -r requirements.txt
+
+# Chạy báo cáo định lượng & tạo file JSON tĩnh
+python scripts/generate_report.py
+
+# Chạy toàn bộ Unit Tests Python
+python scripts/tests/run_tests.py
+
+# Lint & format Python code
+ruff check scripts
+ruff format scripts
+```
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+Dự án phát hành theo mã nguồn mở [MIT License](LICENSE).

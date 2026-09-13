@@ -12,7 +12,13 @@ export default defineConfig({
     tanstackStart({
       prerender: {
         enabled: true,
-        pages: [{ path: "/" }, { path: "/history" }, { path: "/stock" }],
+        pages: [
+          { path: "/" },
+          { path: "/history" },
+          { path: "/stock/FPT" },
+          { path: "/stock/VCB" },
+          { path: "/stock/HPG" },
+        ],
       },
     }),
     react(),
