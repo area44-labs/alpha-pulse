@@ -26,13 +26,11 @@ vn-invest/
 │   │   └── vietnam_market.py        # Chuẩn hóa mã cổ phiếu (HOSE, HNX, UPCoM), lấy dữ liệu EOD qua vnstock
 │   ├── tests/                       # Bộ kiểm thử tự động Python
 │   │   ├── run_tests.py             # Runner kích hoạt toàn bộ unit tests
-│   │   ├── test_backtest.py         # Kiểm thử động cơ backtest T+2.5
 │   │   ├── test_recommendation.py   # Kiểm thử logic phân loại hành động (BUY, WATCH, HOLD, SELL, AVOID)
 │   │   ├── test_regime.py           # Kiểm thử nhận diện trạng thái thị trường
 │   │   ├── test_risk.py             # Kiểm thử thông số rủi ro
 │   │   └── test_schema.py           # Kiểm thử tính hợp lệ của dữ liệu với JSON Schema v2.0
 │   ├── audit_trail_schema.sql       # Schema SQL PostgreSQL/Supabase lưu vết giao dịch & trượt giá (Slippage)
-│   ├── backtest.py                  # Động cơ Backtest danh mục T+2.5 (VietnamPortfolioBacktester)
 │   ├── generate_report.py           # Script tạo báo cáo JSON chuẩn schema v2.0 dưới generated/
 │   └── update_stocks.py             # Script cập nhật giá EOD hằng ngày & xuất src/data/stocks.json
 ├── src/                             # Frontend React + TypeScript
@@ -113,7 +111,7 @@ Trước khi gửi commit hoặc yêu cầu submit:
 1. Sửa lỗi/tính năng theo yêu cầu.
 2. Chạy `pnpm check` (đảm bảo 0 lỗi JS/TS).
 3. Chạy `ruff check scripts && ruff format --check scripts` (đảm bảo 0 lỗi Python).
-4. Chạy `python scripts/tests/run_tests.py` (đảm bảo 13/13 unit tests PASS).
+4. Chạy `python scripts/tests/run_tests.py` (đảm bảo 11/11 unit tests PASS).
 
 <!-- vnai-bootstrap | auto-generated -->
 
