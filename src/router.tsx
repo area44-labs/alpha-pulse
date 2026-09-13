@@ -2,16 +2,23 @@ import { createRouter } from "@tanstack/react-router";
 
 import { routeTree } from "./routeTree.gen";
 
-export function createApplicationRouter() {
-  const router = createRouter({
+export function getRouter() {
+  return createRouter({
     routeTree,
   });
-
-  return router;
 }
+
+export const createApplicationRouter = getRouter;
 
 declare module "@tanstack/react-router" {
   interface Register {
-    router: ReturnType<typeof createApplicationRouter>;
+    router: ReturnType<typeof getRouter>;
+  }
+}
+
+declare module "@tanstack/react-start" {
+  interface Register {
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }

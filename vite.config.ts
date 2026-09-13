@@ -1,14 +1,23 @@
 import tailwindcss from "@tailwindcss/vite";
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-const base = process.env.BASE || "/";
+const base = process.env.BASE || process.env.BASE_URL || "/";
 
 // https://vite.dev/config/
 export default defineConfig({
   base,
-  plugins: [TanStackRouterVite(), react(), tailwindcss()],
+  plugins: [
+    tanstackStart({
+      prerender: {
+        enabled: true,
+        pages: [{ path: "/" }, { path: "/history" }, { path: "/stock" }],
+      },
+    }),
+    react(),
+    tailwindcss(),
+  ],
   resolve: {
     tsconfigPaths: true,
   },
