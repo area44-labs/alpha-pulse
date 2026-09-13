@@ -11,22 +11,47 @@ function getBaseUrl(): string {
 }
 
 /**
- * Fetches canonical recommendations JSON artifact.
+ * Reads local static JSON artifact from disk during SSG build,
+ * or fetches via HTTP in browser runtime.
  */
-export async function loadRecommendations(): Promise<RecommendationsPayload | null> {
+async function loadArtifact<T>(relativePath: string): Promise<T | null> {
+  if (import.meta.env.SSR) {
+    try {
+      const fsModule = "node:fs/promises";
+      const pathModule = "node:path";
+      const fs = await import(/* @vite-ignore */ fsModule);
+      const path = await import(/* @vite-ignore */ pathModule);
+
+      const filePath = path.join(process.cwd(), "public", relativePath);
+      const content = await fs.readFile(filePath, "utf-8");
+      return JSON.parse(content) as T;
+    } catch (err) {
+      console.error(`[SSG] Failed to read static artifact public/${relativePath}:`, err);
+      return null;
+    }
+  }
+
   const baseUrl = getBaseUrl();
-  const url = `${baseUrl}generated/recommendations.json`;
+  const url = `${baseUrl}${relativePath}`;
 
   try {
     const res = await fetch(url);
     if (res.ok) {
-      const data: RecommendationsPayload = await res.json();
-      if (data && data.recommendations) {
-        return data;
-      }
+      return (await res.json()) as T;
     }
   } catch (err) {
-    console.error("Failed to load recommendations artifact:", err);
+    console.error(`Failed to fetch artifact ${url}:`, err);
+  }
+  return null;
+}
+
+/**
+ * Fetches canonical recommendations JSON artifact.
+ */
+export async function loadRecommendations(): Promise<RecommendationsPayload | null> {
+  const data = await loadArtifact<RecommendationsPayload>("generated/recommendations.json");
+  if (data && data.recommendations) {
+    return data;
   }
   return null;
 }
@@ -35,19 +60,9 @@ export async function loadRecommendations(): Promise<RecommendationsPayload | nu
  * Fetches canonical market summary JSON artifact.
  */
 export async function loadMarket(): Promise<MarketPayload | null> {
-  const baseUrl = getBaseUrl();
-  const url = `${baseUrl}generated/market.json`;
-
-  try {
-    const res = await fetch(url);
-    if (res.ok) {
-      const data: MarketPayload = await res.json();
-      if (data && data.market) {
-        return data;
-      }
-    }
-  } catch (err) {
-    console.error("Failed to load market artifact:", err);
+  const data = await loadArtifact<MarketPayload>("generated/market.json");
+  if (data && data.market) {
+    return data;
   }
   return null;
 }
@@ -56,19 +71,9 @@ export async function loadMarket(): Promise<MarketPayload | null> {
  * Fetches history index JSON artifact.
  */
 export async function loadHistoryIndex(): Promise<HistoryIndexPayload | null> {
-  const baseUrl = getBaseUrl();
-  const url = `${baseUrl}generated/history/index.json`;
-
-  try {
-    const res = await fetch(url);
-    if (res.ok) {
-      const data: HistoryIndexPayload = await res.json();
-      if (data && data.dates) {
-        return data;
-      }
-    }
-  } catch (err) {
-    console.error("Failed to load history index artifact:", err);
+  const data = await loadArtifact<HistoryIndexPayload>("generated/history/index.json");
+  if (data && data.dates) {
+    return data;
   }
   return null;
 }
@@ -80,19 +85,9 @@ export async function loadHistoryReport(date: string): Promise<RecommendationsPa
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return null;
   }
-  const baseUrl = getBaseUrl();
-  const url = `${baseUrl}generated/history/${date}.json`;
-
-  try {
-    const res = await fetch(url);
-    if (res.ok) {
-      const data: RecommendationsPayload = await res.json();
-      if (data && data.recommendations) {
-        return data;
-      }
-    }
-  } catch (err) {
-    console.error(`Failed to load historical report for ${date}:`, err);
+  const data = await loadArtifact<RecommendationsPayload>(`generated/history/${date}.json`);
+  if (data && data.recommendations) {
+    return data;
   }
   return null;
 }
