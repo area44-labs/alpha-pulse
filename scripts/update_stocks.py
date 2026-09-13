@@ -787,6 +787,7 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
 
 def main():
     import sys
+
     from scripts.generate_report import main as generate_report_main
 
     print("=====================================================================")
@@ -794,7 +795,6 @@ def main():
     print("=====================================================================")
     sys.argv = [sys.argv[0], "--update"]
     generate_report_main()
-    return
 
 
 def legacy_main_deprecated():
