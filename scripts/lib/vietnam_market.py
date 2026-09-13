@@ -2,17 +2,15 @@
 
 Handles symbol normalization, universe provider abstraction, data quality validation,
 price tick size limits, exchange mappings, and EOD historical market data fetching.
-Explicitly tags data sources: REAL_DATA, CACHE_DATA, or SYNTHETIC_DATA.
+Explicitly tags data sources: REAL_DATA or INSUFFICIENT_HISTORICAL_DATA.
 """
 
-import json
 import logging
 import os
 import re
 import time
 from datetime import datetime, timedelta, timezone
 
-import numpy as np
 import pandas as pd
 
 logger = logging.getLogger(__name__)
@@ -427,104 +425,15 @@ def validate_ohlcv_data(df: pd.DataFrame, symbol: str) -> tuple[pd.DataFrame, li
     return df_valid.reset_index(drop=True), warnings
 
 
-REALISTIC_BASELINE_PRICES = {
-    "ACB": 24.5,
-    "BCM": 68.0,
-    "BID": 48.5,
-    "BVH": 42.0,
-    "CTG": 35.0,
-    "FPT": 132.0,
-    "GAS": 78.0,
-    "GVR": 34.0,
-    "HDB": 26.0,
-    "HPG": 28.0,
-    "MBB": 24.0,
-    "MSN": 75.0,
-    "MWG": 65.0,
-    "PLX": 38.0,
-    "POW": 11.5,
-    "SAB": 58.0,
-    "SSB": 22.0,
-    "SSI": 34.0,
-    "STB": 30.0,
-    "TCB": 23.0,
-    "TPB": 18.0,
-    "VCB": 92.0,
-    "VHM": 42.0,
-    "VIB": 21.0,
-    "VIC": 44.5,
-    "VJC": 102.0,
-    "VNM": 66.0,
-    "VPB": 19.0,
-    "VRE": 22.5,
-    "SHB": 11.5,
-    "DGC": 115.0,
-    "FRT": 175.0,
-    "PVD": 28.0,
-    "VCI": 48.0,
-    "HCM": 28.0,
-    "VND": 16.0,
-    "HSG": 20.0,
-    "NKG": 21.0,
-    "DXG": 15.0,
-    "DIG": 24.0,
-    "PDR": 22.0,
-    "GMD": 82.0,
-}
-
-
-def load_backup_stock_price(symbol: str) -> float:
-    """Load baseline stock price from REALISTIC_BASELINE_PRICES or generated/recommendations.json if available."""
-    sym = symbol.upper() if symbol else ""
-    if sym in REALISTIC_BASELINE_PRICES:
-        return REALISTIC_BASELINE_PRICES[sym]
-
-    if os.path.exists(RECOMMENDATIONS_JSON_PATH):
-        try:
-            with open(RECOMMENDATIONS_JSON_PATH, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                for rec in data.get("recommendations", []):
-                    if rec.get("symbol") == sym:
-                        tp = rec.get("trade_plan", {})
-                        cp = float(tp.get("current_price", 25.0))
-                        return cp / 1000.0 if cp > 1000.0 else cp
-        except Exception as e:  # noqa: BLE001
-            logger.debug("Failed to load baseline stock price for %s: %s", symbol, e)
-    return 25.0
-
-
-def generate_baseline_series(symbol: str, base_price: float = 25.0, days: int = 120):
-    """Generate deterministic baseline series tagged explicitly as SYNTHETIC_DATA."""
-    np.random.seed((hash(symbol) % 10000) + 123)
-    dates = pd.date_range(end=datetime.now(timezone.utc), periods=days, freq="B")
-
-    drift = np.sin(np.linspace(0, 6, days)) * (base_price * 0.1)
-    noise = np.cumsum(np.random.normal(0.05, base_price * 0.012, days))
-    close_prices = base_price + drift + noise
-    close_prices = np.clip(close_prices, base_price * 0.5, base_price * 2.0)
-
-    df = pd.DataFrame(
-        {
-            "time": dates,
-            "open": close_prices * 0.995,
-            "high": close_prices * 1.015,
-            "low": close_prices * 0.985,
-            "close": close_prices,
-            "volume": np.random.randint(200000, 2500000, days),
-        }
-    )
-    return df
-
-
 def get_historical_data(
     symbol: str,
     start_date: str | None = None,
     end_date: str | None = None,
-    max_retries: int = 1,
+    max_retries: int = 2,
     use_cache_only: bool = False,
-    allow_synthetic: bool = True,
+    allow_synthetic: bool = False,
 ):
-    """Fetch historical EOD OHLCV data for a given symbol."""
+    """Fetch real historical EOD OHLCV data for a given symbol from vnstock."""
     sym = normalize_symbol(symbol)
     if not start_date or not end_date:
         now_dt = datetime.now(timezone.utc)
@@ -533,7 +442,7 @@ def get_historical_data(
 
     INDEX_SYMBOLS = {"VNINDEX", "VN30", "HNXINDEX", "UPCOMINDEX", "VN30INDEX"}
 
-    if not use_cache_only and VNSTOCK_AVAILABLE:
+    if VNSTOCK_AVAILABLE:
         sources = ["kbs", "msn"]
         for attempt in range(max_retries):
             for source in sources:
@@ -568,29 +477,8 @@ def get_historical_data(
             if attempt < max_retries - 1:
                 time.sleep(0.2)
 
-    base_p = (
-        1262.62
-        if sym == "VNINDEX"
-        else (
-            1300.0
-            if sym == "VN30"
-            else (
-                235.0
-                if sym == "HNXINDEX"
-                else (95.0 if sym == "UPCOMINDEX" else load_backup_stock_price(sym))
-            )
-        )
+    return (
+        pd.DataFrame(),
+        "INSUFFICIENT_HISTORICAL_DATA",
+        [f"[{sym}] Không thể lấy dữ liệu lịch sử thực tế từ vnstock."],
     )
-    df_fallback = generate_baseline_series(sym, base_price=base_p)
-    df_val, warnings = validate_ohlcv_data(df_fallback, sym)
-
-    data_tag = "CACHE_DATA" if os.path.exists(RECOMMENDATIONS_JSON_PATH) else "SYNTHETIC_DATA"
-
-    if not allow_synthetic and data_tag == "SYNTHETIC_DATA":
-        return (
-            pd.DataFrame(),
-            "INSUFFICIENT_HISTORICAL_DATA",
-            ["Data source is synthetic."],
-        )
-
-    return df_val, data_tag, warnings
