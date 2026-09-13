@@ -116,7 +116,7 @@ export function History({ onSelectStock }: HistoryProps) {
       <div className="flex flex-col gap-4 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="flex items-center text-xl font-bold tracking-tight text-foreground">
-            <HistoryIcon className="mr-2 h-5 w-5" /> Lịch Sử Khuyến Nghị Alpha Pulse
+            <HistoryIcon className="mr-2 h-5 w-5" /> Lịch Sử Khuyến Nghị VN VN Invest
           </h1>
           <p className="text-xs text-muted-foreground">
             Chọn ngày giao dịch để xem lại dữ liệu khuyến nghị và trạng thái thị trường quá khứ.
