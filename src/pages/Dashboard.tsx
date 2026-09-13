@@ -1,13 +1,13 @@
-import { Link } from "@tanstack/react-router";
-import { ArrowDownRight, Sparkles } from "lucide-react";
+import { ArrowDownRight, Sparkles, AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import type { MarketPayload, RecommendationsPayload } from "@/types/recommendation";
 
 import { MarketSummary } from "@/components/market-summary";
+import { RecommendationCard } from "@/components/recommendation-card";
 import { StockTable } from "@/components/stock-table";
 import { loadMarket, loadRecommendations } from "@/data/loader";
-import { formatDate, formatVnd } from "@/lib/format";
+import { formatDate } from "@/lib/format";
 
 export function Dashboard() {
   const [data, setData] = useState<RecommendationsPayload | null>(null);
@@ -46,8 +46,10 @@ export function Dashboard() {
   }
 
   const recommendations = data.recommendations || [];
-  const buyList = recommendations.filter((r) => r.action === "BUY");
-  const sellList = recommendations.filter((r) => r.action === "SELL");
+  const buyList = recommendations.filter((r) => r.action === "BUY" || r.action === "WATCH");
+  const sellList = recommendations.filter(
+    (r) => r.action === "SELL" || r.action === "AVOID" || r.action === "HOLD",
+  );
 
   // Deterministic ranking by risk_adjusted_alpha or alpha_score DESC
   const sortedBuys = [...buyList].sort(
@@ -59,12 +61,21 @@ export function Dashboard() {
       (b.risk_adjusted_alpha ?? b.alpha_score ?? 0) - (a.risk_adjusted_alpha ?? a.alpha_score ?? 0),
   );
 
-  const topBuys = sortedBuys.slice(0, 5);
-  const topSells = sortedSells.slice(0, 5);
+  const topBuys = sortedBuys.slice(0, 4);
+  const topSells = sortedSells.slice(0, 4);
 
-  const vnVal = marketPayload?.market?.metrics?.vnindex_value ?? 1788.61;
-  const vnChgPct = marketPayload?.market?.metrics?.vnindex_change_pct ?? 0.86;
-  const vnChgAbs = (vnVal * vnChgPct) / 100;
+  const mktMetrics = marketPayload?.market?.metrics || data.market?.metrics;
+  const vnVal = mktMetrics?.vnindex_value ?? null;
+  const vnChgPct = mktMetrics?.vnindex_change_pct ?? null;
+  const vnChgAbs = vnVal != null && vnChgPct != null ? (vnVal * vnChgPct) / 100 : null;
+
+  const isStale = () => {
+    if (!data.source_date) return false;
+    const dataDate = new Date(data.source_date);
+    const today = new Date();
+    const diffDays = Math.floor((today.getTime() - dataDate.getTime()) / (1000 * 3600 * 24));
+    return diffDays > 3;
+  };
 
   const marketSummaryData = {
     vnIndex: {
@@ -72,33 +83,50 @@ export function Dashboard() {
       value: vnVal,
       change: vnChgAbs,
       changePercent: vnChgPct,
-      volume: `${marketPayload?.market?.metrics?.volume_20d_ratio ?? 1.2}x 20D MA`,
+      volume: mktMetrics?.volume_20d_ratio != null ? `${mktMetrics.volume_20d_ratio}x MA20` : "N/A",
     },
-    hoseIndex: {
-      name: "TRẠNG THÁI",
-      value: data.market?.regime_score ?? 85.0,
-      change: 0,
-      changePercent: data.market?.confidence ? data.market.confidence * 100 : 85,
-      volume: data.market?.regime ?? "BULL",
+    regimeStatus: {
+      name: "TRẠNG THÁI THỊ TRƯỜNG",
+      value: data.market?.regime_score ?? null,
+      change: null,
+      changePercent: data.market?.confidence != null ? data.market.confidence * 100 : null,
+      volume: data.market?.regime ?? "N/A",
     },
-    hnxIndex: {
-      name: "KHỦNG BỐ / BREADTH",
-      value: (marketPayload?.market?.metrics?.market_breadth_ratio ?? 0.65) * 100,
-      change: 0,
-      changePercent: (marketPayload?.market?.metrics?.market_breadth_ratio ?? 0.65) * 100,
-      volume: "Tỉ lệ CP > MA20",
+    breadth: {
+      name: "BREADTH (>MA20)",
+      value:
+        mktMetrics?.market_breadth_ratio != null ? mktMetrics.market_breadth_ratio * 100 : null,
+      change: null,
+      changePercent:
+        mktMetrics?.market_breadth_ratio != null ? mktMetrics.market_breadth_ratio * 100 : null,
+      volume: "Tỉ lệ mã CP > MA20",
     },
-    upcomIndex: {
-      name: "TỔNG SỐ MÃ",
+    totalStocks: {
+      name: "TỔNG SỐ MÃ SCANNED",
       value: data.summary?.total_scanned ?? recommendations.length,
-      change: 0,
-      changePercent: 0,
+      change: null,
+      changePercent: null,
       volume: `${data.summary?.buy_count ?? buyList.length} MUA / ${data.summary?.sell_count ?? sellList.length} BÁN`,
     },
   };
 
   return (
     <div className="space-y-8">
+      {/* Freshness Banner */}
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-sm border border-border bg-card px-4 py-3 font-mono text-xs">
+        <div className="flex items-center space-x-2">
+          <span className="font-bold text-foreground">Dữ liệu định lượng:</span>
+          <span className="text-muted-foreground">{formatDate(data.source_date)}</span>
+          <span className="text-subtle-foreground">({data.generated_at})</span>
+        </div>
+        {isStale() && (
+          <div className="flex items-center space-x-1 font-bold text-trend-down-text">
+            <AlertCircle className="h-4 w-4" />
+            <span>⚠ Dữ liệu có thể đã cũ (batch generated)</span>
+          </div>
+        )}
+      </div>
+
       {/* Real-time Market Overview Banner */}
       <MarketSummary
         marketData={marketSummaryData}
@@ -106,132 +134,67 @@ export function Dashboard() {
         sellCount={sellList.length}
       />
 
-      {/* Top Highlight Cards */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {/* Top BUY */}
-        <div className="space-y-3 rounded-sm border border-border bg-card p-4">
-          <div className="flex items-center justify-between border-b border-border pb-2">
-            <h3 className="flex items-center font-mono text-xs font-bold text-trend-up-text uppercase">
-              <Sparkles className="mr-1.5 h-4 w-4" /> Top Tín Hiệu Mua ({topBuys.length})
-            </h3>
-            <span className="font-mono text-[10px] text-muted-foreground">
-              Cập nhật: {formatDate(data.source_date)}
-            </span>
-          </div>
-          {topBuys.length === 0 ? (
-            <p className="py-4 text-center font-mono text-xs text-muted-foreground">
-              Không có mã BUY thỏa mãn bộ lọc rủi ro.
-            </p>
-          ) : (
-            <div className="space-y-2">
-              {topBuys.map((r) => (
-                <Link
-                  key={r.symbol}
-                  to="/stock/$symbol"
-                  params={{ symbol: r.symbol }}
-                  className="flex w-full cursor-pointer items-center justify-between rounded-sm border border-border p-2 text-left hover:bg-accent/40"
-                >
-                  <div>
-                    <span className="font-bold text-foreground">{r.symbol}</span>
-                    <span className="ml-2 text-[10px] text-muted-foreground">{r.sector}</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-mono text-xs font-bold text-foreground">
-                      {formatVnd(r.trade_plan.current_price)}
-                    </span>
-                    <span className="ml-2 font-mono text-[10px] font-bold text-trend-up-text">
-                      Mục tiêu: {formatVnd(r.trade_plan.tp1)}
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+      {/* Primary Product Question Banner */}
+      <div className="rounded-sm border border-border bg-accent/30 p-4">
+        <h2 className="text-lg font-bold text-foreground">Hôm nay nên chú ý cổ phiếu nào?</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Hệ thống xếp hạng định lượng ưu tiên các mã thỏa mãn bộ lọc Alpha Score, rủi ro T+2.5 và
+          quy tắc Market Regime ({data.market?.regime}).
+        </p>
+      </div>
+
+      {/* Top Today Recommendations Cards */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between border-b border-border pb-2">
+          <h3 className="flex items-center font-mono text-xs font-bold text-trend-up-text uppercase">
+            <Sparkles className="mr-1.5 h-4 w-4" /> Top Khuyến Nghị Tiêu Biểu Hôm Nay
+          </h3>
+          <span className="font-mono text-[10px] text-muted-foreground">
+            Sắp xếp theo Risk-Adjusted Alpha
+          </span>
         </div>
 
-        {/* Top SELL */}
-        <div className="space-y-3 rounded-sm border border-border bg-card p-4">
+        {topBuys.length === 0 ? (
+          <div className="rounded-sm border border-dashed border-border p-6 text-center font-mono text-xs text-muted-foreground">
+            Không có mã khuyến nghị MUA/THEO DÕI phù hợp trong chế độ thị trường{" "}
+            {data.market?.regime}.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {topBuys.map((rec, index) => (
+              <RecommendationCard key={rec.symbol} recommendation={rec} rank={index + 1} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Sell / Avoid Warnings Section */}
+      {topSells.length > 0 && (
+        <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-border pb-2">
             <h3 className="flex items-center font-mono text-xs font-bold text-trend-down-text uppercase">
-              <ArrowDownRight className="mr-1.5 h-4 w-4" /> Cảnh Báo Khuyên Bán ({topSells.length})
+              <ArrowDownRight className="mr-1.5 h-4 w-4" /> Cảnh Báo Khuyên Bán / Tránh Giao Dịch
             </h3>
-            <span className="font-mono text-[10px] text-muted-foreground">
-              Cập nhật: {formatDate(data.source_date)}
-            </span>
           </div>
-          {topSells.length === 0 ? (
-            <p className="py-4 text-center font-mono text-xs text-muted-foreground">
-              Không có mã khuyến nghị bán.
-            </p>
-          ) : (
-            <div className="space-y-2">
-              {topSells.map((r) => (
-                <Link
-                  key={r.symbol}
-                  to="/stock/$symbol"
-                  params={{ symbol: r.symbol }}
-                  className="flex w-full cursor-pointer items-center justify-between rounded-sm border border-border p-2 text-left hover:bg-accent/40"
-                >
-                  <div>
-                    <span className="font-bold text-foreground">{r.symbol}</span>
-                    <span className="ml-2 text-[10px] text-muted-foreground">{r.sector}</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-mono text-xs font-bold text-foreground">
-                      {formatVnd(r.trade_plan.current_price)}
-                    </span>
-                    <span className="ml-2 font-mono text-[10px] font-bold text-trend-down-text">
-                      Giá SL: {formatVnd(r.trade_plan.stop_loss)}
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {topSells.map((rec) => (
+              <RecommendationCard key={rec.symbol} recommendation={rec} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Stock Table */}
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
           <div className="h-1.5 w-1.5 bg-foreground" />
           <h2 className="font-mono text-[11px] tracking-wider text-muted-foreground uppercase">
-            Danh Sách Khuyến Nghị Giao Dịch Hằng Ngày
+            Toàn Bộ Danh Sách Khuyến Nghị Giao Dịch
           </h2>
         </div>
 
         <StockTable
-          stocks={recommendations.map((r) => {
-            const isBuy = r.action === "BUY";
-            const targetBuyStr =
-              isBuy && r.trade_plan.entry_low != null && r.trade_plan.entry_high != null
-                ? `${(r.trade_plan.entry_low / 1000).toFixed(1)} - ${(r.trade_plan.entry_high / 1000).toFixed(1)}`
-                : "Không khuyến nghị";
-            return {
-              symbol: r.symbol,
-              companyName: r.company_name,
-              sector: r.sector,
-              type: r.action === "BUY" ? "BUY" : "SELL",
-              currentPrice: r.trade_plan.current_price ?? 0,
-              targetBuyPrice: targetBuyStr,
-              targetSellPrice: r.trade_plan.tp1 ?? 0,
-              stopLossPrice: r.trade_plan.stop_loss ?? 0,
-              riskRewardRatio: r.trade_plan.risk_reward
-                ? `1:${r.trade_plan.risk_reward}`
-                : undefined,
-              riskLevel: (r.risk_level as "LOW" | "MEDIUM" | "HIGH") ?? "MEDIUM",
-              rationale: r.reasons?.[0] || "Phân tích định lượng dựa trên chỉ báo kỹ thuật.",
-              divergenceByTf: r.divergence
-                ? {
-                    H: r.divergence.h,
-                    D: r.divergence.d,
-                    W: r.divergence.w,
-                    T: r.divergence.t,
-                  }
-                : undefined,
-            };
-          })}
-          onSelectStock={() => {}}
+          recommendations={recommendations}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />

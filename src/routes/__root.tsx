@@ -54,6 +54,18 @@ function HeaderNav() {
             >
               Lịch Sử
             </Link>
+            <Link
+              to="/methodology"
+              activeProps={{
+                className: "bg-primary font-bold text-primary-foreground",
+              }}
+              inactiveProps={{
+                className: "text-muted-foreground hover:text-foreground",
+              }}
+              className="cursor-pointer rounded-sm px-2.5 py-1 transition-colors"
+            >
+              Phương Pháp Luận
+            </Link>
           </nav>
         </div>
 

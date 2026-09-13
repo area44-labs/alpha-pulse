@@ -6,6 +6,8 @@ export type ExchangeType = "HOSE" | "HNX" | "UPCOM";
 
 export type RiskLevel = "LOW" | "MEDIUM" | "HIGH" | null;
 
+export type DivergenceSignal = "BULLISH" | "BEARISH" | "NONE";
+
 export interface MarketMetrics {
   vnindex_value: number | null;
   vnindex_change_pct: number | null;
@@ -58,11 +60,10 @@ export interface TradePlan {
 }
 
 export interface DivergenceDetails {
-  h?: "BULLISH" | "BEARISH" | "NONE";
-  d?: "BULLISH" | "BEARISH" | "NONE";
-  w?: "BULLISH" | "BEARISH" | "NONE";
-  t?: "BULLISH" | "BEARISH" | "NONE";
-  [key: string]: unknown;
+  "1H"?: DivergenceSignal;
+  "1D"?: DivergenceSignal;
+  "1W"?: DivergenceSignal;
+  "1M"?: DivergenceSignal;
 }
 
 export interface Recommendation {
@@ -73,12 +74,14 @@ export interface Recommendation {
   action: ActionType;
   alpha_score: number | null;
   risk_adjusted_alpha: number | null;
+  confidence: number | null;
   risk_level: RiskLevel;
   expected_return: ExpectedReturn;
   risk_metrics: RiskMetrics;
   trade_plan: TradePlan;
   reasons: string[];
   warnings: string[];
+  invalidation: string[];
   divergence?: DivergenceDetails | null;
 }
 

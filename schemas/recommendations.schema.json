@@ -108,12 +108,14 @@
         "action",
         "alpha_score",
         "risk_adjusted_alpha",
+        "confidence",
         "risk_level",
         "expected_return",
         "risk_metrics",
         "trade_plan",
         "reasons",
-        "warnings"
+        "warnings",
+        "invalidation"
       ],
       "properties": {
         "symbol": { "type": "string" },
@@ -129,7 +131,16 @@
           "minimum": 0.0,
           "maximum": 100.0
         },
-        "risk_adjusted_alpha": { "type": ["number", "null"] },
+        "risk_adjusted_alpha": {
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 100.0
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
         "risk_level": {
           "type": ["string", "null"],
           "enum": ["LOW", "MEDIUM", "HIGH", null]
@@ -197,8 +208,19 @@
           "type": "array",
           "items": { "type": "string" }
         },
+        "invalidation": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
         "divergence": {
-          "type": ["object", "null"]
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "1H": { "type": "string", "enum": ["BULLISH", "BEARISH", "NONE"] },
+            "1D": { "type": "string", "enum": ["BULLISH", "BEARISH", "NONE"] },
+            "1W": { "type": "string", "enum": ["BULLISH", "BEARISH", "NONE"] },
+            "1M": { "type": "string", "enum": ["BULLISH", "BEARISH", "NONE"] }
+          }
         }
       }
     }

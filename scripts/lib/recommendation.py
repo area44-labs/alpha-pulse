@@ -19,6 +19,49 @@ def format_vnd(price: float) -> str:
     return f"{vnd_val:,.0f}".replace(",", ".")
 
 
+def calculate_risk_adjusted_alpha(
+    alpha_score: float,
+    regime: str,
+    volatility_60d: float | None = None,
+    max_drawdown: float | None = None,
+    liquidity_score: float | None = None,
+) -> float:
+    """Calculate deterministic and explainable risk-adjusted alpha score.
+
+    Formula:
+      risk_adjusted_alpha = alpha_score * regime_factor * (1 - vol_penalty) * (1 - mdd_penalty) * liq_factor
+
+    Where:
+      - regime_factor: STRONG_BULL=1.05, BULL=1.0, DEFENSIVE=0.90, BEAR=0.75, PANIC=0.50
+      - vol_penalty: min(0.25, max(0.0, (vol60 - 0.20) * 0.5))
+      - mdd_penalty: min(0.25, max(0.0, (abs(mdd) - 0.15) * 0.5))
+      - liq_factor: 0.85 + 0.15 * (liquidity_score / 100.0) if liquidity_score is not None else 1.0
+    """
+    regime_map = {
+        "STRONG_BULL": 1.05,
+        "BULL": 1.00,
+        "DEFENSIVE": 0.90,
+        "BEAR": 0.75,
+        "PANIC": 0.50,
+    }
+    regime_factor = regime_map.get(regime, 0.90)
+
+    vol_penalty = 0.0
+    if volatility_60d is not None:
+        vol_penalty = min(0.25, max(0.0, (volatility_60d - 0.20) * 0.5))
+
+    mdd_penalty = 0.0
+    if max_drawdown is not None:
+        mdd_penalty = min(0.25, max(0.0, (abs(max_drawdown) - 0.15) * 0.5))
+
+    liq_factor = 1.0
+    if liquidity_score is not None:
+        liq_factor = 0.85 + 0.15 * (max(0.0, min(100.0, liquidity_score)) / 100.0)
+
+    score = alpha_score * regime_factor * (1.0 - vol_penalty) * (1.0 - mdd_penalty) * liq_factor
+    return max(0.0, min(100.0, round(score, 1)))
+
+
 def generate_recommendation(
     symbol: str,
     company_name: str,
@@ -42,6 +85,7 @@ def generate_recommendation(
             "action": "AVOID",
             "alpha_score": None,
             "risk_adjusted_alpha": None,
+            "confidence": 0.0,
             "risk_level": None,
             "expected_return": {
                 "expected_return_5d": None,
@@ -67,7 +111,13 @@ def generate_recommendation(
             },
             "reasons": ["Dữ liệu lịch sử không đủ 20 phiên giao dịch."],
             "warnings": ["Không có dữ liệu giao dịch để phân tích."],
-            "divergence": None,
+            "invalidation": ["Cần bổ sung thêm dữ liệu giao dịch trước khi phân tích."],
+            "divergence": {
+                "1H": "NONE",
+                "1D": "NONE",
+                "1W": "NONE",
+                "1M": "NONE",
+            },
         }
 
     df_d, tf_summary = calculate_multi_timeframe_features(df_stock)
@@ -88,16 +138,20 @@ def generate_recommendation(
     vol_ratio = float(df_d["volume"].iloc[-1]) / vol_20d_avg if vol_20d_avg > 0 else 1.0
 
     score = 50.0
+    confidence = 0.65
     reasons = []
     warnings = []
+    invalidation = []
 
     if raw_close > raw_ma20:
         score += 10.0
+        confidence += 0.05
         reasons.append(
             f"Giá đóng cửa ({format_vnd(raw_close)} VNĐ) nằm trên đường xu hướng MA20 ({format_vnd(raw_ma20)} VNĐ)."
         )
     else:
         score -= 10.0
+        confidence -= 0.05
         warnings.append(
             f"Giá đóng cửa ({format_vnd(raw_close)} VNĐ) nằm dưới đường xu hướng MA20 ({format_vnd(raw_ma20)} VNĐ)."
         )
@@ -108,6 +162,7 @@ def generate_recommendation(
 
     if macd_hist > 0 and macd_hist > prev_macd_hist:
         score += 10.0
+        confidence += 0.05
         reasons.append("MACD Histogram dương và đang tăng trưởng, củng cố đà tăng.")
     elif macd_hist < 0:
         score -= 10.0
@@ -115,6 +170,7 @@ def generate_recommendation(
 
     if vol_ratio > 1.2:
         score += 10.0
+        confidence += 0.05
         reasons.append(f"Khối lượng bùng nổ {vol_ratio:.1f}x so với bình quân 20 phiên.")
 
     if 45.0 <= rsi <= 68.0:
@@ -122,6 +178,7 @@ def generate_recommendation(
         reasons.append(f"Chỉ báo RSI ({rsi:.1f}) nằm trong vùng an toàn (45 - 68).")
     elif rsi > 78.0:
         score -= 15.0
+        confidence -= 0.10
         warnings.append(f"RSI ({rsi:.1f}) rơi vào vùng quá mua nặng (> 78), rủi ro đảo chiều cao.")
     elif rsi > 70.0:
         score -= 10.0
@@ -139,6 +196,7 @@ def generate_recommendation(
         rs_diff = stock_ret_20 - vn_ret_20
         if rs_diff > 0.05:
             score += 5.0
+            confidence += 0.05
             reasons.append(
                 f"Sức mạnh tương quan (RS) vượt trội so với VN-Index (+{rs_diff * 100:.1f}%)."
             )
@@ -151,9 +209,11 @@ def generate_recommendation(
         div = tf_summary[tf_key]["divergence"]
         if div["rsi_bullish"] or div["macd_bullish"]:
             score += 5.0
+            confidence += 0.05
             reasons.append(f"Xuất hiện tín hiệu Phân Kỳ Dương trên khung {tf_label}.")
         if div["rsi_bearish"] or div["macd_bearish"]:
             score -= 10.0
+            confidence -= 0.05
             warnings.append(f"Cảnh báo Phân Kỳ Âm trên khung {tf_label}.")
             if tf_key in ["1d", "1w"]:
                 has_major_bearish_div = True
@@ -183,12 +243,16 @@ def generate_recommendation(
     if vol60 is not None and mdd is not None:
         if vol60 > 0.35 or abs(mdd) > 0.25:
             risk_level = "HIGH"
+            confidence -= 0.05
         elif vol60 < 0.22 and abs(mdd) < 0.12:
             risk_level = "LOW"
+            confidence += 0.05
         else:
             risk_level = "MEDIUM"
     else:
         risk_level = None
+
+    confidence = round(max(0.10, min(0.95, confidence)), 2)
 
     # Trade Plan in full VND
     current_price_vnd = round(close_vnd, 0)
@@ -228,8 +292,15 @@ def generate_recommendation(
             "risk_reward": rr_num,
             "position_percent": final_position_pct,
         }
+
+        invalidation.extend(
+            [
+                f"Giá đóng cửa vi phạm ngưỡng cắt lỗ {format_vnd(sl_p)} VNĐ.",
+                f"Giá gãy hỗ trợ trung hạn MA50 ({format_vnd(raw_ma50)} VNĐ).",
+                "Trạng thái thị trường chung suy giảm sang PANIC.",
+            ]
+        )
     else:
-        # HOLD, SELL, AVOID do not have pseudo buy trade plans
         trade_plan = {
             "current_price": current_price_vnd,
             "entry_low": None,
@@ -240,6 +311,12 @@ def generate_recommendation(
             "risk_reward": None,
             "position_percent": 0.0,
         }
+        invalidation.extend(
+            [
+                "Giá vượt lên trên MA20 kèm thanh khoản bùng nổ vượt 1.5x bình quân 20 phiên.",
+                "Tín hiệu phân kỳ dương hình thành trên khung 1D.",
+            ]
+        )
 
     expected_return = {
         "expected_return_5d": None,
@@ -247,9 +324,21 @@ def generate_recommendation(
         "expected_return_20d": None,
     }
 
-    risk_adjusted_alpha = None
+    # Initial risk_adjusted_alpha without universe liquidity score (will be updated when universe normalized)
+    risk_adjusted_alpha = calculate_risk_adjusted_alpha(
+        alpha_score=score,
+        regime=regime,
+        volatility_60d=vol60,
+        max_drawdown=mdd,
+        liquidity_score=risk_metrics.get("liquidity_score"),
+    )
 
-    div_mapping = {}
+    div_mapping = {
+        "1H": "NONE",
+        "1D": "NONE",
+        "1W": "NONE",
+        "1M": "NONE",
+    }
     tf_k_map = [("1d", "1D"), ("1w", "1W"), ("1m", "1M")]
     for tf_key, tf_lbl in tf_k_map:
         d_info = tf_summary[tf_key]["divergence"]
@@ -268,11 +357,13 @@ def generate_recommendation(
         "action": action,
         "alpha_score": score,
         "risk_adjusted_alpha": risk_adjusted_alpha,
+        "confidence": confidence,
         "risk_level": risk_level,
         "expected_return": expected_return,
         "risk_metrics": risk_metrics,
         "trade_plan": trade_plan,
         "reasons": reasons,
         "warnings": warnings,
+        "invalidation": invalidation,
         "divergence": div_mapping,
     }
