@@ -1,15 +1,15 @@
-# Alpha Pulse - Guidelines for AI Agents
+# VN Invest - Guidelines for AI Agents
 
-Chào mừng bạn đến với repository **Alpha Pulse** của **AREA44**. Đây là hướng dẫn dành cho các AI Agent (Cursor, Claude Code, GitHub Copilot, Windsurf...) nhằm nắm bắt cấu trúc dự án, chạy kiểm tra lint/format và tuân thủ các quy tắc lập trình để phát triển nhanh chóng và chính xác.
+Chào mừng bạn đến với repository **VN Invest** của **AREA44**. Đây là hướng dẫn dành cho các AI Agent (Cursor, Claude Code, GitHub Copilot, Windsurf...) nhằm nắm bắt cấu trúc dự án, chạy kiểm tra lint/format và tuân thủ các quy tắc lập trình để phát triển nhanh chóng và chính xác.
 
 ---
 
 ## 1. Cấu Trúc Dự Án (Project Architecture)
 
-Dự án Alpha Pulse kết hợp **Frontend React 19 (TypeScript, Vite, Tailwind CSS v4, TanStack Router)** và **Backend Định Lượng Python 3.10+ (Vnstock, Pandas, NumPy, JS Schema v2.0)**.
+Dự án VN Invest kết hợp **Frontend React 19 (TypeScript, Vite, Tailwind CSS v4, TanStack Router)** và **Backend Định Lượng Python 3.10+ (Vnstock, Pandas, NumPy, JS Schema v2.0)**.
 
 ```
-alpha-pulse/
+vn-invest/
 ├── .github/
 │   ├── workflows/
 │   │   ├── lint-format.yml          # GitHub Actions lint & format CI

@@ -20,7 +20,7 @@ export function Header({ currentView, onNavigate, lastUpdated }: HeaderProps) {
             onClick={() => onNavigate("dashboard")}
             className="cursor-pointer font-mono text-sm font-bold tracking-tight text-foreground uppercase hover:opacity-80"
           >
-            Alpha Pulse
+            VN Invest
           </button>
 
           <nav className="flex items-center space-x-2 font-mono text-xs">
@@ -67,7 +67,7 @@ export function Header({ currentView, onNavigate, lastUpdated }: HeaderProps) {
             </button>
 
             <a
-              href="https://github.com/area44-labs/alpha-pulse"
+              href="https://github.com/area44-labs/vn-invest"
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm border border-border bg-background text-muted-foreground transition-all hover:bg-accent hover:text-accent-foreground focus:outline-none"

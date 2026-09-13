@@ -1,4 +1,4 @@
-"""T+2.5 Risk Model Module for Alpha Pulse v2.
+"""T+2.5 Risk Model Module for VN Invest v2.
 
 Implements Vietnam-specific T+2.5 settlement horizon risk calculations:
 - T+2.5 Historical VaR 95%

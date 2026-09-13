@@ -1,4 +1,4 @@
-"""Generate Report Script for Alpha Pulse v2.
+"""Generate Report Script for VN Invest v2.
 
 Command line usage:
     python scripts/generate_report.py
@@ -194,7 +194,7 @@ def update_history_index(source_date: str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Alpha Pulse Report Generator v2")
+    parser = argparse.ArgumentParser(description="VN Invest Report Generator v2")
     parser.add_argument(
         "--update",
         action="store_true",
@@ -202,7 +202,7 @@ def main():
     )
     args = parser.parse_args()
 
-    logger.info("Starting Alpha Pulse Report Generator v2 (update=%s)...", args.update)
+    logger.info("Starting VN Invest Report Generator v2 (update=%s)...", args.update)
 
     recs_data, market_data, history_data = run_pipeline(update_data=args.update)
 

@@ -787,7 +787,7 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
 
 def main():
     print("=====================================================================")
-    print("BẮT ĐẦU QUÉT HỆ THỐNG ALPHA PULSE (42 MÃ VN30 & MIDCAP HÀNG ĐẦU)")
+    print("BẮT ĐẦU QUÉT HỆ THỐNG VN INVEST (42 MÃ VN30 & MIDCAP HÀNG ĐẦU)")
     print("=====================================================================")
 
     # Load backup/original data if existing
@@ -1417,7 +1417,7 @@ def main():
         print(df_sorted[cols_to_print].to_string(index=False))
 
     print("\n=====================================================================")
-    print("HOÀN THÀNH CẬP NHẬT DỮ LIỆU ALPHA PULSE!")
+    print("HOÀN THÀNH CẬP NHẬT DỮ LIỆU VN INVEST!")
     print("=====================================================================")
 
 

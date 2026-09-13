@@ -1,4 +1,4 @@
-"""Vietnam Market Data Module for Alpha Pulse v2.
+"""Vietnam Market Data Module for VN Invest v2.
 
 Handles symbol normalization, universe provider abstraction, data quality validation,
 price tick size limits, exchange mappings, and EOD historical market data fetching.

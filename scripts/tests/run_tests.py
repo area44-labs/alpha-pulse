@@ -1,4 +1,4 @@
-"""Test Runner for Alpha Pulse v2 Unit Tests."""
+"""Test Runner for VN Invest v2 Unit Tests."""
 
 import os
 import sys
