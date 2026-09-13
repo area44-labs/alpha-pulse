@@ -786,6 +786,18 @@ def get_historical_data_api(symbol, start_date, end_date, max_retries=1):
 
 
 def main():
+    import sys
+    from scripts.generate_report import main as generate_report_main
+
+    print("=====================================================================")
+    print("DELEGATING TO UNIFIED QUANTITATIVE REPORT GENERATOR (generate_report.py)")
+    print("=====================================================================")
+    sys.argv = [sys.argv[0], "--update"]
+    generate_report_main()
+    return
+
+
+def legacy_main_deprecated():
     print("=====================================================================")
     print("BẮT ĐẦU QUÉT HỆ THỐNG VN INVEST (42 MÃ VN30 & MIDCAP HÀNG ĐẦU)")
     print("=====================================================================")

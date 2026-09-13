@@ -1,21 +1,14 @@
+import { Link } from "@tanstack/react-router";
 import { Calendar, History as HistoryIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import type { HistoryIndexPayload, RecommendationsPayload } from "@/types/recommendation";
 
 import { Badge } from "@/components/ui/badge";
+import { loadHistoryIndex, loadHistoryReport } from "@/data/loader";
+import { formatDate, formatVnd } from "@/lib/format";
 
-import type { RecommendationsPayload } from "./Dashboard";
-
-interface HistoryIndexPayload {
-  last_updated: string;
-  total_reports: number;
-  dates: string[];
-}
-
-interface HistoryProps {
-  onSelectStock: (symbol: string) => void;
-}
-
-export function History({ onSelectStock }: HistoryProps) {
+export function History() {
   const [indexData, setIndexData] = useState<HistoryIndexPayload | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [reportData, setReportData] = useState<RecommendationsPayload | null>(null);
@@ -23,34 +16,17 @@ export function History({ onSelectStock }: HistoryProps) {
   const [loadingReport, setLoadingReport] = useState(false);
 
   useEffect(() => {
-    async function loadHistoryIndex() {
-      const baseUrl = import.meta.env.BASE_URL || "/";
-      const ts = Date.now();
-      const paths = [
-        `${baseUrl}generated/history/index.json?t=${ts}`,
-        `/generated/history/index.json?t=${ts}`,
-        `generated/history/index.json?t=${ts}`,
-      ];
-
-      for (const p of paths) {
-        try {
-          const res = await fetch(p);
-          if (res.ok) {
-            const data: HistoryIndexPayload = await res.json();
-            if (data && data.dates && data.dates.length > 0) {
-              setIndexData(data);
-              setSelectedDate(data.dates[0]);
-              break;
-            }
-          }
-        } catch {
-          // try next
-        }
+    async function initHistoryIndex() {
+      setLoadingIndex(true);
+      const data = await loadHistoryIndex();
+      if (data && data.dates && data.dates.length > 0) {
+        setIndexData(data);
+        setSelectedDate(data.dates[0]);
       }
       setLoadingIndex(false);
     }
 
-    loadHistoryIndex();
+    initHistoryIndex();
   }, []);
 
   useEffect(() => {
@@ -58,27 +34,9 @@ export function History({ onSelectStock }: HistoryProps) {
 
     async function loadDateReport() {
       setLoadingReport(true);
-      const baseUrl = import.meta.env.BASE_URL || "/";
-      const ts = Date.now();
-      const paths = [
-        `${baseUrl}generated/history/${selectedDate}.json?t=${ts}`,
-        `/generated/history/${selectedDate}.json?t=${ts}`,
-        `generated/history/${selectedDate}.json?t=${ts}`,
-      ];
-
-      for (const p of paths) {
-        try {
-          const res = await fetch(p);
-          if (res.ok) {
-            const json: RecommendationsPayload = await res.json();
-            if (json && json.recommendations) {
-              setReportData(json);
-              break;
-            }
-          }
-        } catch {
-          // try next
-        }
+      const report = await loadHistoryReport(selectedDate);
+      if (report) {
+        setReportData(report);
       }
       setLoadingReport(false);
     }
@@ -99,16 +57,11 @@ export function History({ onSelectStock }: HistoryProps) {
       <div className="flex h-64 flex-col items-center justify-center space-y-2 text-center font-mono">
         <p className="text-sm font-bold text-foreground">Không tìm thấy báo cáo lịch sử</p>
         <p className="text-xs text-muted-foreground">
-          Vui lòng tạo báo cáo đầu tiên bằng command pipeline.
+          Vui lòng tạo báo cáo đầu tiên bằng command pipeline Python.
         </p>
       </div>
     );
   }
-
-  const formatVnd = (val: number | null | undefined) => {
-    if (val == null) return "—";
-    return `${val.toLocaleString("vi-VN")} VNĐ`;
-  };
 
   return (
     <div className="space-y-6">
@@ -132,7 +85,7 @@ export function History({ onSelectStock }: HistoryProps) {
           >
             {indexData.dates.map((d) => (
               <option key={d} value={d}>
-                Phiên ngày {d}
+                Phiên ngày {formatDate(d)}
               </option>
             ))}
           </select>
@@ -142,11 +95,11 @@ export function History({ onSelectStock }: HistoryProps) {
       {/* Selected Report Content */}
       {loadingReport ? (
         <div className="flex h-48 items-center justify-center font-mono text-xs text-muted-foreground">
-          Đang tải báo cáo ngày {selectedDate}...
+          Đang tải báo cáo ngày {formatDate(selectedDate)}...
         </div>
       ) : !reportData ? (
         <div className="p-8 text-center font-mono text-xs text-muted-foreground">
-          Không tìm thấy file báo cáo ngày {selectedDate}.
+          Không tìm thấy file báo cáo ngày {formatDate(selectedDate)}.
         </div>
       ) : (
         <div className="space-y-6">
@@ -154,7 +107,7 @@ export function History({ onSelectStock }: HistoryProps) {
           <div className="flex flex-wrap items-center justify-between gap-4 rounded-sm border border-border bg-card p-4">
             <div>
               <span className="block font-mono text-[10px] text-muted-foreground uppercase">
-                Báo cáo ngày {reportData.source_date}
+                Báo cáo ngày {formatDate(reportData.source_date)}
               </span>
               <span className="text-sm font-bold text-foreground">
                 Thị trường: {reportData.market.regime} (Điểm:{" "}
@@ -182,13 +135,15 @@ export function History({ onSelectStock }: HistoryProps) {
               </thead>
               <tbody className="divide-y divide-border text-xs">
                 {reportData.recommendations.map((rec) => (
-                  <tr
-                    key={rec.symbol}
-                    onClick={() => onSelectStock(rec.symbol)}
-                    className="cursor-pointer transition-colors hover:bg-muted/30"
-                  >
+                  <tr key={rec.symbol} className="transition-colors hover:bg-muted/30">
                     <td className="p-3 font-bold text-foreground">
-                      {rec.symbol}{" "}
+                      <Link
+                        to="/stock/$symbol"
+                        params={{ symbol: rec.symbol }}
+                        className="hover:underline"
+                      >
+                        {rec.symbol}
+                      </Link>{" "}
                       <span className="text-[10px] font-normal text-muted-foreground">
                         ({rec.sector})
                       </span>
@@ -206,13 +161,15 @@ export function History({ onSelectStock }: HistoryProps) {
                         {rec.action}
                       </Badge>
                     </td>
-                    <td className="p-3 text-right font-mono font-bold">{rec.alpha_score ?? "—"}</td>
+                    <td className="p-3 text-right font-mono font-bold">
+                      {rec.alpha_score != null ? rec.alpha_score.toFixed(1) : "—"}
+                    </td>
                     <td className="p-3 text-right font-bold">
                       {formatVnd(rec.trade_plan.current_price)}
                     </td>
                     <td className="p-3 text-center font-mono text-[11px]">
                       {rec.trade_plan.entry_low != null
-                        ? `${rec.trade_plan.entry_low.toLocaleString("vi-VN")} - ${rec.trade_plan.entry_high?.toLocaleString("vi-VN")} VNĐ`
+                        ? `${formatVnd(rec.trade_plan.entry_low)} - ${formatVnd(rec.trade_plan.entry_high)}`
                         : "—"}
                     </td>
                   </tr>

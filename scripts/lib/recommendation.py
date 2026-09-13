@@ -191,39 +191,55 @@ def generate_recommendation(
         risk_level = None
 
     # Trade Plan in full VND
+    current_price_vnd = round(close_vnd, 0)
     lowest_5d = float(df_d["low"].tail(5).min())
-    sl_raw = max(raw_close - 1.8 * atr, lowest_5d, raw_ma20 * 0.98, raw_close * 0.93)
-    sl_p = clamp_price_limits(sl_raw, raw_close, ex)
-    risk_amt = max(raw_close - sl_p, raw_close * 0.03)
 
-    entry_low_p = round_tick_size(raw_close, ex)
-    entry_high_p = clamp_price_limits(raw_close * 1.02, raw_close, ex)
-    tp1_p = clamp_price_limits(raw_close + 2.0 * risk_amt, raw_close, ex)
-    tp2_p = clamp_price_limits(raw_close + 3.0 * risk_amt, raw_close, ex)
+    if action in ["BUY", "WATCH"]:
+        sl_raw = max(raw_close - 1.8 * atr, lowest_5d, raw_ma20 * 0.98, raw_close * 0.93)
+        sl_p = min(sl_raw, raw_close * 0.99)
+        sl_p = clamp_price_limits(sl_p, raw_close, ex)
+        risk_amt = max(raw_close - sl_p, raw_close * 0.03)
 
-    rr_num = round((tp1_p - raw_close) / risk_amt, 2) if risk_amt > 0 else 1.0
+        entry_low_p = round_tick_size(raw_close, ex)
+        entry_high_p = clamp_price_limits(max(entry_low_p, raw_close * 1.02), raw_close, ex)
+        tp1_p = clamp_price_limits(max(entry_high_p, raw_close + 2.0 * risk_amt), raw_close, ex)
+        tp2_p = clamp_price_limits(max(tp1_p, raw_close + 3.0 * risk_amt), raw_close, ex)
 
-    stop_distance_pct = (
-        abs(raw_close - sl_p) / raw_close
-        if raw_close > 0 and abs(raw_close - sl_p) > 1e-4
-        else 0.05
-    )
-    portfolio_risk_budget_pct = 1.0
-    calc_position_pct = round(portfolio_risk_budget_pct / stop_distance_pct, 1)
+        rr_num = round((tp1_p - raw_close) / risk_amt, 2) if risk_amt > 0 else 1.0
 
-    max_position_cap = 20.0 if action == "BUY" else (10.0 if action == "WATCH" else 0.0)
-    final_position_pct = min(calc_position_pct, max_position_cap) if max_position_cap > 0 else 0.0
+        stop_distance_pct = (
+            abs(raw_close - sl_p) / raw_close
+            if raw_close > 0 and abs(raw_close - sl_p) > 1e-4
+            else 0.05
+        )
+        portfolio_risk_budget_pct = 1.0
+        calc_position_pct = round(portfolio_risk_budget_pct / stop_distance_pct, 1)
 
-    trade_plan = {
-        "current_price": round(close_vnd, 0),
-        "entry_low": round(entry_low_p * 1000.0, 0),
-        "entry_high": round(entry_high_p * 1000.0, 0),
-        "stop_loss": round(sl_p * 1000.0, 0),
-        "tp1": round(tp1_p * 1000.0, 0),
-        "tp2": round(tp2_p * 1000.0, 0),
-        "risk_reward": rr_num,
-        "position_percent": final_position_pct,
-    }
+        max_position_cap = 20.0 if action == "BUY" else 10.0
+        final_position_pct = min(calc_position_pct, max_position_cap)
+
+        trade_plan = {
+            "current_price": current_price_vnd,
+            "entry_low": round(entry_low_p * 1000.0, 0),
+            "entry_high": round(entry_high_p * 1000.0, 0),
+            "stop_loss": round(sl_p * 1000.0, 0),
+            "tp1": round(tp1_p * 1000.0, 0),
+            "tp2": round(tp2_p * 1000.0, 0),
+            "risk_reward": rr_num,
+            "position_percent": final_position_pct,
+        }
+    else:
+        # HOLD, SELL, AVOID do not have pseudo buy trade plans
+        trade_plan = {
+            "current_price": current_price_vnd,
+            "entry_low": None,
+            "entry_high": None,
+            "stop_loss": None,
+            "tp1": None,
+            "tp2": None,
+            "risk_reward": None,
+            "position_percent": 0.0,
+        }
 
     expected_return = {
         "expected_return_5d": None,

@@ -1,0 +1,112 @@
+export type MarketRegime = "STRONG_BULL" | "BULL" | "DEFENSIVE" | "BEAR" | "PANIC";
+
+export type ActionType = "BUY" | "WATCH" | "HOLD" | "SELL" | "AVOID";
+
+export type ExchangeType = "HOSE" | "HNX" | "UPCOM";
+
+export type RiskLevel = "LOW" | "MEDIUM" | "HIGH" | null;
+
+export interface MarketMetrics {
+  vnindex_value: number | null;
+  vnindex_change_pct: number | null;
+  vn30_change_pct?: number | null;
+  market_breadth_ratio?: number | null;
+  volatility?: number | null;
+  volume_20d_ratio?: number | null;
+}
+
+export interface MarketInfo {
+  regime: MarketRegime;
+  confidence: number | null;
+  regime_score?: number | null;
+  metrics: MarketMetrics;
+}
+
+export interface SummaryInfo {
+  total_scanned: number;
+  buy_count: number;
+  watch_count: number;
+  hold_count: number;
+  sell_count: number;
+  avoid_count: number;
+}
+
+export interface ExpectedReturn {
+  expected_return_5d: number | null;
+  expected_return_10d: number | null;
+  expected_return_20d: number | null;
+}
+
+export interface RiskMetrics {
+  var_t25: number | null;
+  es_t25: number | null;
+  volatility_60d: number | null;
+  max_drawdown: number | null;
+  liquidity_score: number | null;
+  avg_value_20d?: number | null;
+}
+
+export interface TradePlan {
+  current_price: number | null;
+  entry_low: number | null;
+  entry_high: number | null;
+  stop_loss: number | null;
+  tp1: number | null;
+  tp2: number | null;
+  risk_reward: number | null;
+  position_percent: number | null;
+}
+
+export interface DivergenceDetails {
+  h?: "BULLISH" | "BEARISH" | "NONE";
+  d?: "BULLISH" | "BEARISH" | "NONE";
+  w?: "BULLISH" | "BEARISH" | "NONE";
+  t?: "BULLISH" | "BEARISH" | "NONE";
+  [key: string]: unknown;
+}
+
+export interface Recommendation {
+  symbol: string;
+  company_name: string;
+  exchange: ExchangeType;
+  sector: string;
+  action: ActionType;
+  alpha_score: number | null;
+  risk_adjusted_alpha: number | null;
+  risk_level: RiskLevel;
+  expected_return: ExpectedReturn;
+  risk_metrics: RiskMetrics;
+  trade_plan: TradePlan;
+  reasons: string[];
+  warnings: string[];
+  divergence?: DivergenceDetails | null;
+}
+
+export interface UniverseInfo {
+  universe_type?: string;
+  universe_size?: number;
+}
+
+export interface RecommendationsPayload {
+  schema_version: "2.0";
+  generated_at: string;
+  source_date: string;
+  universe_info?: UniverseInfo;
+  market: MarketInfo;
+  summary: SummaryInfo;
+  recommendations: Recommendation[];
+}
+
+export interface MarketPayload {
+  source_date: string;
+  generated_at: string;
+  universe_info?: UniverseInfo;
+  market: MarketInfo;
+  summary: SummaryInfo;
+}
+
+export interface HistoryIndexPayload {
+  last_updated: string;
+  total_reports: number;
+  dates: string[];
+}

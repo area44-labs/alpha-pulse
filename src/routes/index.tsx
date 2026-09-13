@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import App from "@/App";
+import { Dashboard } from "@/pages/Dashboard";
 
 export const Route = createFileRoute("/")({
   component: IndexComponent,
 });
 
 function IndexComponent() {
-  return <App />;
+  return <Dashboard />;
 }

@@ -40,15 +40,17 @@ PUBLIC_GENERATED_DIR = os.path.join(ROOT_DIR, "public", "generated")
 
 
 def save_json_files(relative_path: str, data: dict):
-    """Save JSON data to both generated/ and public/generated/."""
+    """Save JSON data atomically to both generated/ and public/generated/."""
     path1 = os.path.join(GENERATED_DIR, relative_path)
     path2 = os.path.join(PUBLIC_GENERATED_DIR, relative_path)
 
     for p in [path1, path2]:
         os.makedirs(os.path.dirname(p), exist_ok=True)
-        with open(p, "w", encoding="utf-8") as f:
+        tmp_p = f"{p}.tmp"
+        with open(tmp_p, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
             f.write("\n")
+        os.replace(tmp_p, p)
 
 
 def load_schema():
