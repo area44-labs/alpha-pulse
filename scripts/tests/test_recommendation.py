@@ -5,7 +5,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from scripts.lib.recommendation import generate_recommendation
+from scripts.lib.recommendation import calculate_risk_adjusted_alpha, generate_recommendation
 
 
 class TestRecommendationEngine(unittest.TestCase):
@@ -38,6 +38,32 @@ class TestRecommendationEngine(unittest.TestCase):
         self.assertIn(rec_buy["action"], ["BUY", "WATCH", "HOLD", "SELL", "AVOID"])
         self.assertEqual(rec_buy["symbol"], "FPT")
         self.assertIsInstance(rec_buy["trade_plan"]["risk_reward"], (int, float))
+        self.assertIsNotNone(rec_buy["risk_adjusted_alpha"])
+        self.assertIsNotNone(rec_buy["confidence"])
+        self.assertIsInstance(rec_buy["invalidation"], list)
+        self.assertIn("1H", rec_buy["divergence"])
+
+    def test_risk_adjusted_alpha_formula(self):
+        """Verify risk-adjusted alpha deterministic calculation."""
+        score = calculate_risk_adjusted_alpha(
+            alpha_score=80.0,
+            regime="STRONG_BULL",
+            volatility_60d=0.15,
+            max_drawdown=-0.10,
+            liquidity_score=90.0,
+        )
+        self.assertGreaterEqual(score, 70.0)
+        self.assertLessEqual(score, 100.0)
+
+        # High volatility and drawdown penalty check
+        score_high_risk = calculate_risk_adjusted_alpha(
+            alpha_score=80.0,
+            regime="BEAR",
+            volatility_60d=0.45,
+            max_drawdown=-0.35,
+            liquidity_score=20.0,
+        )
+        self.assertLess(score_high_risk, score)
 
     def test_trade_plan_invariants(self):
         n = 60

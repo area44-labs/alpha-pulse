@@ -91,7 +91,12 @@ def calculate_t25_risk_metrics(
 def normalize_universe_liquidity_scores(
     scanned_recommendations: list[dict],
 ) -> list[dict]:
-    """Compute 0-100 percentile rank for liquidity_score across all stocks in universe at same point in time."""
+    """Compute 0-100 percentile rank for liquidity_score across all stocks in universe at same point in time.
+
+    Also updates risk_adjusted_alpha using the finalized liquidity_score.
+    """
+    from scripts.lib.recommendation import calculate_risk_adjusted_alpha
+
     values = []
     for r in scanned_recommendations:
         val = r.get("risk_metrics", {}).get("avg_value_20d")
@@ -108,8 +113,21 @@ def normalize_universe_liquidity_scores(
     idx_map = 0
     for r in scanned_recommendations:
         if r.get("risk_metrics", {}).get("avg_value_20d") is not None:
-            r["risk_metrics"]["liquidity_score"] = float(ranks.iloc[idx_map])
+            liq_score = float(ranks.iloc[idx_map])
+            r["risk_metrics"]["liquidity_score"] = liq_score
             idx_map += 1
+
+            # Re-calculate risk_adjusted_alpha with populated liquidity_score
+            if r.get("alpha_score") is not None:
+                r["risk_adjusted_alpha"] = calculate_risk_adjusted_alpha(
+                    alpha_score=r["alpha_score"],
+                    regime=r.get(
+                        "market_regime", "DEFENSIVE"
+                    ),  # fallback if regime stored or default
+                    volatility_60d=r["risk_metrics"].get("volatility_60d"),
+                    max_drawdown=r["risk_metrics"].get("max_drawdown"),
+                    liquidity_score=liq_score,
+                )
         else:
             r["risk_metrics"]["liquidity_score"] = None
 

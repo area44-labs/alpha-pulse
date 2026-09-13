@@ -1,4 +1,7 @@
-import { ArrowUpRight, ArrowDownRight, HelpCircle, FileText, Sparkles } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { HelpCircle, FileText, Sparkles, ArrowDownRight } from "lucide-react";
+
+import type { Recommendation } from "@/types/recommendation";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -11,101 +14,44 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Tooltip } from "@/components/ui/tooltip";
-
-interface Stock {
-  symbol: string;
-  companyName: string;
-  sector: string;
-  type: "BUY" | "SELL";
-  currentPrice: number;
-  targetBuyPrice: string;
-  targetSellPrice: number;
-  stopLossPrice: number;
-  riskRewardRatio?: string;
-  riskLevel: "LOW" | "MEDIUM" | "HIGH";
-  rationale: string;
-  divergenceByTf?: {
-    H?: "BULLISH" | "BEARISH" | "NONE";
-    D?: "BULLISH" | "BEARISH" | "NONE";
-    W?: "BULLISH" | "BEARISH" | "NONE";
-    T?: "BULLISH" | "BEARISH" | "NONE";
-  };
-}
+import { formatRisk, formatVnd } from "@/lib/format";
 
 interface StockTableProps {
-  stocks: Stock[];
-  onSelectStock: (stock: Stock) => void;
+  recommendations: Recommendation[];
   activeTab: string;
   setActiveTab: (tab: string) => void;
 }
 
-export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: StockTableProps) {
-  // Phân loại danh sách cổ phiếu theo tín hiệu Mua (BUY) và Bán (SELL)
-  const buyStocks = stocks.filter((s) => s.type === "BUY");
-  const sellStocks = stocks.filter((s) => s.type === "SELL");
+export function StockTable({ recommendations, activeTab, setActiveTab }: StockTableProps) {
+  const navigate = useNavigate();
 
-  const getRiskBadge = (risk: "LOW" | "MEDIUM" | "HIGH") => {
-    switch (risk) {
-      case "LOW":
-        return <Badge variant="success">Thấp</Badge>;
-      case "MEDIUM":
-        return <Badge variant="warning">Trung bình</Badge>;
-      case "HIGH":
-        return <Badge variant="destructive">Cao</Badge>;
+  const buyStocks = recommendations.filter((r) => r.action === "BUY" || r.action === "WATCH");
+  const sellStocks = recommendations.filter(
+    (r) => r.action === "SELL" || r.action === "HOLD" || r.action === "AVOID",
+  );
+
+  const renderDivergenceBadges = (r: Recommendation) => {
+    if (!r.divergence) {
+      return (
+        <Badge variant="outline" className="font-mono text-[9px]">
+          Không có phân kỳ
+        </Badge>
+      );
     }
-  };
 
-  // Hàm trích xuất và hiển thị badge tín hiệu Phân kỳ đa khung thời gian (1H, 1D, 1W, 1M)
-  const parseDivergenceBadges = (stock: Stock) => {
-    const badges: { code: string; label: string; type: "BULLISH" | "BEARISH" }[] = [];
-
-    const tfMap: {
-      code: keyof NonNullable<Stock["divergenceByTf"]>;
-      label: string;
-      phraseBull: string;
-      phraseBear: string;
-    }[] = [
-      {
-        code: "H",
-        label: "H (Giờ)",
-        phraseBull: "phân kỳ dương khung giờ (1H)",
-        phraseBear: "phân kỳ âm khung giờ (1H)",
-      },
-      {
-        code: "D",
-        label: "D (Ngày)",
-        phraseBull: "phân kỳ dương khung ngày (1D)",
-        phraseBear: "phân kỳ âm khung ngày (1D)",
-      },
-      {
-        code: "W",
-        label: "W (Tuần)",
-        phraseBull: "phân kỳ dương khung tuần (1W)",
-        phraseBear: "phân kỳ âm khung tuần (1W)",
-      },
-      {
-        code: "T",
-        label: "T (Tháng)",
-        phraseBull: "phân kỳ dương khung tháng (1M)",
-        phraseBear: "phân kỳ âm khung tháng (1M)",
-      },
-    ];
-
-    tfMap.forEach(({ code, phraseBull, phraseBear }) => {
-      let status: "BULLISH" | "BEARISH" | "NONE" = "NONE";
-      if (stock.divergenceByTf && stock.divergenceByTf[code]) {
-        status = stock.divergenceByTf[code]!;
-      } else {
-        if (stock.rationale.includes(phraseBull)) status = "BULLISH";
-        else if (stock.rationale.includes(phraseBear)) status = "BEARISH";
-      }
-
-      if (status === "BULLISH") {
-        badges.push({ code, label: `${code} Dương`, type: "BULLISH" });
-      } else if (status === "BEARISH") {
-        badges.push({ code, label: `${code} Âm`, type: "BEARISH" });
-      }
-    });
+    const tfs: ("1H" | "1D" | "1W" | "1M")[] = ["1H", "1D", "1W", "1M"];
+    const badges = tfs
+      .map((tf) => {
+        const val = r.divergence?.[tf];
+        if (val === "BULLISH" || val === "BEARISH") {
+          return { tf, type: val };
+        }
+        return null;
+      })
+      .filter(
+        (item): item is { tf: "1H" | "1D" | "1W" | "1M"; type: "BULLISH" | "BEARISH" } =>
+          item !== null,
+      );
 
     if (badges.length === 0) {
       return (
@@ -119,21 +65,21 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
       <div className="flex flex-wrap items-center justify-center gap-1">
         {badges.map((b) => (
           <span
-            key={b.code}
+            key={b.tf}
             className={`inline-flex items-center rounded px-1.5 py-0.5 font-mono text-[9px] font-bold ${
               b.type === "BULLISH"
                 ? "border border-trend-up-border bg-trend-up-bg text-trend-up-text"
                 : "border border-trend-down-border bg-trend-down-bg text-trend-down-text"
             }`}
           >
-            {b.type === "BULLISH" ? `📈 ${b.label}` : `📉 ${b.label}`}
+            {b.type === "BULLISH" ? `📈 ${b.tf}` : `📉 ${b.tf}`}
           </span>
         ))}
       </div>
     );
   };
 
-  const renderTable = (data: Stock[]) => {
+  const renderTable = (data: Recommendation[]) => {
     if (data.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center rounded-sm border border-dashed border-border bg-muted/20 p-12 text-center">
@@ -162,7 +108,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
               <TableHead className="h-auto px-4 py-3 text-right font-bold text-muted-foreground">
                 <div className="flex items-center justify-end gap-1">
                   Giá hiện tại
-                  <Tooltip content="Giá giao dịch khớp lệnh thực tế gần nhất (VND)">
+                  <Tooltip content="Giá giao dịch khớp lệnh thực tế từ JSON">
                     <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
@@ -170,15 +116,15 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
               <TableHead className="h-auto px-4 py-3 text-center font-bold text-muted-foreground">
                 <div className="flex items-center justify-center gap-1">
                   Tín hiệu Phân Kỳ
-                  <Tooltip content="Trạng thái Phân kỳ Dương (báo hiệu đà tăng), Phân kỳ Âm (báo hiệu áp lực giảm) trên từng khung thời gian (1H/1D/1W/1M)">
+                  <Tooltip content="Trạng thái Phân kỳ Dương hoặc Phân kỳ Âm (1H / 1D / 1W / 1M)">
                     <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
               </TableHead>
               <TableHead className="h-auto px-4 py-3 text-center font-bold text-muted-foreground">
                 <div className="flex items-center justify-center gap-1">
-                  Vùng giá hành động
-                  <Tooltip content="Khoảng giá khuyến nghị giải ngân (BUY) hoặc dừng giao dịch (SELL)">
+                  Vùng giá khuyến nghị
+                  <Tooltip content="Khoảng giá khuyến nghị Mua từ engine Python">
                     <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
@@ -186,7 +132,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
               <TableHead className="h-auto px-4 py-3 font-bold text-muted-foreground">
                 <div className="flex items-center gap-1">
                   Giá Mục Tiêu & Cắt Lỗ
-                  <Tooltip content="Mục tiêu chốt lời (TP) và ngưỡng cắt lỗ bắt buộc (SL) kèm biên độ tăng giảm dự kiến">
+                  <Tooltip content="Mục tiêu chốt lời (TP1) và ngưỡng dừng lỗ (SL)">
                     <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
@@ -194,7 +140,7 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
               <TableHead className="h-auto px-4 py-3 text-center font-bold text-muted-foreground">
                 <div className="flex items-center justify-center gap-1">
                   Mức rủi ro
-                  <Tooltip content="Mức rủi ro thực tế tính toán từ biến động ATR, hệ số Beta VN-Index và mức sụt giảm Max Drawdown">
+                  <Tooltip content="Mức rủi ro định lượng (LOW / MEDIUM / HIGH)">
                     <HelpCircle className="h-3 w-3 cursor-help text-muted-foreground" />
                   </Tooltip>
                 </div>
@@ -202,64 +148,41 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
             </TableRow>
           </TableHeader>
           <TableBody className="divide-y divide-border text-xs text-foreground/85">
-            {data.map((stock) => {
-              const isBuy = stock.type === "BUY";
-              const currentPriceVnd =
-                stock.currentPrice < 1000 ? stock.currentPrice * 1000 : stock.currentPrice;
-              const targetSellPriceVnd =
-                stock.targetSellPrice < 1000 ? stock.targetSellPrice * 1000 : stock.targetSellPrice;
-              const stopLossPriceVnd =
-                stock.stopLossPrice < 1000 ? stock.stopLossPrice * 1000 : stock.stopLossPrice;
-
-              // Tính toán phần trăm lợi nhuận kỳ vọng và rủi ro cắt lỗ
-              const returnPct = isBuy
-                ? ((targetSellPriceVnd - currentPriceVnd) / currentPriceVnd) * 100
-                : ((currentPriceVnd - targetSellPriceVnd) / currentPriceVnd) * 100;
-
-              const lossPct = isBuy
-                ? ((stopLossPriceVnd - currentPriceVnd) / currentPriceVnd) * 100
-                : ((currentPriceVnd - stopLossPriceVnd) / currentPriceVnd) * 100;
-
+            {data.map((r) => {
+              const isBuy = r.action === "BUY" || r.action === "WATCH";
               return (
                 <TableRow
-                  key={stock.symbol}
-                  className="border-b border-border transition-colors duration-150 hover:bg-muted/30"
+                  key={r.symbol}
+                  onClick={() => navigate({ to: "/stock/$symbol", params: { symbol: r.symbol } })}
+                  className="cursor-pointer border-b border-border transition-colors duration-150 hover:bg-muted/40"
                 >
                   {/* Symbol & Company & Sector */}
                   <TableCell className="px-4 py-3">
-                    <button
-                      onClick={() => onSelectStock(stock)}
-                      className="group flex w-full cursor-pointer flex-col text-left select-none focus:outline-none"
-                      aria-label={`Xem phân tích cổ phiếu ${stock.symbol}`}
-                    >
+                    <div className="flex flex-col">
                       <span className="flex items-center space-x-2">
-                        <span className="text-sm font-bold text-foreground decoration-muted-foreground group-hover:underline">
-                          {stock.symbol}
+                        <span className="text-sm font-bold text-foreground group-hover:underline">
+                          {r.symbol}
                         </span>
-                        <Badge
-                          variant="secondary"
-                          className="font-mono text-[9px] group-hover:bg-accent"
-                        >
-                          {stock.sector}
+                        <Badge variant="secondary" className="font-mono text-[9px]">
+                          {r.sector}
                         </Badge>
                       </span>
                       <span className="mt-0.5 max-w-[180px] truncate text-[11px] text-muted-foreground sm:max-w-[240px]">
-                        {stock.companyName}
+                        {r.company_name}
                       </span>
-                    </button>
+                    </div>
                   </TableCell>
 
                   {/* Current Price */}
                   <TableCell className="px-4 py-3 text-right tabular-nums">
                     <span className="text-xs font-bold text-foreground">
-                      {currentPriceVnd.toLocaleString("vi-VN")}
+                      {formatVnd(r.trade_plan.current_price)}
                     </span>
-                    <span className="ml-0.5 text-[10px] text-subtle-foreground">đ</span>
                   </TableCell>
 
                   {/* Divergence Column */}
                   <TableCell className="px-4 py-3 text-center">
-                    {parseDivergenceBadges(stock)}
+                    {renderDivergenceBadges(r)}
                   </TableCell>
 
                   {/* Buy/Sell Zone */}
@@ -271,40 +194,43 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
                           : "border border-trend-down-border bg-trend-down-bg text-trend-down-text"
                       }`}
                     >
-                      {isBuy ? stock.targetBuyPrice : "Không khuyến nghị"}
+                      {isBuy && r.trade_plan.entry_low != null
+                        ? `${formatVnd(r.trade_plan.entry_low)} - ${formatVnd(r.trade_plan.entry_high)}`
+                        : "Không khuyến nghị"}
                     </span>
                   </TableCell>
 
                   {/* Targets & Stop Loss */}
                   <TableCell className="px-4 py-3">
-                    <div className="flex flex-col space-y-1">
-                      {/* TP */}
-                      <div className="flex items-center text-[11px] tabular-nums">
-                        <span className="w-12 font-medium text-subtle-foreground">Mục tiêu:</span>
-                        <span className="mr-1 font-bold text-trend-up-text">
-                          {targetSellPriceVnd.toLocaleString("vi-VN")}đ
-                        </span>
-                        <span className="inline-flex items-center text-[10px] font-bold text-trend-up-text">
-                          <ArrowUpRight className="mr-0.5 h-3 w-3" />+{returnPct.toFixed(1)}%
+                    <div className="flex flex-col space-y-1 font-mono text-[11px]">
+                      <div className="flex items-center tabular-nums">
+                        <span className="w-16 text-muted-foreground">Mục tiêu:</span>
+                        <span className="font-bold text-trend-up-text">
+                          {formatVnd(r.trade_plan.tp1)}
                         </span>
                       </div>
-                      {/* SL */}
-                      <div className="flex items-center text-[11px] tabular-nums">
-                        <span className="w-12 font-medium text-subtle-foreground">Cắt lỗ:</span>
-                        <span className="mr-1 font-bold text-trend-down-text">
-                          {stopLossPriceVnd.toLocaleString("vi-VN")}đ
-                        </span>
-                        <span className="inline-flex items-center text-[10px] font-bold text-trend-down-text">
-                          <ArrowDownRight className="mr-0.5 h-3 w-3" />
-                          {lossPct.toFixed(1)}%
+                      <div className="flex items-center tabular-nums">
+                        <span className="w-16 text-muted-foreground">Cắt lỗ:</span>
+                        <span className="font-bold text-trend-down-text">
+                          {formatVnd(r.trade_plan.stop_loss)}
                         </span>
                       </div>
                     </div>
                   </TableCell>
 
                   {/* Risk Level */}
-                  <TableCell className="px-4 py-3 text-center">
-                    {getRiskBadge(stock.riskLevel)}
+                  <TableCell className="px-4 py-3 text-center font-mono">
+                    <Badge
+                      variant={
+                        r.risk_level === "LOW"
+                          ? "success"
+                          : r.risk_level === "HIGH"
+                            ? "destructive"
+                            : "warning"
+                      }
+                    >
+                      {formatRisk(r.risk_level)}
+                    </Badge>
                   </TableCell>
                 </TableRow>
               );
@@ -322,16 +248,16 @@ export function StockTable({ stocks, onSelectStock, activeTab, setActiveTab }: S
           <TabsList>
             <TabsTrigger value="BUY" className="flex cursor-pointer items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5 text-trend-up-text" />
-              Mã khuyến nghị mua ({buyStocks.length})
+              Mã Khuyến Nghị Mua & Theo Dõi ({buyStocks.length})
             </TabsTrigger>
             <TabsTrigger value="SELL" className="flex cursor-pointer items-center gap-1.5">
               <ArrowDownRight className="h-3.5 w-3.5 text-trend-down-text" />
-              Mã khuyến nghị bán ({sellStocks.length})
+              Mã Bán / Nắm Giữ / Tránh ({sellStocks.length})
             </TabsTrigger>
           </TabsList>
 
           <div className="hidden font-mono text-[11px] tracking-tight text-subtle-foreground uppercase sm:block">
-            Nhấp vào mã CP để xem chi tiết
+            Nhấp vào dòng để xem chi tiết cổ phiếu
           </div>
         </div>
 
