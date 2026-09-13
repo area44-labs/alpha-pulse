@@ -1,9 +1,24 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+
+import "@/index.css";
 
 export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Alpha Pulse - Khuyến Nghị Giao Dịch Chứng Khoán" },
+    ],
+  }),
   component: RootComponent,
 });
 
 function RootComponent() {
-  return <Outlet />;
+  return (
+    <>
+      <HeadContent />
+      <Outlet />
+      <Scripts />
+    </>
+  );
 }
