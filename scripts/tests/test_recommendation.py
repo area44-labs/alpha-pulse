@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 
 from scripts.lib.recommendation import calculate_risk_adjusted_alpha, generate_recommendation
+from scripts.lib.risk import normalize_universe_liquidity_scores
 
 
 class TestRecommendationEngine(unittest.TestCase):
@@ -201,6 +202,86 @@ class TestRecommendationEngine(unittest.TestCase):
         self.assertIsNone(rec["alpha_score"])
         self.assertIsNone(rec["risk_metrics"]["var_t25"])
         self.assertIsNone(rec["trade_plan"]["current_price"])
+
+    def test_market_regime_propagation_across_regimes(self):
+        """Verify normalization uses explicitly supplied market regime across all regimes."""
+        regimes = ["STRONG_BULL", "BULL", "NEUTRAL", "BEAR", "PANIC"]
+        scores = {}
+
+        for regime in regimes:
+            recs = [
+                {
+                    "alpha_score": 80.0,
+                    "risk_metrics": {
+                        "avg_value_20d": 10.0,
+                        "volatility_60d": 0.20,
+                        "max_drawdown": -0.15,
+                        "liquidity_score": None,
+                    },
+                }
+            ]
+            norm = normalize_universe_liquidity_scores(recs, market_regime=regime)
+            scores[regime] = norm[0]["risk_adjusted_alpha"]
+
+        self.assertGreater(scores["STRONG_BULL"], scores["BULL"])
+        self.assertGreater(scores["BULL"], scores["NEUTRAL"])
+        self.assertGreater(scores["NEUTRAL"], scores["BEAR"])
+        self.assertGreater(scores["BEAR"], scores["PANIC"])
+
+    def test_individual_recommendation_regime_cannot_override_explicit_regime(self):
+        """Verify recommendation's inner 'market_regime' key cannot override explicit parameter."""
+        recs = [
+            {
+                "market_regime": "DEFENSIVE",  # Inner regime attempts to override
+                "alpha_score": 80.0,
+                "risk_metrics": {
+                    "avg_value_20d": 10.0,
+                    "volatility_60d": 0.20,
+                    "max_drawdown": -0.15,
+                    "liquidity_score": None,
+                },
+            }
+        ]
+
+        norm = normalize_universe_liquidity_scores(recs, market_regime="STRONG_BULL")
+        expected_score = calculate_risk_adjusted_alpha(
+            alpha_score=80.0,
+            regime="STRONG_BULL",
+            volatility_60d=0.20,
+            max_drawdown=-0.15,
+            liquidity_score=100.0,
+        )
+
+        self.assertEqual(norm[0]["risk_adjusted_alpha"], expected_score)
+        self.assertNotEqual(
+            norm[0]["risk_adjusted_alpha"],
+            calculate_risk_adjusted_alpha(
+                alpha_score=80.0,
+                regime="DEFENSIVE",
+                volatility_60d=0.20,
+                max_drawdown=-0.15,
+                liquidity_score=100.0,
+            ),
+        )
+
+    def test_invalid_market_regime_raises_error(self):
+        recs = [
+            {
+                "alpha_score": 80.0,
+                "risk_metrics": {
+                    "avg_value_20d": 10.0,
+                },
+            }
+        ]
+
+        with self.assertRaises(ValueError):
+            normalize_universe_liquidity_scores(recs, market_regime="INVALID_REGIME")
+
+        with self.assertRaises(ValueError):
+            normalize_universe_liquidity_scores(recs, market_regime=None)
+
+        with self.assertRaises(ValueError):
+            calculate_risk_adjusted_alpha(alpha_score=80.0, regime="UNKNOWN")
 
 
 if __name__ == "__main__":
