@@ -1,4 +1,4 @@
-# VN VN Invest
+# VN Invest
 
 [![GitHub Pages](https://github.com/area44-labs/vn-invest/actions/workflows/pages.yml/badge.svg)](https://area44-labs.github.io/vn-invest/)
 

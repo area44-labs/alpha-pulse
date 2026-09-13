@@ -1,4 +1,4 @@
-"""Vietnam T+2.5 Portfolio Backtest Engine for VN VN Invest v2.
+"""Vietnam T+2.5 Portfolio Backtest Engine for VN Invest v2.
 
 Simulates true portfolio equity curve with Vietnam T+2.5 settlement rules:
 1. Signal Generation (T Close): Strategy evaluates data up to T.
@@ -401,7 +401,7 @@ def run_backtest(
 def main():
     report = run_backtest(allow_synthetic=False)
     print("\n=====================================================================")
-    print("KẾT QUẢ PORTFOLIO BACKTEST VN VN INVEST V2 (T+2.5 CONSTRAINTS)")
+    print("KẾT QUẢ PORTFOLIO BACKTEST VN INVEST V2 (T+2.5 CONSTRAINTS)")
     print("=====================================================================")
     print(f"Status:                  {report.get('status')}")
     if report.get("status") == "INSUFFICIENT_HISTORICAL_DATA":

@@ -1,4 +1,4 @@
-"""Recommendation Engine Module for VN VN Invest v2.
+"""Recommendation Engine Module for VN Invest v2.
 
 Generates stock recommendations based on composite technical alpha score,
 market regime, T+2.5 risk horizon, market structure entry/stop/target bounds,
@@ -30,7 +30,7 @@ def generate_recommendation(
     foreign_net_buy_bn: float = 0.0,
     prop_net_buy_bn: float = 0.0,
 ) -> dict:
-    """Generate a single stock recommendation object for VN VN Invest v2."""
+    """Generate a single stock recommendation object for VN Invest v2."""
     ex = exchange.upper() if exchange else "HOSE"
 
     if df_stock is None or df_stock.empty or len(df_stock) < 20:

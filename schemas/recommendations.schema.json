@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "VnInvestRecommendationsSchema",
-  "description": "Schema for VN VN Invest Vietnam Quantitative Stock Recommendations v2.0",
+  "description": "Schema for VN Invest Vietnam Quantitative Stock Recommendations v2.0",
   "type": "object",
   "additionalProperties": false,
   "required": [

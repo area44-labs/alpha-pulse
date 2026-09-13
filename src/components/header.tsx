@@ -20,7 +20,7 @@ export function Header({ currentView, onNavigate, lastUpdated }: HeaderProps) {
             onClick={() => onNavigate("dashboard")}
             className="cursor-pointer font-mono text-sm font-bold tracking-tight text-foreground uppercase hover:opacity-80"
           >
-            VN VN Invest
+            VN Invest
           </button>
 
           <nav className="flex items-center space-x-2 font-mono text-xs">

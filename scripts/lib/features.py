@@ -1,4 +1,4 @@
-"""Feature Engine Module for VN VN Invest v2.
+"""Feature Engine Module for VN Invest v2.
 
 Computes technical indicators, moving averages, RSI, MACD, ATR,
 relative strength vs benchmark, market structure bounds, and
